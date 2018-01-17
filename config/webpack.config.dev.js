@@ -11,12 +11,6 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-
-const extractLess = new ExtractTextPlugin({
-  filename: "[name].[contenthash].css",
-  disable: process.env.NODE_ENV === "development"
-});
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -156,14 +150,7 @@ module.exports = {
               // directory for faster rebuilds.
               cacheDirectory: true,
               "plugins": [
-                [
-                  "import",
-                  {
-                    "libraryName": "antd",
-                    "libraryDirectory": "es",
-                    "style": "css"
-                  }
-                ] // `style: true` for less
+                ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] // `style: true` for less
               ]
             },
           },
@@ -206,15 +193,16 @@ module.exports = {
           },
           {
             test: /\.less$/,
-            use: extractLess.extract({
-              use: [{
-                loader: "css-loader"
-              }, {
-                loader: "less-loader"
-              }],
-              // use style-loader in development
-              fallback: "style-loader"
-            })
+            use: [{
+              loader: "style-loader"
+            }, {
+              loader: "css-loader"
+            }, {
+              loader: "less-loader", options: {
+                strictMath: true,
+                noIeCompat: true
+              }
+            }]
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.

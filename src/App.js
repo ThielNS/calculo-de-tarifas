@@ -8,15 +8,15 @@ import ptBR from 'antd/lib/locale-provider/pt_BR';
 import reducers from './reducers';
 
 // Layouts
-import DefautLayout from 'layouts/DefautLayout';
-import LandingPageLayout from 'layouts/LandingPageLayout';
+import DefautLayout from './layouts/DefautLayout';
+import LandingPageLayout from './layouts/LandingPageLayout';
 
 // Pages
-import MainPage from 'pages/MainPage';
-import LandingPage from 'pages/LandingPage';
+import MainPage from './pages/MainPage';
+import LandingPage from './pages/LandingPage';
 
 // Style
-import 'assets/styles/index.less';
+import './assets/styles/index.less';
 
 const store = createStore(
   reducers,
@@ -31,8 +31,8 @@ class App extends Component {
         <LocaleProvider locale={ptBR}>
           <Router>
             <Switch>
-              <LandingPageLayout exact path="/" component={LandingPage}/>
-              <DefautLayout exact path="/app" component={MainPage}/>
+              {/*<LandingPageLayout exact path="/" component={LandingPage}/>*/}
+              <DefautLayout exact path="/list" component={MainPage}/>
             </Switch>
           </Router>
         </LocaleProvider>
