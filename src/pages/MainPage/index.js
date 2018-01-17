@@ -1,8 +1,11 @@
 import React from 'react';
+import ListEquipments from "../../components/ListEquipments";
 
 const MainPage = () => {
   return (
-    <div></div>
+    <div>
+      <ListEquipments/>
+    </div>
   )
 };
 
