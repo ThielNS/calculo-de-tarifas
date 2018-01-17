@@ -22,12 +22,12 @@ class MonthlyExpenses extends Component {
             <section className="card-expenses-monthly">
                 <div className="account-spend">
                     <h2>Gasto mensal</h2>
-                    <div>
-                        <div>
+                    <div className="rates-content">
+                        <div className="white-rate">
                             <h3>Tarifa branca</h3>
                             <i>R$ {whiteRate}</i>
                         </div>
-                        <div>
+                        <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
                             <i>R$ {conventionalRate}</i>
                         </div>
