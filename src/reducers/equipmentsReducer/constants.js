@@ -1,0 +1,2 @@
+
+export const LIST_EQUIPMENTS = 'LIST_EQUIPMENTS';
