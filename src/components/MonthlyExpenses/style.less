@@ -1,13 +1,66 @@
+@import "../../assets/styles/_variable";
+
 .card-expenses-monthly {
-    padding: 15px;
-    background-color: #F7F7F7;
+    border-radius: 5px;
+    padding: 17px;
+    background-color: @bg-card;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    
+
+    h2 {
+        font-weight: bold;
+        color: @gray-dark-color;
+        font-size: 17px;
+    }
+
+    h3 {
+        line-height: 0.2; 
+    }
+    .account-spend {
+        margin-left: 50px;
+    }
+    .border-vertical {
+        border-left: 1px solid @border-color;
+        height: 70px;
+        margin-left: 25px;
+    }
     .rates-content{
-        width: 300px;
+        width: 400px;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
+
+        i {
+            color: #b2b2b2;
+        }
+
+        .conventional-rate {
+            h3 {
+                font-weight: bold;
+                color: @gray-light-color;
+            }
+        }
+    }
+    .expense-feedback {
+        margin-top: 10px;
+        margin-left: 25px;
+        width: 350px;
+        text-align: start;
+        
+        p {
+            color: @gray-light-color;
+        }
+    }
+
+    .highlight-rate {
+        color: @primary-color;
+        font-weight: bold;
+    }
+    .title-card {
+        text-align: center;
+    }
+    i {
+        font-style: normal;      
+        font-size: 15px;  
     }
 }

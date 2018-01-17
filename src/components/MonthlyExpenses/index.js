@@ -6,35 +6,33 @@ class MonthlyExpenses extends Component {
         super(props);
 
         this.state = {
-            whiteRate: "321,94",
-            conventionalRate: "368,85",
-            differenceRates: "67,91"
+            whiteRate: 321.94,
+            conventionalRate: 368.85,
+            differenceRates: 67.91
         }
     }
 
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
 
-        console.log(whiteRate);
-        console.log(conventionalRate);
-
         return (
             <section className="card-expenses-monthly _margin-bottom">
                 <div className="account-spend">
-                    <h2>Gasto mensal</h2>
-                    <div className="rates-content">
-                        <div className="white-rate">
-                            <h3>Tarifa branca</h3>
-                            <i>R$ {whiteRate}</i>
+                    <h2 className="title-card">Gasto Mensal</h2>
+                    <div className="rates-content _margin-top">
+                        <div>
+                            <h3 className="highlight-rate">Tarifa branca</h3>
+                            <i className="rate">R$ {whiteRate}</i>
                         </div>
                         <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
-                            <i>R$ {conventionalRate}</i>
+                            <i className="rate">R$ {conventionalRate}</i>
                         </div>
                     </div>
                 </div>
+                <i className="border-vertical"></i>
                 <div className="expense-feedback">
-                    <p>Tarifa Branca é mais adequada. Você economizará R$ {differenceRates}</p>
+                    <p> <i className="highlight-rate">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate">R$ {differenceRates}</i></p>
                 </div>
             </section>
         )
