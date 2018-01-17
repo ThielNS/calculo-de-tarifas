@@ -19,7 +19,7 @@ class MonthlyExpenses extends Component {
         console.log(conventionalRate);
 
         return (
-            <section className="card-expenses-monthly">
+            <section className="card-expenses-monthly _margin-bottom">
                 <div className="account-spend">
                     <h2>Gasto mensal</h2>
                     <div className="rates-content">

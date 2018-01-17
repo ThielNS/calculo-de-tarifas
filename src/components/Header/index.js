@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import LogoTipo from '../../assets/images/LogoTipo.png';
+import './header.less';
 
 const Header = () => {
   return (
-    <header>
+    <header className="container header row -justify-content-center">
       <Link to="/app">
-        <img src="#" alt="Logo Cálculo de Tarifas"/>
+        <img src={LogoTipo} alt="Logo Cálculo de Tarifas" className="logo"/>
       </Link>
     </header>
   )
