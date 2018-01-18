@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Select } from "antd";
+import { Button, Col, Icon, Row, Select } from "antd";
 import './addEquipments.less';
 
 class AddEquipment extends Component {
@@ -16,8 +16,10 @@ class AddEquipment extends Component {
        power: 0,
        quantity: 1,
        timeOfUse: '00:00',
+       whiteTariff: 0.00,
+       conventionalTariff: 0.00,
        textSearch: '',
-       placeholder: `Inserir Equipamento`,
+       placeholder: `Inserir item`,
      }
   }
 
@@ -37,37 +39,44 @@ class AddEquipment extends Component {
 
   render() {
 
-    const { inputNumber } = this.props;
-    const { timeOfUse, textSearch, placeholder } = this.state;
+    const { inputNumber, formattNumber } = this.props;
+    const { timeOfUse, textSearch, placeholder, whiteTariff, conventionalTariff } = this.state;
 
     return (
-      <div className="add-equipments">
-        <Select
-          mode="combobox"
-          value={textSearch}
-          placeholder={placeholder}
-          style={{width: '150px'}}
-          className="_margin-right"
-          defaultActiveFirstOption={false}
-          showArrow={false}
-          filterOption={false}
-          onChange={this.handleChange}
-        >
-          {this.renderOptions}
-        </Select>
-        <span className="_margin-right">
+      <Row className="add-equipments">
+        <Col span="5">
+          <Select
+            mode="combobox"
+            value={textSearch}
+            placeholder={placeholder}
+            className="select-equipment _margin-right"
+            defaultActiveFirstOption={false}
+            showArrow={false}
+            filterOption={false}
+            onChange={this.handleChange}
+          >
+            {this.renderOptions}
+          </Select>
+        </Col>
+        <Col span="3" className="_margin-right">
           {inputNumber(0, 'power')}
-        </span>
-        <span className="_margin-right">
+        </Col>
+        <Col span="3" className="_margin-right">
           {inputNumber(1, 'quantity')}
-        </span>
-        <span className="_margin-right">
+        </Col>
+        <Col span="3" className="_margin-right">
           <span className="time _padding-small-right">
           {timeOfUse}
           </span>
           <Icon type="calendar" className="_padding-small-left"/>
-        </span>
-      </div>
+        </Col>
+        <Col span="2" className="price _margin-right">
+          {formattNumber(whiteTariff)}
+        </Col>
+        <Col span="4" className="price _margin-right">
+          {formattNumber(conventionalTariff)}
+        </Col>
+      </Row>
     );
   }
 }
