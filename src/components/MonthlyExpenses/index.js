@@ -6,15 +6,15 @@ class MonthlyExpenses extends Component {
         super(props);
 
         this.state = {
-            whiteRate: 321.94,
+            whiteRate: 18.452655,
             conventionalRate: 368.85,
-            differenceRates: 67.91
+            differenceRates: 67.91,  
         }
     }
 
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
-
+        
         return (
             <section className="card-expenses-monthly _margin-bottom">
                 <div className="account-spend">

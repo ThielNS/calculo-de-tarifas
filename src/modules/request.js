@@ -25,7 +25,6 @@ export const request = (url, { contentType = 'application/json', ...customOption
   let userToken = localStorage.getItem('userToken');
   userToken = userToken ? userToken : null;
 
-
   const headers = {
     Authorization: userToken,
   };
@@ -38,7 +37,6 @@ export const request = (url, { contentType = 'application/json', ...customOption
     ...customOptions,
     headers,
   };
-
 
   return fetch(`${API_URL}/${url}`, options)
     .then(response => {

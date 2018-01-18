@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ChooseDealership from "./ChooseDealership";
 import RedoList from "./RedoList";
-import "./style.less";
+import "./optionsTable.less";
 
 class OptionsTable extends Component {
 

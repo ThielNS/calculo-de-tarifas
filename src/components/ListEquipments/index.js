@@ -89,7 +89,7 @@ class ListEquipments extends Component {
   }
 
   btnRemove = id => {
-    return(
+    return (
       <Button
         type="danger"
         size="small"
