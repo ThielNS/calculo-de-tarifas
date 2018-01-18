@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table } from 'antd';
-import AddEquipment from "../AddEquipment";
+import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 
 class ListEquipments extends Component {
@@ -156,7 +156,7 @@ class ListEquipments extends Component {
           pagination={false}
           rowKey="id"
           footer={() =>
-            <AddEquipment
+            <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
               formattNumber={this.formattNumber.bind(this)}
             />

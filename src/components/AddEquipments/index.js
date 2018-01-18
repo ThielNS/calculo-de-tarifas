@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Button, Col, Icon, Row, Select } from "antd";
+import { Col, Icon, Row, Select } from "antd";
 import './addEquipments.less';
 
-class AddEquipment extends Component {
+class AddEquipments extends Component {
 
   constructor(props) {
     super(props);
      this.state = {
        id: '1',
-       equipments: [
-         'Computador',
-         'Liquidificador',
-         'Microondas'
-       ],
+       equipments: [],
        power: 0,
        quantity: 1,
        timeOfUse: '00:00',
@@ -24,23 +20,28 @@ class AddEquipment extends Component {
   }
 
   handleChange = (value) => {
+
+    console.log(value)
+
+    const { searchEquipments } = this.props;
     this.setState({ textSearch: value });
-  };
 
-  renderOptions = () => {
-
-    const { equipments } = this.state;
-    const { Option } = Select;
-
-    return equipments.map((value, index) => (
-      <Option key={index}>{value}</Option>
-    ));
+    searchEquipments(value)
+      .then(({data}) => {
+        this.setState({ equipments: data})
+      })
   };
 
   render() {
 
     const { inputNumber, formattNumber } = this.props;
-    const { timeOfUse, textSearch, placeholder, whiteTariff, conventionalTariff } = this.state;
+    const { equipments, timeOfUse, textSearch, placeholder, whiteTariff, conventionalTariff } = this.state;
+
+    const { Option } = Select;
+
+    const options = equipments.map((item, index) => (
+      <Option key={item.name}>{item.name}</Option>
+    ));
 
     return (
       <Row className="add-equipments">
@@ -55,7 +56,7 @@ class AddEquipment extends Component {
             filterOption={false}
             onChange={this.handleChange}
           >
-            {this.renderOptions}
+            {options}
           </Select>
         </Col>
         <Col span="3" className="_margin-right">
@@ -81,4 +82,4 @@ class AddEquipment extends Component {
   }
 }
 
-export default AddEquipment;
+export default AddEquipments;
