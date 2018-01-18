@@ -1,4 +1,4 @@
-import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS } from "./constants";
+import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, SEARCH_EQUIPMENTS } from "./constants";
 import { initialState } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
@@ -14,6 +14,10 @@ const equipmentsReducer = (state = initialState, action) => {
 
     case LIST_EQUIPMENTS:
       return state;
+
+    case SEARCH_EQUIPMENTS:
+
+      return action.data;
 
     case REMOVE_EQUIPMENTS:
 

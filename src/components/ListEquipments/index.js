@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table } from 'antd';
-import AddEquipment from "../AddEquipment";
+import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 
 class ListEquipments extends Component {
@@ -66,14 +66,14 @@ class ListEquipments extends Component {
           dataIndex: "whiteTariff",
           key: "whiteTariff",
           className: "column-right",
-          render: price => `R$ ${price}`
+          render: price => this.formattNumber(price)
         },
         {
           title: "Tarifa Convencional",
           dataIndex: "conventionalTariff",
           key: "conventionalTariff",
           className: "column-right",
-          render: price => `R$ ${price}`
+          render: price => this.formattNumber(price)
         },
         {
           dataIndex: "id",
@@ -87,6 +87,11 @@ class ListEquipments extends Component {
       }
     }
   }
+
+  formattNumber = value => {
+    const number = parseFloat(value).toFixed(2);
+    return `R$ ${number}`
+  };
 
   btnRemove = id => {
     return (
@@ -150,7 +155,12 @@ class ListEquipments extends Component {
           columns={columns}
           pagination={false}
           rowKey="id"
-          footer={() => <AddEquipment inputNumber={this.inputNumber.bind()}/>}
+          footer={() =>
+            <AddEquipmentsContainer
+              inputNumber={this.inputNumber.bind(this)}
+              formattNumber={this.formattNumber.bind(this)}
+            />
+          }
         />
       </div>
     );
