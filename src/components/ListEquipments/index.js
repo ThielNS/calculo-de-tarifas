@@ -154,6 +154,7 @@ class ListEquipments extends Component {
           dataSource={list}
           columns={columns}
           pagination={false}
+          className="list-equipmets"
           rowKey="id"
           footer={() =>
             <AddEquipmentsContainer
