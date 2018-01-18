@@ -58,7 +58,7 @@ class ListEquipments extends Component {
           title: "Tempo de Uso",
           dataIndex: "timeOfUse",
           key: "timeOfUse",
-          className: "column-right",
+          className: "set-time column-right",
           render: date => this.timeOfUse(date)
         },
         {
@@ -83,7 +83,8 @@ class ListEquipments extends Component {
       ],
       formatter: {
         formatter: value => `${value}W`,
-        parser: value => value.replace('W', '')
+        parser: value => value.replace('W', ''),
+        step: 0.1
       }
     }
   }
@@ -117,8 +118,8 @@ class ListEquipments extends Component {
 
     return(
       <InputNumber
-        min={1}
-        defaultValue={number}
+        min={0.1}
+        value={number}
         {...formatter}
         onChange={value => this.changeNumber(value, type)}
       />
@@ -136,17 +137,15 @@ class ListEquipments extends Component {
   timeOfUse = timeOfUse => {
     return(
       <div>
-        <span>{`${timeOfUse}`}</span>
-        <Button type="primary" size="small" className="_margin-small-left" ghost>
-          <Icon type="edit"/>
-        </Button>
+        <span className="_margin-small-right">{`${timeOfUse}`}</span>
+        <Icon type="edit"/>
       </div>
     );
   };
 
   render() {
 
-    const { list, columns } = this.state;
+    const { list, columns, formatter } = this.state;
 
     return (
       <div className="card">
@@ -160,6 +159,7 @@ class ListEquipments extends Component {
             <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
               formattNumber={this.formattNumber.bind(this)}
+              formatter={formatter}
             />
           }
         />
