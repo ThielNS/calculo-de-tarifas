@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Table } from 'antd';
+import { Button, Icon, InputNumber, Table } from 'antd';
 import AddEquipment from "../AddEquipment";
 import './listEquipments.less';
 
@@ -8,10 +8,12 @@ class ListEquipments extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      quantity: 1,
+      power: 0,
       list: [
         {
           id: '1',
-          equipments: 'Computer',
+          equipments: 'Computer de mesa',
           power: '200',
           quantity: 2,
           timeOfUse: "10:25:45",
@@ -43,12 +45,14 @@ class ListEquipments extends Component {
           dataIndex: "power",
           key: "power",
           className: "column-right",
-          render: power => `${power}W`
+          render: value => this.inputNumber(value, 'power')
         },
         {
           title: "Quatidade",
           dataIndex: "quantity",
-          key: "quantity"
+          key: "quantity",
+          className: "column-right",
+          render: value => this.inputNumber(value, 'quantity')
         },
         {
           title: "Tempo de Uso",
@@ -76,7 +80,11 @@ class ListEquipments extends Component {
           key: "id",
           render: id => this.btnRemove(id)
         },
-      ]
+      ],
+      formatter: {
+        formatter: value => `${value}W`,
+        parser: value => value.replace('W', '')
+      }
     }
   }
 
@@ -97,11 +105,34 @@ class ListEquipments extends Component {
     console.log(id)
   };
 
+  inputNumber = (number, type) => {
+
+    let { formatter} = this.state;
+    formatter = (type === 'power') ? formatter : {};
+
+    return(
+      <InputNumber
+        min={1}
+        defaultValue={number}
+        {...formatter}
+        onChange={value => this.changeNumber(value, type)}
+      />
+    )
+  };
+
+  changeNumber = (value, type) => {
+    if(type === 'quantity') {
+      this.setState({ quantity: value })
+    } else if(type === 'power') {
+      this.setState({ power: value })
+    }
+  };
+
   timeOfUse = timeOfUse => {
     return(
       <div>
         <span>{`${timeOfUse}`}</span>
-        <Button type="primary" size="small" className="_margin-left" ghost>
+        <Button type="primary" size="small" className="_margin-small-left" ghost>
           <Icon type="edit"/>
         </Button>
       </div>
@@ -119,7 +150,7 @@ class ListEquipments extends Component {
           columns={columns}
           pagination={false}
           rowKey="id"
-          footer={() => <AddEquipment/>}
+          footer={() => <AddEquipment inputNumber={this.inputNumber.bind()}/>}
         />
       </div>
     );
