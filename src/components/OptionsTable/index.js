@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ChooseDealership from "./ChooseDealership";
+import ChooseDealership from "./ChooseDistribuitors";
 import RedoList from "./RedoList";
 import "./optionsTable.less";
 
