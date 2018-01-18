@@ -29,7 +29,7 @@ class RedoList extends Component {
                 visible: false,
                 confirmLoading: false,
             });
-        }, 2000);
+        });
     }
     handleCancel = () => {
         this.setState({
