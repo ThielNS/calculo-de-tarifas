@@ -32,7 +32,7 @@ class MonthlyExpenses extends Component {
                 </div>
                 <i className="border-vertical"></i>
                 <div className="expense-feedback">
-                    <p> <i className="highlight-rate">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate">R$ {differenceRates}</i></p>
+                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">R$ {differenceRates}</i></p>
                 </div>
             </section>
         )
