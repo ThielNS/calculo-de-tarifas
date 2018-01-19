@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table } from 'antd';
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
+import ColTimeOfUse from "../ColTimeOfUse";
 
 class ListEquipments extends Component {
 
@@ -135,11 +136,15 @@ class ListEquipments extends Component {
   };
 
   timeOfUse = timeOfUse => {
+
+    const { modal, toggleModal } = this.props;
+
     return(
-      <div>
-        <span className="_margin-small-right">{`${timeOfUse}`}</span>
-        <Icon type="edit"/>
-      </div>
+      <ColTimeOfUse
+        timeOfUse={timeOfUse}
+        modal={modal}
+        toggleModal={toggleModal}
+      />
     );
   };
 

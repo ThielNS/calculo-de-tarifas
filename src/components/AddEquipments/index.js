@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Col, Icon, InputNumber, Row, Select } from "antd";
+import { Col, InputNumber, Row, Select } from "antd";
 import './addEquipments.less';
+import ColTimeOfUse from "../ColTimeOfUse";
 
 class AddEquipments extends Component {
 
@@ -16,6 +17,7 @@ class AddEquipments extends Component {
        conventionalTariff: 0.00,
        textSearch: '',
        placeholder: `Inserir item`,
+       showModal: false,
      }
   }
 
@@ -65,13 +67,18 @@ class AddEquipments extends Component {
 
   render() {
 
-    const { formattNumber } = this.props;
+    const { formattNumber, modal, toggleModal } = this.props;
     const { equipments, timeOfUse, textSearch, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;
 
     const { Option } = Select;
 
     const options = equipments.map((item, index) => (
-      <Option key={item.name} power={item.defaultPower}>{`${item.name} / ${item.defaultPower}W`}</Option>
+      <Option
+        key={item.name}
+        power={item.defaultPower}
+      >
+        {`${item.name} | ${item.defaultPower}W`}
+      </Option>
     ));
 
     return (
@@ -97,15 +104,16 @@ class AddEquipments extends Component {
         <Col span="3" className="_margin-right">
           {this.inputNumber(quantity, 'quantity')}
         </Col>
+
         <Col
           span="3"
-          className="set-time _margin-right"
-          onClick={() => alert('ai')}
+          className="_margin-right"
         >
-          <span className="_padding-small-right">
-          {timeOfUse}
-          </span>
-          <Icon type="calendar" className="_padding-small-left"/>
+          <ColTimeOfUse
+            timeOfUse={timeOfUse}
+            modal={modal}
+            toggleModal={toggleModal}
+          />
         </Col>
         <Col span="2" className="price _margin-right">
           {formattNumber(whiteTariff)}
