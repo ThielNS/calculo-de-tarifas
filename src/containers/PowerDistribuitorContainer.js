@@ -3,7 +3,7 @@ import {listDistribuitors} from "../actions/powerDistribuitorAction";
 import ChooseDistribuitors from "../components/OptionsTable/ChooseDistribuitors";
 
 const mapStateToProps = state => {
-    return { itemsTechs: state.technologiesReducer };
+    return { itemsDistribuitors: state.powerDistribuitorReducer };
 };
 
 const mapDispatchToProps = dispatch => ({

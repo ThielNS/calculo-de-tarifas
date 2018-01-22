@@ -41,8 +41,8 @@ class RedoList extends Component {
         const { visible, confirmLoading, ModalText } = this.state;
 
         return (
-            <div>
-                <Button icon="reload" onClick={this.showModal}>Refazer Lista</Button>
+            <div className="modal-redolist">
+                <Button icon="reload" onClick={this.showModal} className="redo-list">Refazer Lista</Button>
                 <Modal title="Refazer lista"
                     visible={visible}
                     onOk={this.handleOk}

@@ -12,6 +12,10 @@ class MonthlyExpenses extends Component {
         }
     }
 
+    componentDidMount() {
+        
+    }
+
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
         
