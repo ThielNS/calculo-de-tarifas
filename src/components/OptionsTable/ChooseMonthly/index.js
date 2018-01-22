@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
-const { Option, OptGroup } = Select;
+import "./chooseMonthly.less";
+const { Option } = Select;
 
 class ChooseMonthly extends Component {
     constructor(props) {
@@ -69,15 +70,15 @@ class ChooseMonthly extends Component {
         ))
     }
     render() {
-        const { monthlys } = this.state;
-        console.log(monthlys);
+
         return (
-            <div className="content-select" >
+            <div className="content-select option-left" >
                 <i className="label-distribuitors">Escolha um mês</i>
                 <Select
+                    className="select-monthly"
                     showSearch
                     style={{ width: 200 }}
-                    placeholder="AES Eletropaulo"
+                    placeholder="Janeiro"
                     optionFilterProp="children"
                     onChange={this.handleChange}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

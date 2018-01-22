@@ -16,8 +16,8 @@ class chooseDistribuitors extends Component {
         ));
     }
     handleChange(value) {
-        console.log(`selected ${value}`);
-    }
+/*         console.log(`selected ${value}`);
+ */    }
     render() {
 
         return (
