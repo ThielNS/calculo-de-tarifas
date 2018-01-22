@@ -1,5 +1,5 @@
-//const API_URL = "http://192.168.2.129:80";
- const API_URL = "https://private-581d3-itse1.apiary-mock.com";
+// const API_URL = "http://192.168.2.129:80";
+const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{
   return request(url, {
@@ -22,11 +22,8 @@ export const patch = (url, data) => {
 };
 
 export const request = (url, { contentType = 'application/json', ...customOptions }) => {
-  let userToken = localStorage.getItem('userToken');
-  userToken = userToken ? userToken : null;
 
   const headers = {
-    Authorization: userToken,
   };
 
   if (contentType) {
