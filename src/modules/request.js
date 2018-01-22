@@ -22,7 +22,6 @@ export const patch = (url, data) => {
 };
 
 export const request = (url, { contentType = 'application/json', ...customOptions }) => {
-
   const headers = {
   };
 
@@ -39,7 +38,7 @@ export const request = (url, { contentType = 'application/json', ...customOption
     .then(response => {
       // if(response.statusCode.toString().match(/^4/))
       //   throw new Error(`${response.statusCode} Error`);
-      return response.json();
+      return response.json();    
     })
     .catch(error => {
       throw new Error('Request Error', error.message);

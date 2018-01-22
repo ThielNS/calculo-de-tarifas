@@ -7,18 +7,18 @@ class AddEquipments extends Component {
 
   constructor(props) {
     super(props);
-     this.state = {
-       id: '1',
-       equipments: [],
-       power: 0,
-       quantity: 1,
-       timeOfUse: '00:00',
-       whiteTariff: 0.00,
-       conventionalTariff: 0.00,
-       textSearch: '',
-       placeholder: `Inserir item`,
-       showModal: false,
-     }
+    this.state = {
+      id: '1',
+      equipments: [],
+      power: 0,
+      quantity: 1,
+      timeOfUse: '00:00',
+      whiteTariff: 0.00,
+      conventionalTariff: 0.00,
+      textSearch: '',
+      placeholder: `Inserir item`,
+      showModal: false,
+    }
   }
 
   handleChange = (value) => {
@@ -27,8 +27,8 @@ class AddEquipments extends Component {
     this.setState({ textSearch: value });
 
     searchEquipments(value)
-      .then(({data}) => {
-        this.setState({ equipments: data})
+      .then(({ data }) => {
+        this.setState({ equipments: data })
       })
   };
 
@@ -47,7 +47,7 @@ class AddEquipments extends Component {
     let { formatter } = this.props;
     formatter = (type === 'power') ? formatter : {};
 
-    return(
+    return (
       <InputNumber
         min={1}
         value={number}
@@ -58,9 +58,9 @@ class AddEquipments extends Component {
   };
 
   changeNumber = (value, type) => {
-    if(type === 'quantity') {
+    if (type === 'quantity') {
       this.setState({ quantity: value })
-    } else if(type === 'power') {
+    } else if (type === 'power') {
       this.setState({ power: value })
     }
   };

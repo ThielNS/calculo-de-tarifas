@@ -7,18 +7,19 @@ class MonthlyExpenses extends Component {
 
         this.state = {
             whiteRate: 18.452655,
-            conventionalRate: 368.85,
-            differenceRates: 67.91,  
+            conventionalRate: 36.859999999,
+            differenceRates: 67.9111111
         }
     }
 
-    componentDidMount() {
-        
-    }
+    formattNumber = value => {
+        const number = parseFloat(value).toFixed(2);
+        return `R$ ${number}`
+    };
 
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
-        
+
         return (
             <section className="card-expenses-monthly _margin-bottom">
                 <div className="account-spend">
@@ -26,17 +27,17 @@ class MonthlyExpenses extends Component {
                     <div className="rates-content _margin-top">
                         <div>
                             <h3 className="highlight-rate">Tarifa branca</h3>
-                            <i className="rate">R$ {whiteRate}</i>
+                            <i className="rate">{this.formattNumber(whiteRate)}</i>
                         </div>
                         <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
-                            <i className="rate">R$ {conventionalRate}</i>
+                            <i className="rate">{this.formattNumber(conventionalRate)}</i>
                         </div>
                     </div>
                 </div>
                 <i className="border-vertical"></i>
                 <div className="expense-feedback">
-                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">R$ {differenceRates}</i></p>
+                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">{this.formattNumber(differenceRates)}</i></p>
                 </div>
             </section>
         )
