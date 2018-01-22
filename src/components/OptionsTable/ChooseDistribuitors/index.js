@@ -17,9 +17,8 @@ class chooseDistribuitors extends Component {
     }
     handleChange(value) {
 /*         console.log(`selected ${value}`);
- */    }
+ */ }
     render() {
-
         return (
             <div className="content-select">
                 <i className="label-distribuitors">Concessionárias</i>
@@ -32,7 +31,7 @@ class chooseDistribuitors extends Component {
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                     {this.renderOptions()}
-                    
+
                 </Select>
             </div>
         )

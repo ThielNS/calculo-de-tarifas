@@ -19,13 +19,15 @@ class RedoList extends Component {
         });
     }
     handleOk = () => {
+        //console.log('List clean');
+
         this.setState({
             okText: 'Sim',
             confirmLoading: true,
         });
         setTimeout(() => {
             this.setState({
-                okText: 'Sim',                
+                okText: 'Sim',
                 visible: false,
                 confirmLoading: false,
             });
@@ -34,7 +36,7 @@ class RedoList extends Component {
     handleCancel = () => {
         this.setState({
             visible: false,
-            text:'Cancelar'
+            text: 'Cancelar'
         });
     }
     render() {
