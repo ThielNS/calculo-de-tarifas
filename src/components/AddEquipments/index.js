@@ -15,7 +15,7 @@ class AddEquipments extends Component {
        timeOfUse: '00:00',
        whiteTariff: 0.00,
        conventionalTariff: 0.00,
-       textSearch: '',
+       nameEquipment: '',
        placeholder: `Inserir item`,
        showModal: false,
      }
@@ -24,7 +24,7 @@ class AddEquipments extends Component {
   handleChange = (value) => {
 
     const { searchEquipments } = this.props;
-    this.setState({ textSearch: value });
+    this.setState({ nameEquipment: value });
 
     searchEquipments(value)
       .then(({data}) => {
@@ -37,7 +37,7 @@ class AddEquipments extends Component {
     const { power } = option.props;
 
     this.setState({
-      textSearch: value,
+      nameEquipment: value,
       power
     })
   };
@@ -67,8 +67,8 @@ class AddEquipments extends Component {
 
   render() {
 
-    const { formattNumber, modal, toggleModal } = this.props;
-    const { equipments, timeOfUse, textSearch, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;
+    const { formattNumber } = this.props;
+    const { equipments, timeOfUse, nameEquipment, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;
 
     const { Option } = Select;
 
@@ -86,7 +86,7 @@ class AddEquipments extends Component {
         <Col span="5">
           <Select
             mode="combobox"
-            value={textSearch}
+            value={nameEquipment}
             placeholder={placeholder}
             className="select-equipment _margin-right"
             defaultActiveFirstOption={false}
@@ -111,8 +111,7 @@ class AddEquipments extends Component {
         >
           <ColTimeOfUse
             timeOfUse={timeOfUse}
-            modal={modal}
-            toggleModal={toggleModal}
+            nameEquipment={nameEquipment}
           />
         </Col>
         <Col span="2" className="price _margin-right">
