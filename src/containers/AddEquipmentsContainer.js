@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 import { searchEquipments } from "../actions/equipmentsAction";
-import { toggleModal } from "../actions/modalAction";
+import { calculate } from "../actions/equipmentsAction";
 import AddEquipment from "../components/AddEquipments";
 
 const mapStateToProps = state => {
   return {
     resultEquipments: state.equipmentsReducer,
-    modal: state.modalReducer
+    resultCalculate: state.equipmentsReducer,
   }
 };
 
 const mapDispatchToProps = {
   searchEquipments,
-  toggleModal
+  calculate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEquipment);

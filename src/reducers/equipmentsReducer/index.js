@@ -1,9 +1,13 @@
-import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, SEARCH_EQUIPMENTS } from "./constants";
+import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, SEARCH_EQUIPMENTS, LIST_CALCULATE_EQUIPMENTS } from "./constants";
 import { initialState } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
 
   switch(action.type) {
+    
+    case LIST_CALCULATE_EQUIPMENTS:
+      return state;
+
     case ADD_EQUIPMENT:
 
       const { data } = action;

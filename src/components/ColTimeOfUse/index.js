@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Icon } from "antd";
-import TimeOfUse from "../Modal/TimeOfUse";
-import ModalContainer from "../../containers/ModalContainer";
+import ModalTimeOfUse from "./ModalTimeOfUse";
 
-const ColTimeOfUse = ({ timeOfUse, modal, toggleModal}) => {
+class ColTimeOfUse extends Component {
 
-  return (
-    <div
-      className="set-time"
-      onClick={() => toggleModal(modal.showModal)}
-    >
-      <span className="_padding-small-right">
-        {timeOfUse}
-      </span>
-      <Icon type="calendar"/>
-      <ModalContainer
-        title="Tempo de Uso"
-        showModal={modal.showModal}
-      >
-        <TimeOfUse/>
-      </ModalContainer>
-    </div>
-  );
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleModal: false,
+    }
+  }
+
+  toggleModal = () => {
+    this.setState((state) => ({
+      visibleModal: !state.visibleModal,
+    }));
+  };
+
+  render() {
+
+    const { nameEquipment, timeOfUse } = this.props;
+    const { visibleModal } = this.state;
+
+    return (
+      <div className="set-time">
+        <div onClick={this.toggleModal}>
+          <span className="_padding-small-right">
+            {timeOfUse}
+          </span>
+          <Icon type="calendar"/>
+        </div>
+        <ModalTimeOfUse
+          nameEquipment={nameEquipment}
+          visibleModal={visibleModal}
+          closeModal={this.toggleModal}
+        />
+      </div>
+    );
+  }
+}
 
 export default ColTimeOfUse;

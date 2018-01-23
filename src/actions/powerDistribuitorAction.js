@@ -1,5 +1,5 @@
-import { LIST_DISTRIBUITORS } from "../reducers/powerDistribuitorReducer/constants"
-import { get } from "../modules/request";
+import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "../reducers/powerDistribuitorReducer/constants"
+import { get, post } from "../modules/request";
 
 export const listDistribuitors = () => dispatch => {
     return get('powerdistribuitors')
@@ -12,4 +12,14 @@ export const listDistribuitors = () => dispatch => {
         .catch(Error => {
 
         })
+}
+
+export const listCalculateEquipments = () => dispatch => {
+    return post('calculate')
+    .then(data => (
+        dispatch({
+            type: LIST_EQUIPMENTS_DISTRIBUITOR,
+            data
+        })
+    ))
 }

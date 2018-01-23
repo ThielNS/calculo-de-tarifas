@@ -10,51 +10,51 @@ class ChooseMonthly extends Component {
         this.state = {
             monthlys: [
                 {
-                    number: 1,
+                    number: 0,
                     name: 'Janeiro'
                 },
                 {
-                    number: 2,
+                    number: 1,
                     name: 'Fevereiro'
                 },
                 {
-                    number: 3,
+                    number: 2,
                     name: 'Maio'
                 },
                 {
-                    number: 4,
+                    number: 3,
                     name: 'Março'
                 },
                 {
-                    number: 5,
+                    number: 4,
                     name: 'Abril'
                 },
                 {
-                    number: 6,
+                    number: 5,
                     name: 'Junho'
                 },
                 {
-                    number: 7,
+                    number: 6,
                     name: 'Julho'
                 },
                 {
-                    number: 8,
+                    number: 7,
                     name: 'Agosto'
                 },
                 {
-                    number: 9,
+                    number: 8,
                     name: 'Setembro'
                 },
                 {
-                    number: 10,
+                    number: 9,
                     name: 'Outubro'
                 },
                 {
-                    number: 11,
+                    number: 10,
                     name: 'Novembro'
                 },
                 {
-                    number: 12,
+                    number: 11,
                     name: 'Dezembro'
                 }
             ]
@@ -73,7 +73,7 @@ class ChooseMonthly extends Component {
 
         return (
             <div className="content-select option-left" >
-                <i className="label-distribuitors">Escolha um mês</i>
+                <i className="label-distribuitors">Mês</i>
                 <Select
                     className="select-monthly"
                     showSearch
