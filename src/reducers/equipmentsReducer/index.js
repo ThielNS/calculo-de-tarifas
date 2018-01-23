@@ -8,7 +8,7 @@ const equipmentsReducer = (state = initialState, action) => {
 
       const { data } = action;
       const newState = state.concat(data);
-      localStorage.setItem('list', newState);
+      localStorage.setItem('list', JSON.stringify(newState));
 
       return newState;
 

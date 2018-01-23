@@ -4,6 +4,7 @@ import ListEquipments from "../components/ListEquipments/index";
 
 const mapStateToProps = state => {
   return {
+    listEquipments: state.equipmentsReducer,
     modal: state.modalReducer
   }
 };

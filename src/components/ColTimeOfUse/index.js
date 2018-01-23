@@ -11,7 +11,10 @@ class ColTimeOfUse extends Component {
     }
   }
 
-  toggleModal = () => {
+  toggleModal = (value) => {
+    if(value === true) {
+      this.props.submitData()
+    }
     this.setState((state) => ({
       visibleModal: !state.visibleModal,
     }));
@@ -19,7 +22,7 @@ class ColTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, timeOfUse } = this.props;
+    const { nameEquipment, timeOfUse, useOfMonth, handleUseOfMonth } = this.props;
     const { visibleModal } = this.state;
 
     return (
@@ -34,6 +37,8 @@ class ColTimeOfUse extends Component {
           nameEquipment={nameEquipment}
           visibleModal={visibleModal}
           closeModal={this.toggleModal}
+          useOfMonth={useOfMonth}
+          handleUseOfMonth={handleUseOfMonth}
         />
       </div>
     );

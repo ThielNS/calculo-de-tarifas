@@ -8,18 +8,56 @@ class AddEquipments extends Component {
   constructor(props) {
     super(props);
      this.state = {
-       id: '1',
+       id: 1,
        equipments: [],
+       nameEquipment: '',
        power: 0,
        quantity: 1,
        timeOfUse: '00:00',
-       whiteTariff: 0.00,
-       conventionalTariff: 0.00,
-       nameEquipment: '',
+       useOfMonth: [],
+       whiteTariff: '-',
+       conventionalTariff: '-',
        placeholder: `Inserir item`,
-       showModal: false,
+       send: false,
      }
   }
+
+  componentDidUpdate() {
+    const { id, nameEquipment, power, quantity, useOfMonth, send } = this.state;
+    const { addEquipment } = this.props;
+
+    if(nameEquipment && power > 0 && quantity >= 1 && useOfMonth.length > 0 && send) {
+
+      const dataInfo = {
+        id: id,
+        nameEquipment: nameEquipment,
+        power: power,
+        quantity: quantity,
+        useOfMonth: useOfMonth
+      };
+
+      addEquipment(dataInfo);
+
+      this.setState({
+        id: id + 1,
+        nameEquipment: '',
+        power: 0,
+        quantity: 1,
+        useOfMonth: [],
+        send: !send,
+      })
+    }
+  }
+
+  handleUseOfMonth = date => {
+    let { useOfMonth } = this.state;
+
+    useOfMonth.push(date);
+
+    this.setState({
+      useOfMonth
+    });
+  };
 
   handleChange = (value) => {
 
@@ -27,8 +65,11 @@ class AddEquipments extends Component {
     this.setState({ nameEquipment: value });
 
     searchEquipments(value)
-      .then(({data}) => {
-        this.setState({ equipments: data})
+      .then(data => {
+        this.setState({ equipments: data })
+      })
+      .catch(e => {
+        console.log(e, 'erro');
       })
   };
 
@@ -65,10 +106,15 @@ class AddEquipments extends Component {
     }
   };
 
+  submitData = () => {
+    this.setState(state => ({
+      send: !state.send,
+    }))
+  };
+
   render() {
 
-    const { formattNumber } = this.props;
-    const { equipments, timeOfUse, nameEquipment, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;
+    const { equipments, timeOfUse, nameEquipment, power, quantity, useOfMonth, placeholder, whiteTariff, conventionalTariff } = this.state;
 
     const { Option } = Select;
 
@@ -112,13 +158,16 @@ class AddEquipments extends Component {
           <ColTimeOfUse
             timeOfUse={timeOfUse}
             nameEquipment={nameEquipment}
+            useOfMonth={useOfMonth}
+            handleUseOfMonth={this.handleUseOfMonth}
+            submitData={this.submitData}
           />
         </Col>
         <Col span="2" className="price _margin-right">
-          {formattNumber(whiteTariff)}
+          {whiteTariff}
         </Col>
         <Col span="4" className="price _margin-right">
-          {formattNumber(conventionalTariff)}
+          {conventionalTariff}
         </Col>
       </Row>
     );

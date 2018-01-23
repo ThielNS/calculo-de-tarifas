@@ -10,13 +10,8 @@ export const searchEquipments = name => dispatch => {
 
   const limit = 5;
 
-  return get(`equipments?name=${name}&limit=${limit}`)
-    .then(data => {
-      return dispatch({
-        type: SEARCH_EQUIPMENTS,
-        data
-      })
-    })
+  return get(`equipments?name={name}&limit={limit}`)
+    .then(data => data)
     .catch(error => {
       console.error(error);
     })
