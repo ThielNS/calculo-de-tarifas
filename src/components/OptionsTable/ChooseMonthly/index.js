@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Select } from 'antd';
 import "./chooseMonthly.less";
 import Moment from 'moment';
+import 'moment/locale/pt-br';
+
 const { Option } = Select;
 
 class ChooseMonthly extends Component {
@@ -73,14 +75,15 @@ class ChooseMonthly extends Component {
     }
 
     gettingMonths() {
-        const m = Moment();
-        const { monthlys } = this.state;
-
+        const m = new Moment();
+        let listMonths = [];
         for (let i = 0; i < 12; i++) {
-                return <Option key={i} value={m.months(i).format('MMMM')}>{m.months(i).format('MMMM')}</Option>
-        
-            //console.log(m.months(i).format('MMMM'));
+            listMonths.push(
+                <Option key={i} value={m.month(i).format('MMMM')}>{m.month(i).format('MMMM')}</Option>
+            )
         }
+
+        return listMonths;
     }
 
     render() {
