@@ -17,21 +17,17 @@ class ListEquipments extends Component {
           equipments: 'Computer de mesa',
           power: '200',
           quantity: 2,
-          timeOfUse: "10:25:45",
-          useOfMonth: [
-            {
-              dateInit: "2018-01-01",
-              dateFinish: "2018-01-01",
-              timeInit: "16:45:00",
-              timeFinish: "17:15:00"
-            },
-            {
-              dateInit: "2018-12-25",
-              dateFinish: "2018-12-27",
-              timeInit: "17:45:00",
-              timeFinish: "18:45:00"
-            }
-          ],
+          useOfMonth: {
+            timeOfUse: "10:25:45",
+            dates: [
+              {
+                dateInit: "2018-01-01",
+                dateFinish: "2018-01-02",
+                timeInit: "16:45:00",
+                timeFinish: "17:15:00"
+              }
+            ]
+          },
           whiteTariff: 25.59,
           conventionalTariff: 28.76
         }
@@ -39,7 +35,7 @@ class ListEquipments extends Component {
       columns: [
         {
           title: "Equipamentos",
-          dataIndex: "equipments"
+          dataIndex: "nameEquipment"
         },
         {
           title: "Potência",
@@ -57,8 +53,8 @@ class ListEquipments extends Component {
         },
         {
           title: "Tempo de Uso",
-          dataIndex: "timeOfUse",
-          key: "timeOfUse",
+          dataIndex: "useOfMonth",
+          key: "useOfMonth",
           className: "set-time column-right",
           render: date => this.timeOfUse(date)
         },
@@ -109,7 +105,7 @@ class ListEquipments extends Component {
   };
 
   removeItem = id => {
-    console.log(id)
+    console.log(id, 'removeItem')
   };
 
   inputNumber = (number, type) => {
@@ -135,27 +131,31 @@ class ListEquipments extends Component {
     }
   };
 
-  timeOfUse = timeOfUse => {
+  timeOfUse = data => {
 
     const { modal, toggleModal } = this.props;
 
-    return(
-      <ColTimeOfUse
-        timeOfUse={timeOfUse}
-        modal={modal}
-        toggleModal={toggleModal}
-      />
-    );
+    if(data) {
+      return(
+        <ColTimeOfUse
+          timeOfUse={data.timeOfUse}
+          modal={modal}
+          toggleModal={toggleModal}
+          useOfMonth={data}
+        />
+      );
+    }
   };
 
   render() {
 
-    const { list, columns, formatter } = this.state;
+    const { columns, formatter } = this.state;
+    const { listEquipments } = this.props;
 
     return (
       <div className="card">
         <Table
-          dataSource={list}
+          dataSource={listEquipments}
           columns={columns}
           pagination={false}
           className="list-equipmets"

@@ -7,37 +7,70 @@ class AddEquipments extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      id: '1',
-      equipments: [],
-      power: 0,
-      quantity: 1,
-      timeOfUse: '00:00',
-      whiteTariff: 0.00,
-      conventionalTariff: 0.00,
-      nameEquipment: '',
-      placeholder: `Inserir item`,
-      showModal: false,
+     this.state = {
+       equipments: [],
+       nameEquipment: '',
+       power: 0,
+       quantity: 1,
+       timeOfUse: '00:00',
+       useOfMonth: [],
+       whiteTariff: '-',
+       conventionalTariff: '-',
+       placeholder: `Inserir item`,
+       send: false,
+     }
+  }
+
+  componentDidUpdate() {
+    const { nameEquipment, power, quantity, useOfMonth, send } = this.state;
+    const { addEquipment, listEquipments } = this.props;
+    const id = listEquipments.length + 1;
+
+    if(nameEquipment && power > 0 && quantity >= 1 && useOfMonth.length > 0 && send) {
+
+      const dataInfo = {
+        id: id,
+        nameEquipment: nameEquipment,
+        power: power,
+        quantity: quantity,
+        useOfMonth: useOfMonth
+      };
+
+      addEquipment(dataInfo);
+
+      this.setState({
+        nameEquipment: '',
+        power: 0,
+        quantity: 1,
+        useOfMonth: [],
+        send: !send,
+      })
     }
   }
 
-  componentDidMount() {
-  }
+  handleUseOfMonth = date => {
+    let { useOfMonth } = this.state;
 
-  handleTime = () => {
-   
-  }
+    useOfMonth.push(date);
+
+    this.setState({
+      useOfMonth
+    });
+  };
+
   handleChange = (value) => {
+
     const { searchEquipments } = this.props;
     this.setState({ nameEquipment: value });
 
     searchEquipments(value)
-      .then(({ data }) => {
-
+      .then(data => {
         this.setState({ equipments: data })
       })
+      .catch(e => {
+        console.log(e, 'erro');
+      })
   };
-
 
   handleSelect = (value, option) => {
 
@@ -49,13 +82,12 @@ class AddEquipments extends Component {
     })
   };
 
-
   inputNumber = (number, type) => {
 
     let { formatter } = this.props;
     formatter = (type === 'power') ? formatter : {};
 
-    return (
+    return(
       <InputNumber
         min={1}
         value={number}
@@ -66,17 +98,22 @@ class AddEquipments extends Component {
   };
 
   changeNumber = (value, type) => {
-    if (type === 'quantity') {
+    if(type === 'quantity') {
       this.setState({ quantity: value })
-    } else if (type === 'power') {
+    } else if(type === 'power') {
       this.setState({ power: value })
     }
   };
 
-  render() {
-    const { formattNumber } = this.props;
+  submitData = () => {
+    this.setState(state => ({
+      send: !state.send,
+    }))
+  };
 
-    const { equipments, timeOfUse, nameEquipment, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;
+  render() {
+
+    const { equipments, timeOfUse, nameEquipment, power, quantity, useOfMonth, placeholder, whiteTariff, conventionalTariff } = this.state;
 
     const { Option } = Select;
 
@@ -120,13 +157,16 @@ class AddEquipments extends Component {
           <ColTimeOfUse
             timeOfUse={timeOfUse}
             nameEquipment={nameEquipment}
+            useOfMonth={useOfMonth}
+            handleUseOfMonth={this.handleUseOfMonth}
+            submitData={this.submitData}
           />
         </Col>
         <Col span="2" className="price _margin-right">
-          {formattNumber(whiteTariff)}
+          {whiteTariff}
         </Col>
         <Col span="4" className="price _margin-right">
-          {formattNumber(conventionalTariff)}
+          {conventionalTariff}
         </Col>
       </Row>
     );

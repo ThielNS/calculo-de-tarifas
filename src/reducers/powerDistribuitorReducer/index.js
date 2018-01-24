@@ -3,7 +3,13 @@ import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "./constants";
 export const powerDistribuitorReducer = (state = [], action) => {
     switch (action.type) {
         case LIST_DISTRIBUITORS:
-            return action.data;
+
+            const { data } = action;
+            const newState = state.concat(data);
+            localStorage.setItem('powerDistribuitorId', JSON.stringify(newState));
+
+            return newState;
+
         default:
             return state;
     }

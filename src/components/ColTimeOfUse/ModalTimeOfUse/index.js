@@ -3,16 +3,19 @@ import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
 
+const { RangePicker } = DatePicker;
+const formatDate = 'DD/MM/YYYY';
+
 class Modal extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       valueRadio: 'continuous',
-      startDate: moment(),
-      endDate: moment(),
-      startTime: moment(),
-      endTime: moment()
+      dateInit: null,
+      dateFinish: null,
+      timeInit: null,
+      timeFinish: null,
     }
   }
 
@@ -22,22 +25,50 @@ class Modal extends Component {
     })
   };
 
-  handleDate = (date, dateString) => {
-    if(Array.isArray(dateString)){
-      this.setState({
-        startDate: dateString[0],
-        endDate: dateString[1],
-      })
-    } else {
-      this.setState({
-        startDate: dateString,
-        endDate: dateString,
-      })
-    }
+  componentDidUpdate() {
+    const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
+    const { handleUseOfMonth } = this.props;
+
+      if(dateInit && dateFinish && timeInit && timeFinish) {
+
+        const date = {
+          dateInit: dateInit,
+          dateFinish: dateFinish,
+          timeInit: timeInit,
+          timeFinish: timeFinish
+        };
+
+        handleUseOfMonth(date);
+
+        this.setState({
+          dateInit: null,
+          dateFinish: null,
+          timeInit: null,
+          timeFinish: null
+        });
+
+        this.forceUpdate();
+      }
   };
 
-  changeTime = (obj, text) => {
-    console.log(text)
+  changeDatePicker = (date) => {
+    this.setState({
+      dateInit: date,
+      dateFinish: date,
+    })
+  };
+
+  changeRangePicker = (date) => {
+    this.setState({
+      dateInit: date[0],
+      dateFinish: date[1],
+    })
+  };
+
+  changeTime = (currentTime, propType) => {
+    this.setState({
+      [propType]: currentTime,
+    })
   };
 
   dateRender = current => {
@@ -69,42 +100,85 @@ class Modal extends Component {
 
   };
 
-  renderDatePicker = () => {
+  convertMoment = value => {
+    return value !== null ? moment(value) : null;
+  };
 
+  renderDate = (item) => {
+
+    const { valueRadio } = this.state;
     const { RangePicker } = DatePicker;
-    const { valueRadio, startDate, endDate, startTime, endTime } = this.state;
-    const format = 'HH:mm';
+    const convertMoment = this.convertMoment;
 
-    return (
-      <div className="row _margin-top">
-        {valueRadio === 'continuous' ? (
+    if(item.dateInit !== item.dateFinish && valueRadio === 'continuous' ) {
+      return (
+        <div className="row">
           <RangePicker
-            onChange={this.handleDate}
+            onChange={this.handleDateRange}
             dateRender={this.dateRender}
             disabledDate={this.disabledDate}
-            format="DD/MM/YYYY"
+            format={formatDate}
             className="_margin-right"
-            defaultValue={[moment(startDate), moment(endDate)]}
+            value={[convertMoment(item.dateInit), convertMoment(item.dateFinish)]}
           />
-        ) : (
+          {this.renderTime(item.timeInit, item.timeFinish)}
+        </div>
+      )
+    } else if(item.dateInit === item.dateFinish && valueRadio === 'daily' ) {
+      return (
+        <div className="row">
           <DatePicker
-            onChange={this.handleDate}
+            onChange={this.handleDatePicker}
             disabledDate={this.disabledDate}
-            format="DD/MM/YYYY"
+            format={formatDate}
             className="_margin-right"
-            defaultValue={moment(startDate)}
+            value={convertMoment(item.dateInit)}
           />
-        )}
-        <TimePicker defaultValue={startTime} format={format} placeholder="Hora inicio" className="imput-time _margin-right" onChange={this.changeTime}/>
-        <TimePicker defaultValue={endTime} format={format} placeholder="Hora fim" className="imput-time" onChange={this.changeTime}/>
+          {this.renderTime(item.timeInit, item.timeFinish)}
+        </div>
+      )
+    }
+  };
+
+  renderTime = (timeInit = null, timeFinish = null) => {
+
+    const formatTime = 'HH:mm';
+
+    return (
+      <div className="row ant-col-sm-12">
+        <TimePicker
+          value={this.convertMoment(timeInit)}
+          format={formatTime}
+          placeholder="Hora inicio"
+          className="imput-time _margin-right"
+          onChange={data => this.changeTime(data, 'timeInit')}
+        />
+        <TimePicker
+          value={this.convertMoment(timeFinish)}
+          format={formatTime}
+          placeholder="Hora fim"
+          className="imput-time"
+          onChange={data => this.changeTime(data, 'timeFinish')}
+        />
       </div>
     )
+  };
+
+  renderDatePicker = () => {
+    const { useOfMonth } = this.props;
+
+    return useOfMonth.map((item, index) => (
+      <div key={index} className="_margin-bottom">
+        {this.renderDate(item)}
+      </div>
+    ));
   };
 
   render() {
 
     const { nameEquipment, visibleModal, closeModal } = this.props;
-    const { valueRadio } = this.state;
+    const { valueRadio, dateInit, dateFinish, timeInit, timeFinish } = this.state;
+
     const RadioGroup = Radio.Group;
     const RadioButton = Radio.Button;
 
@@ -114,14 +188,41 @@ class Modal extends Component {
           title={`Tempo de Uso - ${nameEquipment}`}
           style={{width: '600px'}}
           visible={visibleModal}
-          onOk={closeModal}
+          onOk={() => closeModal(true)}
           onCancel={closeModal}
         >
           <RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>
             <RadioButton value="continuous">Uso Contínuo</RadioButton>
             <RadioButton value="daily">Uso Diário</RadioButton>
           </RadioGroup>
-          {this.renderDatePicker()}
+          <div className="_margin-top">
+            {this.renderDatePicker()}
+          </div>
+
+          <div>
+            <div className="row _margin-top">
+              {valueRadio === 'continuous' ? (
+                <RangePicker
+                  onChange={this.changeRangePicker}
+                  dateRender={this.dateRender}
+                  disabledDate={this.disabledDate}
+                  format={'DD/MM/YYYY'}
+                  className="_margin-right"
+
+                  value={[dateInit, dateFinish]}
+                />
+              ) : (
+                <DatePicker
+                  onChange={this.changeDatePicker}
+                  disabledDate={this.disabledDate}
+                  format={'DD/MM/YYYY'}
+                  className="_margin-right"
+                  value={dateInit}
+                />
+              )}
+              {this.renderTime(timeInit, timeFinish)}
+            </div>
+          </div>
         </BoxModal>
       </div>
     )

@@ -4,13 +4,12 @@ import { listEquipments } from "../actions/equipmentsAction";
 import { listCalculateEquipments } from "../actions/powerDistribuitorAction";
 import ChooseDistribuitors from "../components/OptionsTable/ChooseDistribuitors";
 
-const mapStateToProps = store => {
-    console.log(store)
+const mapStateToProps = state => {
     return {
-        itemsDistribuitors: store.powerDistribuitorReducer,
-        itemsEquipments: store.equipmentsReducer,
-        itemsCalculateEquipments: store.powerDistribuitorReducer,
-        powerDistribuitorId: store.powerDistribuitorId
+        itemsDistribuitors: state.powerDistribuitorReducer,
+        itemsEquipments: state.equipmentsReducer,
+        itemsCalculateEquipments: state.powerDistribuitorReducer,
+        powerDistribuitorId: state.powerDistribuitorId
     };
 };
 

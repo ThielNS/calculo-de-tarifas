@@ -9,7 +9,7 @@ class chooseDistribuitors extends Component {
         super(props);
         
         this.state = {
-            //powerDistribuitorId: props.powerDistribuitorId,
+            powerDistribuitorId: '',
         }
     }
 
