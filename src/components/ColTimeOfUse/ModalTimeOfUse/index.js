@@ -65,12 +65,9 @@ class Modal extends Component {
     })
   };
 
-  changeTime = (currentTime, type) => {
-
-    const prop = `time${type}`;
-
+  changeTime = (currentTime, propType) => {
     this.setState({
-      [prop]: currentTime,
+      [propType]: currentTime,
     })
   };
 
@@ -103,9 +100,15 @@ class Modal extends Component {
 
   };
 
+  convertMoment = value => {
+    return value !== null ? moment(value) : null;
+  };
+
   renderDate = (item) => {
+
     const { valueRadio } = this.state;
     const { RangePicker } = DatePicker;
+    const convertMoment = this.convertMoment;
 
     if(item.dateInit !== item.dateFinish && valueRadio === 'continuous' ) {
       return (
@@ -116,7 +119,7 @@ class Modal extends Component {
             disabledDate={this.disabledDate}
             format={formatDate}
             className="_margin-right"
-            value={[moment(item.dateInit, formatDate), moment(item.dateFinish, formatDate)]}
+            value={[convertMoment(item.dateInit), convertMoment(item.dateFinish)]}
           />
           {this.renderTime(item.timeInit, item.timeFinish)}
         </div>
@@ -129,7 +132,7 @@ class Modal extends Component {
             disabledDate={this.disabledDate}
             format={formatDate}
             className="_margin-right"
-            value={moment(item.dateInit, formatDate)}
+            value={convertMoment(item.dateInit)}
           />
           {this.renderTime(item.timeInit, item.timeFinish)}
         </div>
@@ -144,18 +147,18 @@ class Modal extends Component {
     return (
       <div className="row ant-col-sm-12">
         <TimePicker
-          value={timeInit}
+          value={this.convertMoment(timeInit)}
           format={formatTime}
           placeholder="Hora inicio"
           className="imput-time _margin-right"
-          onChange={data => this.changeTime(data, 'Init')}
+          onChange={data => this.changeTime(data, 'timeInit')}
         />
         <TimePicker
-          value={timeFinish}
+          value={this.convertMoment(timeFinish)}
           format={formatTime}
           placeholder="Hora fim"
           className="imput-time"
-          onChange={data => this.changeTime(data, 'Finish')}
+          onChange={data => this.changeTime(data, 'timeFinish')}
         />
       </div>
     )

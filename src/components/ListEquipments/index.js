@@ -35,7 +35,7 @@ class ListEquipments extends Component {
       columns: [
         {
           title: "Equipamentos",
-          dataIndex: "equipments"
+          dataIndex: "nameEquipment"
         },
         {
           title: "Potência",
@@ -105,7 +105,7 @@ class ListEquipments extends Component {
   };
 
   removeItem = id => {
-    console.log(id)
+    console.log(id, 'removeItem')
   };
 
   inputNumber = (number, type) => {
@@ -141,7 +141,7 @@ class ListEquipments extends Component {
           timeOfUse={data.timeOfUse}
           modal={modal}
           toggleModal={toggleModal}
-          useOfMonth={data.dates}
+          useOfMonth={data}
         />
       );
     }
@@ -151,7 +151,7 @@ class ListEquipments extends Component {
 
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
-    console.log(listEquipments)
+
     return (
       <div className="card">
         <Table

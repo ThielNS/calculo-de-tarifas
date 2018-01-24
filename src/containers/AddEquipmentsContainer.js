@@ -4,7 +4,7 @@ import AddEquipment from "../components/AddEquipments";
 
 const mapStateToProps = state => {
   return {
-    resultEquipments: state.equipmentsReducer
+    listEquipments: state.equipmentsReducer
   }
 };
 

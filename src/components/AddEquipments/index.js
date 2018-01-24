@@ -8,7 +8,6 @@ class AddEquipments extends Component {
   constructor(props) {
     super(props);
      this.state = {
-       id: 1,
        equipments: [],
        nameEquipment: '',
        power: 0,
@@ -23,8 +22,9 @@ class AddEquipments extends Component {
   }
 
   componentDidUpdate() {
-    const { id, nameEquipment, power, quantity, useOfMonth, send } = this.state;
-    const { addEquipment } = this.props;
+    const { nameEquipment, power, quantity, useOfMonth, send } = this.state;
+    const { addEquipment, listEquipments } = this.props;
+    const id = listEquipments.length + 1;
 
     if(nameEquipment && power > 0 && quantity >= 1 && useOfMonth.length > 0 && send) {
 
@@ -39,7 +39,6 @@ class AddEquipments extends Component {
       addEquipment(dataInfo);
 
       this.setState({
-        id: id + 1,
         nameEquipment: '',
         power: 0,
         quantity: 1,
