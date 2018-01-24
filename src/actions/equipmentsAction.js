@@ -1,20 +1,10 @@
 
 import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, SEARCH_EQUIPMENTS, LIST_CALCULATE_EQUIPMENTS  } from "../reducers/equipmentsReducer/constants";
-import { get, post } from "../modules/request";
+import { get } from "../modules/request";
 
 export const listEquipments = () => dispatch => {
   return dispatch({ type: LIST_EQUIPMENTS })
 };
-
-export const calculate = () => dispatch => {
-  return post('calculate')
-  .then(data => (    
-      dispatch({
-          type: LIST_CALCULATE_EQUIPMENTS,
-          data
-      })
-  ))
-}
 
 export const searchEquipments = name => dispatch => {
 

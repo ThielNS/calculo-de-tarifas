@@ -61,7 +61,8 @@ class ChooseMonthly extends Component {
         }
     }
     handleChange(value) {
-        /* console.log(`Selected ${value}`) */
+         
+         console.log(`Selected ${value}`);
     }
     renderOptions() {
         const { monthlys } = this.state;

@@ -4,18 +4,18 @@ import "./chooseDistribuitors.less";
 
 class chooseDistribuitors extends Component {
 
+   
     constructor(props) {
         super(props);
-
+        
         this.state = {
-            powerDistribuitorId: '',
+            //powerDistribuitorId: props.powerDistribuitorId,
         }
     }
 
     componentDidMount() {
         this.props.listDistribuitors();
         this.props.listEquipments();
-        this.props.listCalculateEquipments();
     }
 
     renderOptions() {
@@ -29,16 +29,13 @@ class chooseDistribuitors extends Component {
     handleChange = (value) => {
         const { itemsEquipments } = this.props;
         console.log(itemsEquipments);
-        this.props.listCalculateEquipments();
-        
+
         this.setState({ powerDistribuitorId: value });
         console.log(`Selected ${value}`);
 
     };
 
     render() {
-
-        console.log(this.state.powerDistribuitorId)
         return (
             <div className="content-select">
                 <i className="label-distribuitors">Concessionárias</i>

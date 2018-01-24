@@ -3,10 +3,7 @@ import { initialState } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
 
-  switch(action.type) {
-    
-    case LIST_CALCULATE_EQUIPMENTS:
-      return state;
+  switch (action.type) {
 
     case ADD_EQUIPMENT:
 

@@ -7,31 +7,27 @@ class AddEquipments extends Component {
 
   constructor(props) {
     super(props);
-     this.state = {
-       id: '1',
-       equipments: [],
-       power: 0,
-       quantity: 1,
-       timeOfUse: '00:00',
-       whiteTariff: 0.00,
-       conventionalTariff: 0.00,
-       nameEquipment: '',
-       placeholder: `Inserir item`,
-       showModal: false,
-     }
+    this.state = {
+      id: '1',
+      equipments: [],
+      power: 0,
+      quantity: 1,
+      timeOfUse: '00:00',
+      whiteTariff: 0.00,
+      conventionalTariff: 0.00,
+      nameEquipment: '',
+      placeholder: `Inserir item`,
+      showModal: false,
+    }
   }
 
   componentDidMount() {
-    this.props.calculate();
   }
-  
-  handleTime = () => {
 
-    this.props.calculate();
-    console.log(this.props.calculate())
+  handleTime = () => {
+   
   }
   handleChange = (value) => {
-
     const { searchEquipments } = this.props;
     this.setState({ nameEquipment: value });
 
@@ -78,7 +74,6 @@ class AddEquipments extends Component {
   };
 
   render() {
-    console.log(this.props.calculate())
     const { formattNumber } = this.props;
 
     const { equipments, timeOfUse, nameEquipment, power, quantity, placeholder, whiteTariff, conventionalTariff } = this.state;

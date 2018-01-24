@@ -14,12 +14,22 @@ export const listDistribuitors = () => dispatch => {
         })
 }
 
-export const listCalculateEquipments = () => dispatch => {
-    return post('calculate')
-    .then(data => (
-        dispatch({
-            type: LIST_EQUIPMENTS_DISTRIBUITOR,
-            data
+export const listCalculateEquipments = bodyParameters => dispatch => {
+    return post('calculate', bodyParameters)
+        .then(data => {
+            return dispatch({
+                type: LIST_EQUIPMENTS_DISTRIBUITOR,
+                data
+            });
         })
-    ))
+        .catch(error => {
+            console.log("error")
+        })
 }
+
+/* export const listCalculateEquipments = data => dispatch => {
+    return dispatch({
+      type: ADD_EQUIPMENT,
+      data
+    })
+  }; */
