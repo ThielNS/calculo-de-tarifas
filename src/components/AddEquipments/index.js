@@ -33,7 +33,9 @@ class AddEquipments extends Component {
         nameEquipment: nameEquipment,
         power: power,
         quantity: quantity,
-        useOfMonth: useOfMonth
+        date: {
+          useOfMonth: useOfMonth
+        }
       };
 
       addEquipment(dataInfo);
