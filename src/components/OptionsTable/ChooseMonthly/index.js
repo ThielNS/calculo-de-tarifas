@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
 import "./chooseMonthly.less";
+import Moment from 'moment';
 const { Option } = Select;
 
 class ChooseMonthly extends Component {
@@ -57,12 +58,12 @@ class ChooseMonthly extends Component {
                     number: 11,
                     name: 'Dezembro'
                 }
-            ]
+            ],
+            currentMonthly: ''
         }
     }
     handleChange(value) {
-         
-         console.log(`Selected ${value}`);
+        console.log(`Selected ${value}`);
     }
     renderOptions() {
         const { monthlys } = this.state;
@@ -70,7 +71,22 @@ class ChooseMonthly extends Component {
             <Option value={item.name} key={index}>{item.name}</Option>
         ))
     }
+
+    gettingMonths() {
+        const m = Moment();
+        const { monthlys } = this.state;
+
+        for (let i = 0; i < 12; i++) {
+                return <Option key={i} value={m.months(i).format('MMMM')}>{m.months(i).format('MMMM')}</Option>
+        
+            //console.log(m.months(i).format('MMMM'));
+        }
+    }
+
     render() {
+        const date = new Date();
+        const currentMonthly = date.getMonth();
+
 
         return (
             <div className="content-select option-left" >
@@ -81,10 +97,11 @@ class ChooseMonthly extends Component {
                     style={{ width: 200 }}
                     placeholder="Janeiro"
                     optionFilterProp="children"
+                    firstActiveValue={currentMonthly}
                     onChange={this.handleChange}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                    {this.renderOptions()}
+                    {this.gettingMonths()}
                 </Select>
             </div>
         )

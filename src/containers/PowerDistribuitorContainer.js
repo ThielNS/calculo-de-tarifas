@@ -9,7 +9,6 @@ const mapStateToProps = state => {
         itemsDistribuitors: state.powerDistribuitorReducer,
         itemsEquipments: state.equipmentsReducer,
         itemsCalculateEquipments: state.powerDistribuitorReducer,
-        powerDistribuitorId: state.powerDistribuitorId
     };
 };
 
