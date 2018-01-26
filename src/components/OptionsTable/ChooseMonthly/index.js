@@ -16,7 +16,7 @@ class ChooseMonthly extends Component {
     }
 
     handleChange(value) {
-        console.log(`Selected ${value}`);
+       /*  console.log(`Selected ${value}`); */
     }
 
     renderOptions() {
@@ -41,12 +41,11 @@ class ChooseMonthly extends Component {
     getCurrentMonth() {
         const date = new Date();
         const currentMonth = date.getMonth();
-        console.log(currentMonth)
-        return currentMonth;
+/*         console.log(currentMonth)
+ */        return currentMonth;
     }
 
     render() {
-        console.log(this.getCurrentMonth())
         return (
             <div className="content-select option-left" >
                 <i className="label-distribuitors">Mês</i>

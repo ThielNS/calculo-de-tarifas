@@ -86,7 +86,6 @@ class ListEquipments extends Component {
 
   editUseOfMonth = date => {
 
-    console.log(date);
 
     let { useOfMonth } = this.state;
 
@@ -155,8 +154,8 @@ class ListEquipments extends Component {
 
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
-    console.log(listEquipments);
 
+    
     return (
       <div className="card">
         <Table

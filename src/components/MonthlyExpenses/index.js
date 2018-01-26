@@ -14,7 +14,6 @@ class MonthlyExpenses extends Component {
 
     componentDidMount() {
         this.props.listCalculateTariffs();
-        console.log(this.props.listCalculateTariffs())
     }
 
     formattNumber = value => {
@@ -24,21 +23,36 @@ class MonthlyExpenses extends Component {
 
     getWhiteTariffs() {
         const { listEquipments } = this.props;
-        let whiteTariffs = [];
+        let whiteTariffs = [0.00];
+
         Object.keys(listEquipments).forEach(function (key) {
             var valueWhiteTariff = listEquipments[key]['whiteTariff'];
             whiteTariffs.push(valueWhiteTariff);
         })
         return whiteTariffs.reduce((a, b) => { return a + b })
+
+    }
+
+    getConventionalTariffs() {
+        const { listEquipments } = this.props;
+        let conventionalTariffs = [0.00];
+
+        Object.keys(listEquipments).forEach((key) => {
+            var valueConventionalTariff = listEquipments[key]['conventionalTariff'];
+            conventionalTariffs.push(valueConventionalTariff);
+        })
+        return conventionalTariffs.reduce((a, b) => { return a + b });
     }
 
 
-    render() {
-        const { whiteRate, conventionalRate, differenceRates } = this.state;
-        const { listEquipments } = this.props;
-        console.log(listEquipments);
+    getDifferenceTariffs() {
+        let total = 0.00;
+        total = (this.getConventionalTariffs() - this.getWhiteTariffs());
+        return total;
+    }
 
-        console.log(this.getWhiteTariffs())
+    render() {
+        const { listEquipments } = this.props;
 
         return (
             <section className="card-expenses-monthly _margin-bottom">
@@ -51,14 +65,16 @@ class MonthlyExpenses extends Component {
                         </div>
                         <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
-                            <i className="rate">{this.formattNumber(conventionalRate)}</i>
+                            <i className="rate">{this.formattNumber(this.getConventionalTariffs())}</i>
                         </div>
                     </div>
                 </div>
-                <i className="border-vertical"></i>
-                <div className="expense-feedback">
-                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">{this.formattNumber(differenceRates)}</i></p>
-                </div>
+                <i className="border-vertical"
+                ></i>
+                {listEquipments.length >= 1 ? <div className="expense-feedback">
+                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">{this.formattNumber(this.getDifferenceTariffs())}</i></p>
+                </div> : <div className="expense-feedback"><span>Não há nenhum equipamento na lista ainda.</span></div>}
+
             </section>
         )
     }
