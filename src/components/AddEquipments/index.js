@@ -26,7 +26,7 @@ class AddEquipments extends Component {
     const { addEquipment, listEquipments } = this.props;
     const id = listEquipments.length + 1;
 
-    if(nameEquipment && power > 0 && quantity >= 1 && useOfMonth.length > 0 && send) {
+    if(nameEquipment && power > 0.01 && quantity >= 1 && useOfMonth.length > 0 && send) {
 
       const dataInfo = {
         id: id,

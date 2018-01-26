@@ -57,6 +57,7 @@ export const addEquipment = data => dispatch => {
 };
 
 export const removeEquipments = index => dispatch => {
+  console.log(index);
   return dispatch({
     type: REMOVE_EQUIPMENTS,
     index: index

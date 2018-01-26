@@ -21,7 +21,11 @@ const equipmentsReducer = (state = initialState, action) => {
 
     case REMOVE_EQUIPMENTS:
 
-      state.splice(action.index, 1);
+      state = [
+        ...state.slice(0, action.index),
+        ...state.slice(action.index + 1)
+        ];
+
       localStorage.setItem('list', JSON.stringify(state));
 
       return state;

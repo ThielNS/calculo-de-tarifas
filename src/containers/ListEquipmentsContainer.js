@@ -4,12 +4,13 @@ import ListEquipments from "../components/ListEquipments/index";
 import { removeEquipments } from "../actions/equipmentsAction";
 
 const mapStateToProps = state => {
+  debugger
   return {
     listEquipments: state.equipmentsReducer,
     modal: state.modalReducer
   }
 };
-debugger
+
 const mapDispatchToProps = {
   toggleModal,
   removeEquipments

@@ -69,20 +69,19 @@ class ListEquipments extends Component {
   };
 
   btnRemove = (value, data, index) => {
+
+    const { removeEquipments } = this.props;
+
     return (
       <Button
         type="danger"
         size="small"
-        onClick={() => this.removeItem(index)}
+        onClick={() => removeEquipments(index)}
         ghost
       >
         <Icon type="close" />
       </Button>
     );
-  };
-
-  removeItem = index => {
-    this.props.removeEquipments(index)
   };
 
   inputNumber = (number, type) => {
@@ -128,6 +127,7 @@ class ListEquipments extends Component {
 
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
+    console.log(listEquipments);
 
     return (
       <div className="card">
