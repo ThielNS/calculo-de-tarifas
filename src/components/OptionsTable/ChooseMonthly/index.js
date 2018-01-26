@@ -11,62 +11,14 @@ class ChooseMonthly extends Component {
         super(props);
 
         this.state = {
-            monthlys: [
-                {
-                    number: 0,
-                    name: 'Janeiro'
-                },
-                {
-                    number: 1,
-                    name: 'Fevereiro'
-                },
-                {
-                    number: 2,
-                    name: 'Maio'
-                },
-                {
-                    number: 3,
-                    name: 'Março'
-                },
-                {
-                    number: 4,
-                    name: 'Abril'
-                },
-                {
-                    number: 5,
-                    name: 'Junho'
-                },
-                {
-                    number: 6,
-                    name: 'Julho'
-                },
-                {
-                    number: 7,
-                    name: 'Agosto'
-                },
-                {
-                    number: 8,
-                    name: 'Setembro'
-                },
-                {
-                    number: 9,
-                    name: 'Outubro'
-                },
-                {
-                    number: 10,
-                    name: 'Novembro'
-                },
-                {
-                    number: 11,
-                    name: 'Dezembro'
-                }
-            ],
             currentMonthly: ''
         }
     }
+
     handleChange(value) {
         console.log(`Selected ${value}`);
     }
+
     renderOptions() {
         const { monthlys } = this.state;
         return monthlys.map((item, index) => (
@@ -74,7 +26,7 @@ class ChooseMonthly extends Component {
         ))
     }
 
-    gettingMonths() {
+    getMonths() {
         const m = new Moment();
         let listMonths = [];
         for (let i = 0; i < 12; i++) {
@@ -86,11 +38,15 @@ class ChooseMonthly extends Component {
         return listMonths;
     }
 
-    render() {
+    getCurrentMonth() {
         const date = new Date();
-        const currentMonthly = date.getMonth();
+        const currentMonth = date.getMonth();
+        console.log(currentMonth)
+        return currentMonth;
+    }
 
-
+    render() {
+        console.log(this.getCurrentMonth())
         return (
             <div className="content-select option-left" >
                 <i className="label-distribuitors">Mês</i>
@@ -100,11 +56,11 @@ class ChooseMonthly extends Component {
                     style={{ width: 200 }}
                     placeholder="Janeiro"
                     optionFilterProp="children"
-                    firstActiveValue={currentMonthly}
+                    firstActiveValue={this.getCurrentMonth()}
                     onChange={this.handleChange}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                    {this.gettingMonths()}
+                    {this.getMonths()}
                 </Select>
             </div>
         )
