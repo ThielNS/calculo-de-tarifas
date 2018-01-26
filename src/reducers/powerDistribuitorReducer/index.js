@@ -1,5 +1,6 @@
 import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "./constants";
 
+
 export const powerDistribuitorReducer = (state = [], action) => {
     switch (action.type) {
         case LIST_DISTRIBUITORS:

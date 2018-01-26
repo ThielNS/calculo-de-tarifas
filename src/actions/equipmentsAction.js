@@ -62,3 +62,9 @@ export const removeEquipments = index => dispatch => {
     index: index
   })
 };
+
+export const resetListEquipments = dispatch => {
+  return dispatch({
+    type: REMOVE_EQUIPMENTS
+  })
+};

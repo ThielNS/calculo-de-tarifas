@@ -1,10 +1,15 @@
 import { LIST_TARIFFS } from "./constants";
-import initialState from "./initialState";
+import { initialState, localStorageSetItem } from "../equipmentsReducer/initialState";
 
 export const listTariffsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LIST_TARIFFS:
-            return state; 
+            const { data } = action;
+            const newState = state.concat(data);
+            localStorageSetItem(newState);
+
+            return newState;
+
         default:
             return state;
     }

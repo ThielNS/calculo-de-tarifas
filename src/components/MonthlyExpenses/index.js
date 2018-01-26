@@ -12,14 +12,33 @@ class MonthlyExpenses extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.listCalculateTariffs();
+        console.log(this.props.listCalculateTariffs())
+    }
+
     formattNumber = value => {
         const number = parseFloat(value).toFixed(2);
         return `R$ ${number}`
     };
 
+/*     getWhiteTariffs() {
+        const { listEquipments } = this.props;
+        let whiteTariffs = [];
+        Object.keys(listEquipments).forEach(function (key) {
+            var valueWhiteTariff = listEquipments[key]['whiteTariff'];
+            whiteTariffs.push(valueWhiteTariff);
+        })
+        return whiteTariffs.reduce((a, b) => { return a + b })
+    } */
+
 
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
+/*         const { listEquipments } = this.props;
+        console.log(listEquipments);
+
+        console.log(this.getWhiteTariffs()) */
 
         return (
             <section className="card-expenses-monthly _margin-bottom">
