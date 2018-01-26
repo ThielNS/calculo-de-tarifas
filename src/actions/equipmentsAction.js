@@ -63,7 +63,33 @@ export const removeEquipments = index => dispatch => {
   })
 };
 
+//TODO: converter data
+
 export const editEquipments = (dataItem, index) => dispatch => {
+
+  post('calculate', dataItem)
+    .then(response => {
+      dataItem.date.timeOfUse = response[0].timeOfUse;
+      dataItem.whiteTariff = response[0].whiteTariffEnergySpending;
+      dataItem.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: EDIT_EQUIPMENTS,
+        dataItem,
+        index,
+      })
+    });
+};
+
+export const addUseOfMonth = (data, index) => dispatch => {
+
+  console.log(data, index);
+
+  const date = { useOfMonth: data.date.useOfMonth.concat(data.useOfMonth) };
+
+  const item = {...data, date };
+
+  const { useOfMonth, ...dataItem } = item;
+
 
   post('calculate', dataItem)
     .then(response => {

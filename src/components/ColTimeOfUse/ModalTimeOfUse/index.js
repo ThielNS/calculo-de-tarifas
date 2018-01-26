@@ -27,7 +27,7 @@ class Modal extends Component {
 
   componentDidUpdate() {
     const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
-    const { handleUseOfMonth } = this.props;
+    const { addUseOfMonth, index } = this.props;
 
       if(dateInit && dateFinish && timeInit && timeFinish) {
 
@@ -38,7 +38,7 @@ class Modal extends Component {
           timeFinish: timeFinish
         };
 
-        handleUseOfMonth(date);
+        addUseOfMonth(date, index);
 
         this.setState({
           dateInit: null,

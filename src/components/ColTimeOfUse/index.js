@@ -22,7 +22,7 @@ class ColTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, timeOfUse, useOfMonth, handleUseOfMonth, index } = this.props;
+    const { nameEquipment, timeOfUse, useOfMonth, addUseOfMonth, index } = this.props;
     const { visibleModal } = this.state;
 
     return (
@@ -38,7 +38,7 @@ class ColTimeOfUse extends Component {
           visibleModal={visibleModal}
           closeModal={this.toggleModal}
           useOfMonth={useOfMonth}
-          handleUseOfMonth={handleUseOfMonth}
+          addUseOfMonth={addUseOfMonth}
           index={index}
         />
       </div>

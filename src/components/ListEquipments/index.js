@@ -51,8 +51,6 @@ class ListEquipments extends Component {
           render: price => this.formattNumber(price)
         },
         {
-          dataIndex: "id",
-          key: "id",
           render: this.btnRemove
         },
       ],
@@ -78,22 +76,18 @@ class ListEquipments extends Component {
       item = { date: value, power, quantity };
     }
 
-    let newData = { id: index, nameEquipment, ...item };
+    let newData = { nameEquipment, ...item };
 
     this.props.editEquipments(newData, index)
   };
 
 
-  editUseOfMonth = date => {
+  addUseOfMonth = (useOfMonth, index) => {
+    const { listEquipments } = this.props;
 
+    const data = { ...listEquipments[index], useOfMonth, index};
 
-    let { useOfMonth } = this.state;
-
-    useOfMonth.push(date);
-
-    this.setState({
-      useOfMonth
-    });
+    this.props.addUseOfMonth(data, index)
   };
 
   formattNumber = value => {
@@ -140,10 +134,11 @@ class ListEquipments extends Component {
       return(
         <ColTimeOfUse
           timeOfUse={obj.timeOfUse}
+          nameEquipment={data.nameEquipment}
           modal={modal}
           toggleModal={toggleModal}
           useOfMonth={obj.useOfMonth}
-          handleUseOfMonth={this.editUseOfMonth}
+          addUseOfMonth={this.addUseOfMonth}
           index={index}
         />
       );
@@ -163,7 +158,7 @@ class ListEquipments extends Component {
           columns={columns}
           pagination={false}
           className="list-equipmets"
-          rowKey="id"
+          rowKey={(data, index) => index}
           footer={() =>
             <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
