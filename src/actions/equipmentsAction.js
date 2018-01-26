@@ -64,7 +64,6 @@ export const removeEquipments = index => dispatch => {
 };
 
 export const editEquipments = (dataItem, index) => dispatch => {
-  console.log(dataItem, index);
 
   post('calculate', dataItem)
     .then(response => {

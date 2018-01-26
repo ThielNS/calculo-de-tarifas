@@ -22,9 +22,9 @@ const equipmentsReducer = (state = initialState, action) => {
         ...state.slice(action.index + 1)
         ];
 
-      localStorageSetItem(newState);
+      localStorageSetItem(state);
 
-      return newState;
+      return state;
 
     case EDIT_EQUIPMENTS:
 

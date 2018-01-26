@@ -85,6 +85,9 @@ class ListEquipments extends Component {
 
 
   editUseOfMonth = date => {
+
+    console.log(date);
+
     let { useOfMonth } = this.state;
 
     useOfMonth.push(date);
