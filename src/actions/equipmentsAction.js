@@ -1,5 +1,5 @@
 
-import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS } from "../reducers/equipmentsReducer/constants";
+import { ADD_EQUIPMENT, EDIT_EQUIPMENTS, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
 
 export const listEquipments = () => dispatch => {
@@ -61,6 +61,21 @@ export const removeEquipments = index => dispatch => {
     type: REMOVE_EQUIPMENTS,
     index: index
   })
+};
+
+export const editEquipments = (dataItem, index) => dispatch => {
+
+  post('calculate', dataItem)
+    .then(response => {
+      dataItem.date.timeOfUse = response[0].timeOfUse;
+      dataItem.whiteTariff = response[0].whiteTariffEnergySpending;
+      dataItem.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: EDIT_EQUIPMENTS,
+        dataItem,
+        index,
+      })
+    });
 };
 
 export const resetListEquipments = dispatch => {

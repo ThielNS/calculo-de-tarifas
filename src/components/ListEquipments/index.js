@@ -9,8 +9,9 @@ class ListEquipments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 1,
       power: 0,
+      quantity: 1,
+      useOfMonth: [],
       columns: [
         {
           title: "Equipamentos",
@@ -20,20 +21,20 @@ class ListEquipments extends Component {
           title: "Potência",
           dataIndex: "power",
           key: "power",
-          render: value => this.inputNumber(value, 'power')
+          render: (value, data, index) => this.inputNumber(value, 'power', data, index)
         },
         {
           title: "Quantidade",
           dataIndex: "quantity",
           key: "quantity",
-          render: value => this.inputNumber(value, 'quantity')
+          render: (value, data, index) => this.inputNumber(value, 'quantity', data, index)
         },
         {
           title: "Tempo de Uso",
           dataIndex: "date",
           key: "date",
           className: "set-time column-right",
-          render: date => this.timeOfUse(date)
+          render: this.timeOfUse
         },
         {
           title: "Tarifa Branca",
@@ -63,6 +64,39 @@ class ListEquipments extends Component {
     }
   }
 
+  editEquipment = (value, type, data, index) => {
+
+    const { nameEquipment, power, quantity, date  } = data;
+
+    let item;
+
+    if(type === 'power') {
+      item = { power: value, quantity, date };
+    } else if(type === 'quantity') {
+      item = { quantity: value, power, date };
+    } else if(type === 'date') {
+      item = { date: value, power, quantity };
+    }
+
+    let newData = { id: index, nameEquipment, ...item };
+
+    this.props.editEquipments(newData, index)
+  };
+
+
+  editUseOfMonth = date => {
+
+    console.log(date);
+
+    let { useOfMonth } = this.state;
+
+    useOfMonth.push(date);
+
+    this.setState({
+      useOfMonth
+    });
+  };
+
   formattNumber = value => {
     const number = parseFloat(value).toFixed(2);
     return `R$ ${number}`
@@ -84,7 +118,7 @@ class ListEquipments extends Component {
     );
   };
 
-  inputNumber = (number, type) => {
+  inputNumber = (number, type, data, index) => {
 
     let { formatter} = this.state;
     formatter = (type === 'power') ? formatter : {};
@@ -94,30 +128,24 @@ class ListEquipments extends Component {
         min={0.1}
         value={number}
         {...formatter}
-        onChange={value => this.changeNumber(value, type)}
+        onChange={value => this.editEquipment(value, type, data, index)}
       />
     )
   };
 
-  changeNumber = (value, type) => {
-    if(type === 'quantity') {
-      this.setState({ quantity: value })
-    } else if(type === 'power') {
-      this.setState({ power: value })
-    }
-  };
-
-  timeOfUse = data => {
+  timeOfUse = (obj, data, index) => {
 
     const { modal, toggleModal } = this.props;
 
-    if(data) {
+    if(obj) {
       return(
         <ColTimeOfUse
-          timeOfUse={data.timeOfUse}
+          timeOfUse={obj.timeOfUse}
           modal={modal}
           toggleModal={toggleModal}
-          useOfMonth={data.useOfMonth}
+          useOfMonth={obj.useOfMonth}
+          handleUseOfMonth={this.editUseOfMonth}
+          index={index}
         />
       );
     }

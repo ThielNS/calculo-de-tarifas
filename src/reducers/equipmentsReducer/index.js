@@ -1,4 +1,4 @@
-import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, RESET_LIST_EQUIPMENTS } from "./constants";
+import { ADD_EQUIPMENT, EDIT_EQUIPMENTS, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, RESET_LIST_EQUIPMENTS } from "./constants";
 import { initialState, localStorageSetItem } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
@@ -23,9 +23,24 @@ const equipmentsReducer = (state = initialState, action) => {
         ...state.slice(action.index + 1)
         ];
 
-      localStorageSetItem(newState);
+      localStorageSetItem(state);
 
-      return newState;
+      return state;
+
+    case EDIT_EQUIPMENTS:
+
+      const { index, dataItem } = action;
+
+      state = state.map((item, i) => {
+        if(index === i) {
+          item = dataItem;
+        }
+        return item;
+      });
+
+      localStorageSetItem(state);
+
+      return state;
 
     case RESET_LIST_EQUIPMENTS:
 
