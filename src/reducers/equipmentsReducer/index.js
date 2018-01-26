@@ -22,7 +22,13 @@ const equipmentsReducer = (state = initialState, action) => {
 
     case REMOVE_EQUIPMENTS:
 
-      localStorage.clear('list');
+      state = [
+        ...state.slice(0, action.index),
+        ...state.slice(action.index + 1)
+        ];
+
+      localStorage.setItem('list', JSON.stringify(state));
+
       return state;
 
     default:

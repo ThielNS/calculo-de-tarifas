@@ -11,27 +11,6 @@ class ListEquipments extends Component {
     this.state = {
       quantity: 1,
       power: 0,
-      list: [
-        {
-          id: '1',
-          equipments: 'Computer de mesa',
-          power: '200',
-          quantity: 2,
-          useOfMonth: {
-            timeOfUse: "10:25:45",
-            dates: [
-              {
-                dateInit: "2018-01-01",
-                dateFinish: "2018-01-02",
-                timeInit: "16:45:00",
-                timeFinish: "17:15:00"
-              }
-            ]
-          },
-          whiteTariff: 25.59,
-          conventionalTariff: 28.76
-        }
-      ],
       columns: [
         {
           title: "Equipamentos",
@@ -41,20 +20,18 @@ class ListEquipments extends Component {
           title: "Potência",
           dataIndex: "power",
           key: "power",
-          className: "column-right",
           render: value => this.inputNumber(value, 'power')
         },
         {
-          title: "Quatidade",
+          title: "Quantidade",
           dataIndex: "quantity",
           key: "quantity",
-          className: "column-right",
           render: value => this.inputNumber(value, 'quantity')
         },
         {
           title: "Tempo de Uso",
-          dataIndex: "useOfMonth",
-          key: "useOfMonth",
+          dataIndex: "date",
+          key: "date",
           className: "set-time column-right",
           render: date => this.timeOfUse(date)
         },
@@ -75,7 +52,7 @@ class ListEquipments extends Component {
         {
           dataIndex: "id",
           key: "id",
-          render: id => this.btnRemove(id)
+          render: this.btnRemove
         },
       ],
       formatter: {
@@ -91,21 +68,20 @@ class ListEquipments extends Component {
     return `R$ ${number}`
   };
 
-  btnRemove = id => {
+  btnRemove = (value, data, index) => {
+
+    const { removeEquipments } = this.props;
+
     return (
       <Button
         type="danger"
         size="small"
-        onClick={() => this.removeItem(id)}
+        onClick={() => removeEquipments(index)}
         ghost
       >
         <Icon type="close" />
       </Button>
     );
-  };
-
-  removeItem = id => {
-    console.log(id, 'removeItem')
   };
 
   inputNumber = (number, type) => {
@@ -141,7 +117,7 @@ class ListEquipments extends Component {
           timeOfUse={data.timeOfUse}
           modal={modal}
           toggleModal={toggleModal}
-          useOfMonth={data}
+          useOfMonth={data.useOfMonth}
         />
       );
     }
@@ -151,6 +127,7 @@ class ListEquipments extends Component {
 
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
+    console.log(listEquipments);
 
     return (
       <div className="card">

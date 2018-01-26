@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import { toggleModal } from "../actions/modalAction";
 import ListEquipments from "../components/ListEquipments/index";
+import { removeEquipments } from "../actions/equipmentsAction";
 
 const mapStateToProps = state => {
+  debugger
   return {
     listEquipments: state.equipmentsReducer,
     modal: state.modalReducer
@@ -10,7 +12,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal
+  toggleModal,
+  removeEquipments
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListEquipments);
