@@ -1,31 +1,57 @@
 import React, { Component } from "react";
 import { Select } from 'antd';
+import "./chooseDistribuitors.less";
 
+class chooseDistribuitors extends Component {
 
-class ChooseDealership extends Component {
+   
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            powerDistribuitorId: '',
+        }
+    }
+
+    componentDidMount() {
+        this.props.listDistribuitors();
+        this.props.listEquipments();
+    }
+
+    renderOptions() {
+        const { Option } = Select;
+        const { itemsDistribuitors } = this.props;
+        return itemsDistribuitors.map((item, index) => (
+            <Option key={index} value={item.id}>{item.name}</Option>
+        ));
+    }
+
+    handleChange = (value) => {
+/*         const { itemsEquipments } = this.props;
+ */        
+
+        this.setState({ powerDistribuitorId: value });
+       /*  console.log(`Selected ${value}`); */
+
+    };
 
     render() {
-        const Option = Select.Option;
-        function handleChange(value) {
-            //console.log(`selected ${value}`);
-        }
-
-
         return (
+            <div className="content-select">
+                <i className="label-distribuitors">Concessionárias</i>
                 <Select
                     showSearch
                     style={{ width: 200 }}
                     placeholder="AES Eletropaulo"
                     optionFilterProp="children"
-                    onChange={handleChange}
+                    onChange={this.handleChange}
                     filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                    <Option value="jack">Jack</Option>
-                    <Option value="lucy">Lucy</Option>
-                    <Option value="tom">Tom</Option>
+                    {this.renderOptions()}
                 </Select>
+            </div>
         )
     }
 }
 
-export default ChooseDealership;
+export default chooseDistribuitors;

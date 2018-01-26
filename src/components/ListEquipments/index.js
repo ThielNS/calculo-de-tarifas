@@ -150,6 +150,7 @@ class ListEquipments extends Component {
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
 
+    
     return (
       <div className="card">
         <Table

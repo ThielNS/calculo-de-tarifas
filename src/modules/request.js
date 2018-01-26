@@ -1,4 +1,4 @@
-// const API_URL = "http://192.168.2.129:80";
+//const API_URL = "http://192.168.2.194:80";
 const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{
@@ -22,7 +22,6 @@ export const patch = (url, data) => {
 };
 
 export const request = (url, { contentType = 'application/json', ...customOptions }) => {
-
   const headers = {
   };
 
@@ -39,7 +38,7 @@ export const request = (url, { contentType = 'application/json', ...customOption
     .then(response => {
       // if(response.statusCode.toString().match(/^4/))
       //   throw new Error(`${response.statusCode} Error`);
-      return response.json();
+      return response.json();    
     })
     .catch(error => {
       throw new Error('Request Error', error.message);

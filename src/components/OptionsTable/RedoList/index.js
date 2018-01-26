@@ -11,7 +11,6 @@ class RedoList extends Component {
             visible: false,
             confirmLoading: false,
         }
-
     }
     showModal = () => {
         this.setState({
@@ -19,30 +18,32 @@ class RedoList extends Component {
         });
     }
     handleOk = () => {
+        //console.log('List clean');
+        
         this.setState({
             okText: 'Sim',
             confirmLoading: true,
         });
         setTimeout(() => {
             this.setState({
-                okText: 'Sim',                
+                okText: 'Sim',
                 visible: false,
                 confirmLoading: false,
             });
-        }, 2000);
+        });
     }
     handleCancel = () => {
         this.setState({
             visible: false,
-            text:'Cancelar'
+            text: 'Cancelar'
         });
     }
     render() {
         const { visible, confirmLoading, ModalText } = this.state;
 
         return (
-            <div>
-                <Button icon="reload" onClick={this.showModal}>Refazer Lista</Button>
+            <div className="modal-redolist">
+                <Button icon="reload" onClick={this.showModal} className="btn-redo-list">Refazer Lista</Button>
                 <Modal title="Refazer lista"
                     visible={visible}
                     onOk={this.handleOk}

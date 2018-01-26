@@ -3,7 +3,8 @@ import { initialState, localStorageSetItem } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
 
-  switch(action.type) {
+  switch (action.type) {
+
     case ADD_EQUIPMENT:
 
       const { data } = action;
