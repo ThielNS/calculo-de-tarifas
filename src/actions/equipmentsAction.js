@@ -82,8 +82,6 @@ export const editEquipments = (dataItem, index) => dispatch => {
 
 export const addUseOfMonth = (data, index) => dispatch => {
 
-  console.log(data, index);
-
   const date = { useOfMonth: data.date.useOfMonth.concat(data.useOfMonth) };
 
   const item = {...data, date };
