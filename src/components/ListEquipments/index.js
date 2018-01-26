@@ -127,7 +127,6 @@ class ListEquipments extends Component {
 
     const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
-    console.log(listEquipments);
 
     return (
       <div className="card">
