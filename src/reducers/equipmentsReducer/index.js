@@ -1,5 +1,5 @@
-import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, SEARCH_EQUIPMENTS } from "./constants";
-import { initialState } from "./initialState";
+import { ADD_EQUIPMENT, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, RESET_LIST_EQUIPMENTS } from "./constants";
+import { initialState, localStorageSetItem } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
 
@@ -8,16 +8,12 @@ const equipmentsReducer = (state = initialState, action) => {
 
       const { data } = action;
       const newState = state.concat(data);
-      localStorage.setItem('list', JSON.stringify(newState));
+      localStorageSetItem(newState);
 
       return newState;
 
     case LIST_EQUIPMENTS:
       return state;
-
-    case SEARCH_EQUIPMENTS:
-
-      return action.data;
 
     case REMOVE_EQUIPMENTS:
 
@@ -26,8 +22,14 @@ const equipmentsReducer = (state = initialState, action) => {
         ...state.slice(action.index + 1)
         ];
 
-      localStorage.setItem('list', JSON.stringify(state));
+      localStorageSetItem(newState);
 
+      return newState;
+
+    case RESET_LIST_EQUIPMENTS:
+
+      state = [];
+      localStorageSetItem(state);
       return state;
 
     default:
