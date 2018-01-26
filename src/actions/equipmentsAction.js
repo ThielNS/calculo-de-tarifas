@@ -1,5 +1,8 @@
 
-import { ADD_EQUIPMENT, EDIT_EQUIPMENTS, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS } from "../reducers/equipmentsReducer/constants";
+import {
+  ADD_EQUIPMENT, EDIT_EQUIPMENTS, EDIT_USE_OF_MONTH, LIST_EQUIPMENTS,
+  REMOVE_EQUIPMENTS
+} from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
 
 export const listEquipments = () => dispatch => {
@@ -100,6 +103,15 @@ export const addUseOfMonth = (data, index) => dispatch => {
         index,
       })
     });
+};
+
+export const editUseOfMonth = (data, index) => dispatch => {
+
+  return dispatch({
+    type: EDIT_USE_OF_MONTH,
+    data,
+    index
+  })
 };
 
 export const resetListEquipments = dispatch => {

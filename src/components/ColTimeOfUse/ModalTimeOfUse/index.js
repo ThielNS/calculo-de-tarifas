@@ -16,6 +16,10 @@ class Modal extends Component {
       dateFinish: null,
       timeInit: null,
       timeFinish: null,
+      editDateInit: null,
+      editDateFinish: null,
+      editTimeInit: null,
+      editTimeFinish: null,
     }
   }
 
@@ -104,9 +108,10 @@ class Modal extends Component {
     return value !== null ? moment(value) : null;
   };
 
-  renderDate = (item) => {
+  renderDate = (item, index) => {
 
     const { valueRadio } = this.state;
+    const { editUseOfMonth } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
@@ -114,7 +119,7 @@ class Modal extends Component {
       return (
         <div className="row">
           <RangePicker
-            onChange={this.handleDateRange}
+            onChange={data => editUseOfMonth(data, index)}
             dateRender={this.dateRender}
             disabledDate={this.disabledDate}
             format={formatDate}
@@ -128,7 +133,7 @@ class Modal extends Component {
       return (
         <div className="row">
           <DatePicker
-            onChange={this.handleDatePicker}
+            onChange={data => editUseOfMonth(data, index)}
             disabledDate={this.disabledDate}
             format={formatDate}
             className="_margin-right"
@@ -169,7 +174,7 @@ class Modal extends Component {
 
     return useOfMonth.map((item, index) => (
       <div key={index} className="_margin-bottom">
-        {this.renderDate(item)}
+        {this.renderDate(item, index)}
       </div>
     ));
   };
