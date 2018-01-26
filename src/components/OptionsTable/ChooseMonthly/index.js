@@ -11,24 +11,19 @@ class ChooseMonthly extends Component {
         super(props);
 
         this.state = {
-            currentMonthly: ''
+            monthIndex: ''
         }
     }
 
-    handleChange(value) {
-       /*  console.log(`Selected ${value}`); */
-    }
-
-    renderOptions() {
-        const { monthlys } = this.state;
-        return monthlys.map((item, index) => (
-            <Option value={item.name} key={index}>{item.name}</Option>
-        ))
-    }
+    handleChange = (value) => {
+        const { listMonths } = this.props;
+        this.setState({ monthIndex: value });
+        /*  console.log(`Selected ${value}`); */
+    };
 
     getMonths() {
         const m = new Moment();
-        let listMonths = [];
+        let { listMonths } = this.props;
         for (let i = 0; i < 12; i++) {
             listMonths.push(
                 <Option key={i} value={m.month(i).format('MMMM')}>{m.month(i).format('MMMM')}</Option>
@@ -46,6 +41,11 @@ class ChooseMonthly extends Component {
     }
 
     render() {
+        const { listMonths } = this.props;
+        console.log(listMonths)
+
+
+
         return (
             <div className="content-select option-left" >
                 <i className="label-distribuitors">Mês</i>

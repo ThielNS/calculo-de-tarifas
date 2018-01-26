@@ -61,19 +61,19 @@ class MonthlyExpenses extends Component {
                     <div className="rates-content _margin-top">
                         <div>
                             <h3 className="highlight-rate">Tarifa branca</h3>
-                            <i className="rate">{this.formattNumber(this.getWhiteTariffs())}</i>
+                            <span className="rate">{this.formattNumber(this.getWhiteTariffs())}</span>
                         </div>
                         <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
-                            <i className="rate">{this.formattNumber(this.getConventionalTariffs())}</i>
+                            <span className="rate">{this.formattNumber(this.getConventionalTariffs())}</span>
                         </div>
                     </div>
                 </div>
                 <i className="border-vertical"
                 ></i>
                 {listEquipments.length >= 1 ? <div className="expense-feedback">
-                    <p> <i className="highlight-rate rate-white">Tarifa Branca</i> é mais adequada. Você economizará  <i className="highlight-rate cash-difference">{this.formattNumber(this.getDifferenceTariffs())}</i></p>
-                </div> : <div className="expense-feedback"><span>Não há nenhum equipamento na lista ainda.</span></div>}
+                    <p> <span className="highlight-rate rate-white">Tarifa Branca</span> é mais adequada. Você economizará  <span className="highlight-rate cash-difference">{this.formattNumber(this.getDifferenceTariffs())}</span></p>
+                </div> : <div className="expense-feedback"><span>Não há nenhum equipamento na lista</span></div>}
 
             </section>
         )

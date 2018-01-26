@@ -3,7 +3,7 @@ import ChooseMonthly from "../components/OptionsTable/ChooseMonthly";
 
 const mapStateToProps = state => {
     return {
-         listMonths: state.listMonthsReducer,
+         listMonths: state.listMonthly,
     }
 }
 

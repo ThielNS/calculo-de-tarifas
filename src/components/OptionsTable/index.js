@@ -2,7 +2,8 @@ import React, { Component } from "react";
 //import ChooseDistribuitors from "./ChooseDistribuitors";
 import RedoList from "./RedoList";
 import ChooseMonthly from "./ChooseMonthly";
-import PowerDistribuitorContainer from "../../containers/PowerDistribuitorContainer"
+import PowerDistribuitorContainer from "../../containers/PowerDistribuitorContainer";
+import ChooseMonthlyContainer from "../../containers/ChooseMonthlyContainer";
 import "./optionsTable.less";
 
 class OptionsTable extends Component {
@@ -11,7 +12,7 @@ class OptionsTable extends Component {
         return (
             <div className="flex-content _margin-bottom">
                 <PowerDistribuitorContainer />
-                <ChooseMonthly />
+                <ChooseMonthlyContainer />
                 <RedoList />
             </div>
         )
