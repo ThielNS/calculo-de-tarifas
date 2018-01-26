@@ -22,7 +22,7 @@ class MonthlyExpenses extends Component {
         return `R$ ${number}`
     };
 
-/*     getWhiteTariffs() {
+    getWhiteTariffs() {
         const { listEquipments } = this.props;
         let whiteTariffs = [];
         Object.keys(listEquipments).forEach(function (key) {
@@ -30,15 +30,15 @@ class MonthlyExpenses extends Component {
             whiteTariffs.push(valueWhiteTariff);
         })
         return whiteTariffs.reduce((a, b) => { return a + b })
-    } */
+    }
 
 
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
-/*         const { listEquipments } = this.props;
+        const { listEquipments } = this.props;
         console.log(listEquipments);
 
-        console.log(this.getWhiteTariffs()) */
+        console.log(this.getWhiteTariffs())
 
         return (
             <section className="card-expenses-monthly _margin-bottom">
@@ -47,7 +47,7 @@ class MonthlyExpenses extends Component {
                     <div className="rates-content _margin-top">
                         <div>
                             <h3 className="highlight-rate">Tarifa branca</h3>
-                            <i className="rate">{this.formattNumber(whiteRate)}</i>
+                            <i className="rate">{this.formattNumber(this.getWhiteTariffs())}</i>
                         </div>
                         <div className="conventional-rate">
                             <h3>Tarifa convencional</h3>
