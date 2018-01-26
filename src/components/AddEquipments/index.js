@@ -23,13 +23,11 @@ class AddEquipments extends Component {
 
   componentDidUpdate() {
     const { nameEquipment, power, quantity, useOfMonth, send } = this.state;
-    const { addEquipment, listEquipments } = this.props;
-    const id = listEquipments.length + 1;
+    const { addEquipment } = this.props;
 
     if(nameEquipment && power > 0.01 && quantity >= 1 && useOfMonth.length > 0 && send) {
 
       const dataInfo = {
-        id: id,
         nameEquipment: nameEquipment,
         power: power,
         quantity: quantity,
@@ -50,7 +48,7 @@ class AddEquipments extends Component {
     }
   }
 
-  handleUseOfMonth = date => {
+  addUseOfMonth = date => {
     let { useOfMonth } = this.state;
 
     useOfMonth.push(date);
@@ -160,7 +158,7 @@ class AddEquipments extends Component {
             timeOfUse={timeOfUse}
             nameEquipment={nameEquipment}
             useOfMonth={useOfMonth}
-            handleUseOfMonth={this.handleUseOfMonth}
+            addUseOfMonth={this.addUseOfMonth}
             submitData={this.submitData}
           />
         </Col>
