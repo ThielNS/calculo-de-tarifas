@@ -1,0 +1,1 @@
+export const LIST_TARIFFS = 'LIST_TARIFFS';

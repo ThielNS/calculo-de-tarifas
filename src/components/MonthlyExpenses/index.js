@@ -17,6 +17,7 @@ class MonthlyExpenses extends Component {
         return `R$ ${number}`
     };
 
+
     render() {
         const { whiteRate, conventionalRate, differenceRates } = this.state;
 
