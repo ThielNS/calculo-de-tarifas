@@ -24,7 +24,6 @@ const equipmentsReducer = (state = initialState, action) => {
         ];
 
       localStorageSetItem(state);
-
       return state;
 
     case EDIT_EQUIPMENTS:
