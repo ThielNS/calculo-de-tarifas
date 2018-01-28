@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import RedoList from "./RedoList";
 import PowerDistribuitorContainer from "../../containers/PowerDistribuitorContainer";
 import ChooseMonthlyContainer from "../../containers/ChooseMonthlyContainer";
 import RedoListEquipmentsContainer from "../../containers/RedoListEquipmentsContainer";

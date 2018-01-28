@@ -16,7 +16,6 @@ class ChooseMonthly extends Component {
     }
 
     handleChange = (value) => {
-        const { listMonths } = this.props;
         this.setState({ monthIndex: value });
         /*  console.log(`Selected ${value}`); */
     };

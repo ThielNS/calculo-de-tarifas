@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { listEquipments } from "../actions/equipmentsAction";
 import { resetListEquipments } from "../actions/equipmentsAction";
 import RedoList from "../components/OptionsTable/RedoList";
 
