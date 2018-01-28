@@ -47,7 +47,7 @@ class MonthlyExpenses extends Component {
 
     getDifferenceTariffs() {
         let total = 0.00;
-        total = (this.getConventionalTariffs() - this.getWhiteTariffs());
+        total = Math.abs(this.getWhiteTariffs() - this.getConventionalTariffs());
         return total;
     }
 
