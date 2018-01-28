@@ -18,7 +18,6 @@ class RedoList extends Component {
         });
     }
     handleOk = () => {
-        let { itemsEquipments } = this.props;
         this.props.resetListEquipments();
 
         this.setState({
@@ -33,7 +32,6 @@ class RedoList extends Component {
                 confirmLoading: false,
             });
         });
-    return itemsEquipments.splice(0, itemsEquipments.length)
         
     }
     handleCancel = () => {

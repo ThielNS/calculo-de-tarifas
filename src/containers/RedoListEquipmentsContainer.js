@@ -5,17 +5,12 @@ import RedoList from "../components/OptionsTable/RedoList";
 
 const mapStateToProps = state => {
     return {
-        itemsEquipments: state.equipmentsReducer,
 
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    listEquipments: () => {
-        return dispatch(listEquipments());
-    },
     resetListEquipments: () => {
-        console.log(dispatch(resetListEquipments()))        
         return dispatch(resetListEquipments());
     },
 })
