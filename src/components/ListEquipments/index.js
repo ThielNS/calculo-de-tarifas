@@ -12,6 +12,10 @@ class ListEquipments extends Component {
       power: 0,
       quantity: 1,
       useOfMonth: [],
+      rowForm: {
+
+      },
+
       columns: [
         {
           title: "Equipamentos",
