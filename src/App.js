@@ -31,7 +31,7 @@ class App extends Component {
         <LocaleProvider locale={ptBR}>
           <Router>
             <Switch>
-              {/*<LandingPageLayout exact path="/" component={LandingPage}/>*/}
+              <LandingPageLayout exact path="/" component={LandingPage}/>
               <DefautLayout exact path="/list" component={MainPage}/>
             </Switch>
           </Router>

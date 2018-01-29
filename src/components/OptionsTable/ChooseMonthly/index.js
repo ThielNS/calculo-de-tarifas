@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
-import "./chooseMonthly.less";
 import Moment from 'moment';
 import 'moment/locale/pt-br';
+import "./chooseMonthly.less";
 
 const { Option } = Select;
 
@@ -15,9 +15,11 @@ class ChooseMonthly extends Component {
         }
     }
 
-    handleChange = (value) => {
-        this.setState({ monthIndex: value });
-        /*  console.log(`Selected ${value}`); */
+    handleChange = (key) => {
+        const { listMonths } = this.props;
+        console.log(listMonths)
+        console.log(`Selected ${key}`);
+
     };
 
     getMonths() {
@@ -25,7 +27,7 @@ class ChooseMonthly extends Component {
         let { listMonths } = this.props;
         for (let i = 0; i < 12; i++) {
             listMonths.push(
-                <Option key={i} value={m.month(i).format('MMMM')}>{m.month(i).format('MMMM')}</Option>
+                <Option key={i} value={i} handleChange={this.handleChange}>{m.month(i).format('MMMM')}</Option>
             )
         }
 
@@ -42,8 +44,6 @@ class ChooseMonthly extends Component {
     render() {
         const { listMonths } = this.props;
         console.log(listMonths)
-
-
 
         return (
             <div className="content-select option-left" >
