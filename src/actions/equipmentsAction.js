@@ -1,6 +1,7 @@
 import {
   ADD_EQUIPMENT,
   EDIT_EQUIPMENTS,
+  EDIT_USE_OF_MONTH,
   LIST_EQUIPMENTS,
   REMOVE_EQUIPMENTS,
   RESET_LIST_EQUIPMENTS
@@ -26,6 +27,9 @@ export const addEquipment = data => dispatch => {
 
   data.date.useOfMonth.map(item => {
     let { useOfMonth } = newData.date;
+/* 
+    let monthIndex = localStorage.getItem('monthIndex');
+    console.log(monthIndex); */
 
     let dates = {
       dateInit: item.dateInit.format("YYYY-MM-DD"),
@@ -77,8 +81,6 @@ export const editEquipments = (dataItem, index) => dispatch => {
 };
 
 export const addUseOfMonth = (data, index) => dispatch => {
-  console.log(data, index);
-
   const date = { useOfMonth: data.date.useOfMonth.concat(data.useOfMonth) };
 
   const item = { ...data, date };
@@ -94,6 +96,14 @@ export const addUseOfMonth = (data, index) => dispatch => {
       dataItem,
       index
     });
+  });
+};
+
+export const editUseOfMonth = (data, index) => dispatch => {
+  return dispatch({
+    type: EDIT_USE_OF_MONTH,
+    data,
+    index
   });
 };
 

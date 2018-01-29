@@ -1,4 +1,7 @@
-import { ADD_EQUIPMENT, EDIT_EQUIPMENTS, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS, RESET_LIST_EQUIPMENTS } from "./constants";
+import {
+  ADD_EQUIPMENT, EDIT_EQUIPMENTS, EDIT_USE_OF_MONTH, LIST_EQUIPMENTS, REMOVE_EQUIPMENTS,
+  RESET_LIST_EQUIPMENTS
+} from "./constants";
 import { initialState, localStorageSetItem } from "./initialState";
 
 const equipmentsReducer = (state = initialState, action) => {
@@ -45,6 +48,10 @@ const equipmentsReducer = (state = initialState, action) => {
 
       state = [];
       localStorageSetItem(state);
+      return state;
+
+    case EDIT_USE_OF_MONTH:
+      console.log(action);
       return state;
 
     default:

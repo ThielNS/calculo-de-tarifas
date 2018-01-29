@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { toggleModal } from "../actions/modalAction";
 import ListEquipments from "../components/ListEquipments/index";
-import { addUseOfMonth, editEquipments, removeEquipments } from "../actions/equipmentsAction";
+import { addUseOfMonth, editEquipments, editUseOfMonth, removeEquipments } from "../actions/equipmentsAction";
 
 const mapStateToProps = state => {
   return {
@@ -14,7 +14,8 @@ const mapDispatchToProps = {
   toggleModal,
   removeEquipments,
   editEquipments,
-  addUseOfMonth
+  addUseOfMonth,
+  editUseOfMonth
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListEquipments);

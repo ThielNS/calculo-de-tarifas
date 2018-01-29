@@ -42,9 +42,6 @@ class AddEquipments extends Component {
 
       addEquipment(dataInfo);
 
-      localStorage.getItem('monthIndex');
-      console.log(localStorage.getItem('monthIndex'))
-
       this.setState({
         nameEquipment: "",
         power: 0,

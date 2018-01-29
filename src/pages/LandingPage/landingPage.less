@@ -1,17 +1,20 @@
 @import "../../assets/styles/_variable";
 
 .banner {
-    padding-top: 35px;
-    padding-left: 90px;
     background-image: url("../../assets/images/bg-conta-amarelo.png");
     background-repeat: no-repeat;
-    height: 900px;
+    height: 100vh;
     color: @bg-card;
     background-repeat: no-repeat;
     background-size: cover;
+    padding-top: 1px;
+    display: flex;
+    align-items: center;
 
     .content-banner {
-        margin-top: 40px;
+        width: 1100px;
+        margin: 0 auto;
+
         .title {
             color: @bg-card;
             font-size: 55px;
@@ -51,7 +54,8 @@
        
     }
     .down-arrow {
-        margin-top: 100px;
+        position: relative;
+        bottom: 20px;
         display: flex;
         align-content: center;
         justify-content: center;

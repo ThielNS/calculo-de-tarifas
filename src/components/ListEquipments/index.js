@@ -128,7 +128,7 @@ class ListEquipments extends Component {
 
   timeOfUse = (obj, data, index) => {
 
-    const { modal, toggleModal } = this.props;
+    const { modal, toggleModal, editUseOfMonth } = this.props;
 
     if(obj) {
       return(
@@ -138,6 +138,7 @@ class ListEquipments extends Component {
           modal={modal}
           toggleModal={toggleModal}
           useOfMonth={obj.useOfMonth}
+          editUseOfMonth={editUseOfMonth}
           addUseOfMonth={this.addUseOfMonth}
           index={index}
         />
