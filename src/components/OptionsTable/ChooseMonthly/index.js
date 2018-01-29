@@ -11,15 +11,14 @@ class ChooseMonthly extends Component {
         super(props);
 
         this.state = {
-            monthIndex: ''
         }
     }
 
     handleChange = (key) => {
-        const { listMonths } = this.props;
-        console.log(listMonths)
         console.log(`Selected ${key}`);
-
+        localStorage.setItem('monthIndex', key);
+        console.log(key);
+        console.log(localStorage.getItem('monthIndex'))
     };
 
     getMonths() {

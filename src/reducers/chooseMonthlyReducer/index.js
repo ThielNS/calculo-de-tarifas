@@ -7,8 +7,8 @@ const listMonthly = (state = [], action) => {
             const { data } = action;
             const newState = state.concat(data);
             localStorage.setItem('monthIndex', JSON.stringify(newState));
-            
             return newState;
+
         default:
             return state;
     }

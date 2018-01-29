@@ -5,43 +5,94 @@
     padding-left: 90px;
     background-image: url("../../assets/images/bg-conta-amarelo.png");
     background-repeat: no-repeat;
-    height: 800px;
+    height: 900px;
     color: @bg-card;
+    background-repeat: no-repeat;
+    background-size: cover;
 
-    .title {
-        color: @bg-card;
-        font-size: 55px;
-        width: 740px;
-        padding-top: 30px;
-        font-weight: bold;
-    }
-    .subtitle{
-        color: @bg-card;        
-        font-size: 40px;
-        width: 600px;
-        font-weight: bold;
-    
-    }
-    .content-links {
-        padding-top: 30px;
-
-        span {
-            margin-left: 20px;
-            font-size: 20px;
+    .content-banner {
+        margin-top: 40px;
+        .title {
+            color: @bg-card;
+            font-size: 55px;
+            width: 740px;
+            padding-top: 65px;
+            font-weight: bold;
         }
+        .subtitle{
+            color: @bg-card;        
+            font-size: 40px;
+            width: 600px;
+            font-weight: bold;
+            margin-top: 30px;
+        
+        }
+        .content-links {
+    
+            span {
+                margin-left: 20px;
+                font-size: 20px;
+            }
+        }
+        .btn-calculate {
+            font-size: 18px;
+            background-color: @bg-card;
+            height: 50px;
+            width: 230px;
+            outline: none;
+            cursor: pointer;
+            color: @primary-color;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 55px;
+            
+        }
+       
     }
-    .btn-calculate {
+    .down-arrow {
+        margin-top: 100px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+    }
+   
+}
+
+.white-tariff {
+    
+    background-color: @bg-card;
+
+    .title-difference {
+        font-size: 45px;
+    }
+    .illustration-difference {
+        width: 1020px;
+        margin-left: -120px;
+
+    }
+    .about {
+        display: flex;
+        
+    }
+    .content-difference {
+        font-size: 25px;
+    }
+    .btn-calculate-tariff {
         font-size: 18px;
-        background-color: @bg-card;
+        margin-top: 15px;
+        background-color: @primary-color;
         height: 50px;
-        width: 230px;
+        width: 220px;
         outline: none;
         cursor: pointer;
-        color: @primary-color;
+        color: @bg-card;
         font-weight: bold;
         text-transform: uppercase;
         border: none;
         border-radius: 55px;
-        
+    }
+    .difference-tariffs {
+        margin-top: 140px;
     }
 }

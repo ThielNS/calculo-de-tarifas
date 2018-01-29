@@ -8,9 +8,9 @@ export const listEquipments = () => dispatch => {
 
 export const searchEquipments = name => dispatch => {
 
-  // const limit = 5;
+   //const limit = 5;
 
-  return get(`equipments?name={name}&limit={limit}`)
+  return get(`equipments?name=${name}&limit=5`)
     .then(data => data)
     .catch(error => {
       console.error(error);

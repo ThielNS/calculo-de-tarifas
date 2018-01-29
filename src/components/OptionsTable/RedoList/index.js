@@ -35,7 +35,7 @@ class RedoList extends Component {
         
     }
     handleCancel = () => {
-        this.props.resetListEquipments();
+        
         this.setState({
             visible: false,
             text: 'Cancelar'
