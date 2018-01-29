@@ -4,9 +4,10 @@ import "./footer.less";
 
 const Footer = () => {
   return (
-  <footer className="content-footer">
+/*   <footer className="content-footer">
       <p>&copy; Cálculo de Tarifas 2018 - Iniciativa <img src={LogoSenai} alt="Senai SP" /> </p>
-    </footer> 
+    </footer> */
+    <div></div>
   )
 };
 
