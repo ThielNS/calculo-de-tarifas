@@ -1,15 +1,13 @@
 import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "./constants";
+import { initialState } from "./initialState";
 
-
-export const powerDistribuitorReducer = (state = [], action) => {
+export const powerDistribuitorReducer = (state = initialState, action) => {
     switch (action.type) {
         case LIST_DISTRIBUITORS:
 
             const { data } = action;
-            const newState = state.concat(data);
-            localStorage.setItem('powerDistribuitorId', JSON.stringify(newState));
-
-            return newState;
+            
+            return data;
 
         default:
             return state;
@@ -25,4 +23,3 @@ export const calculateEquipmentsDistribuitor = (state = [], action) => {
     }
 }
 
-/* export default powerDistribuitorReducer; */

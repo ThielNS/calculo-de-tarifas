@@ -1,17 +1,30 @@
-import { LIST_MONTHS } from "./constants";
+import { LIST_MONTHS, GET_MONTH } from "./constants";
+import { initialState, localStorageSetItem } from "./initialState";
 
-const listMonthly = (state = [], action) => {
+const listMonthly = (state = initialState, action) => {
+  switch (action.type) {
+    case LIST_MONTHS:
+      const { data } = action;
 
-    switch (action.type) {
-        case LIST_MONTHS:
-            const { data } = action;
-            const newState = state.concat(data);
-            localStorage.setItem('monthIndex', JSON.stringify(newState));
-            return newState;
+      //localStorage.setItem("monthIndex", JSON.stringify(newState));
+      return data;
 
-        default:
-            return state;
-    }
-}
+    case GET_MONTH:
+      const { monthIndex } = action;
+  
+      state = state.map((item, i) => {
+        if (monthIndex === i) {
+          
+        }
+        return i;
+      });
+
+       localStorageSetItem(state);
+
+      return state;
+    default:
+      return state;
+  }
+};
 
 export default listMonthly;

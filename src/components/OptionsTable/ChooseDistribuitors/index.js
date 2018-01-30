@@ -27,14 +27,13 @@ class chooseDistribuitors extends Component {
   }
 
   handleChange = value => {
-    /*         const { itemsEquipments } = this.props;
- */
+    /*  const { itemsEquipments } = this.props;
+    */
     this.setState({ powerDistribuitorId: value });
     console.log(`Selected ${value}`);
-    localStorage.setItem('powerDistribuitorId', value);
-    localStorage.getItem('powerDistribuitorId');
-    console.log(localStorage.getItem('powerDistribuitorId'));
-    
+    localStorage.setItem("powerDistribuitorId", value);
+    localStorage.getItem("powerDistribuitorId");
+    console.log(localStorage.getItem("powerDistribuitorId"));
   };
 
   render() {

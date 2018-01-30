@@ -14,18 +14,16 @@ class ChooseMonthly extends Component {
   }
 
   handleChange = key => {
-    console.log(`Selected ${key}`);
     localStorage.setItem("monthIndex", key);
     console.log(key);
-    console.log(localStorage.getItem("monthIndex"));
   };
 
   getMonths() {
     const m = new Moment();
-    let { listMonths } = this.props;
+    let listMonths = [];
     for (let i = 0; i < 12; i++) {
       listMonths.push(
-        <Option key={i} value={i} handleChange={this.handleChange}>
+        <Option key={localStorage.getItem("monthIndex")} value={i}>
           {m.month(i).format("MMMM")}
         </Option>
       );

@@ -1,7 +1,7 @@
 import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "../reducers/powerDistribuitorReducer/constants"
 import { get, post } from "../modules/request";
 
-export const listDistribuitors = () => dispatch => {
+export const listDistribuitors = (index, dataItem) => dispatch => {
     return get('powerdistribuitors')
         .then(data => (
             dispatch({
