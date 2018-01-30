@@ -86,12 +86,59 @@ class ListEquipments extends Component {
   };
 
 
-  addUseOfMonth = (useOfMonth, index) => {
+  addUseOfMonth = (dates, index) => {
     const { listEquipments } = this.props;
 
-    const data = { ...listEquipments[index], useOfMonth, index};
+    const data = { ...listEquipments[index], dates, index};
 
     this.props.addUseOfMonth(data, index)
+  };
+
+  editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
+
+    const { listEquipments, editUseOfMonth } = this.props;
+
+    let dateTime = {};
+
+    let { date } = listEquipments[indexEquipment];
+
+
+    if(isTime === 'timeInit') {
+      dateTime = {
+        dateInit: date.useOfMonth[indexDate].dateInit,
+        dateFinish: date.useOfMonth[indexDate].dateFinish,
+        timeInit: data,
+        timeFinish: date.useOfMonth[indexDate].timeFinish
+      }
+    } else if(isTime === 'timeFinish') {
+      dateTime = {
+        dateInit: date.useOfMonth[indexDate].dateInit,
+        dateFinish: date.useOfMonth[indexDate].dateFinish,
+        timeInit: date.useOfMonth[indexDate].timeInit,
+        timeFinish: data,
+      }
+    } else {
+      if(Array.isArray(data)) {
+        dateTime = {
+          dateInit: data[0],
+          dateFinish: data[1],
+          timeInit: date.useOfMonth[indexDate].timeInit,
+          timeFinish: date.useOfMonth[indexDate].timeFinish,
+        }
+      } else {
+        dateTime = {
+          dateInit: data,
+          dateFinish: data,
+          timeInit: date.useOfMonth[indexDate].timeInit,
+          timeFinish: date.useOfMonth[indexDate].timeFinish,
+        }
+      }
+    }
+
+    const newdata = { ...listEquipments[indexEquipment], dateTime}
+
+    editUseOfMonth(newdata, indexEquipment, indexDate)
+
   };
 
   formattNumber = value => {
@@ -132,7 +179,7 @@ class ListEquipments extends Component {
 
   timeOfUse = (obj, data, index) => {
 
-    const { modal, toggleModal, editUseOfMonth } = this.props;
+    const { modal, toggleModal } = this.props;
 
     if(obj) {
       return(
@@ -142,7 +189,7 @@ class ListEquipments extends Component {
           modal={modal}
           toggleModal={toggleModal}
           useOfMonth={obj.useOfMonth}
-          editUseOfMonth={editUseOfMonth}
+          editUseOfMonth={this.editUseOfMonth}
           addUseOfMonth={this.addUseOfMonth}
           index={index}
         />
