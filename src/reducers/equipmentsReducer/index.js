@@ -52,7 +52,16 @@ const equipmentsReducer = (state = initialState, action) => {
       return state;
 
     case EDIT_USE_OF_MONTH:
-      console.log(action);
+
+      const editState = state.map((equipment, index) => {
+        if(index === action.indexEquipment) {
+          equipment = action.data
+        }
+        return equipment;
+      });
+
+      localStorageSetItem(editState);
+
       return state;
 
     default:
