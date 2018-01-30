@@ -15,7 +15,9 @@ export const listEquipments = () => dispatch => {
 export const searchEquipments = name => dispatch => {
   //const limit = 5;
 
-  return get(`equipments?name=${name}&limit=5`)
+  const limit = 5;
+
+  return get(`equipments?name=${name}&limit=${limit}`)
     .then(data => data)
     .catch(error => {
       console.error(error);
@@ -23,13 +25,13 @@ export const searchEquipments = name => dispatch => {
 };
 
 export const addEquipment = data => dispatch => {
-  let newData = { date: { useOfMonth: [] } };
 
-  data.date.useOfMonth.map(item => {
-    let { useOfMonth } = newData.date;
-/* 
-    let monthIndex = localStorage.getItem('monthIndex');
-    console.log(monthIndex); */
+  let newData = { useOfMonth: [] };
+
+
+  data.date.useOfMonth.map((item) => {
+
+    let { useOfMonth } = newData;
 
     let dates = {
       dateInit: item.dateInit.format("YYYY-MM-DD"),
@@ -43,20 +45,28 @@ export const addEquipment = data => dispatch => {
     return item;
   });
 
-  newData.id = data.id;
   newData.power = data.power;
   newData.quantity = data.quantity;
 
-  post("calculate", newData).then(response => {
-    data.date.timeOfUse = response[0].timeOfUse;
-    data.whiteTariff = response[0].whiteTariffEnergySpending;
-    data.conventionalTariff = response[0].conventionalTariffEnergySpending;
-    return dispatch({
-      type: ADD_EQUIPMENT,
-      data
+  const teste = {
+    powerDistribuitorId: "019EA005-6182-4F8D-95A4-DE3D86CBA51B",
+    month : 1,
+    equipments: [
+      newData
+    ]
+  };
+
+  post('calculate', teste)
+    .then(response => {
+      data.date.timeOfUse = response[0].timeOfUse;
+      data.whiteTariff = response[0].whiteTariffEnergySpending;
+      data.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: ADD_EQUIPMENT,
+        data
+      })
     });
-  });
-};
+  }
 
 export const removeEquipments = index => dispatch => {
   return dispatch({
