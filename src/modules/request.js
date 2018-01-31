@@ -1,5 +1,5 @@
 const API_URL = "http://192.168.2.203:80";
-//const API_URL = "https://private-581d3-itse1.apiary-mock.com";
+// const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{
   return request(url, {
@@ -36,11 +36,12 @@ export const request = (url, { contentType = 'application/json', ...customOption
 
   return fetch(`${API_URL}/${url}`, options)
     .then(response => {
-      // if(response.statusCode.toString().match(/^4/))
-      //   throw new Error(`${response.statusCode} Error`);
-      return response.json();    
+      // if(response.statusCode.toString().match(/^4/)) {
+      //   return response.json()
+      // }
+      return response.json();
     })
     .catch(error => {
-      throw new Error('Request Error', error.message);
+      throw new Error('Request Error', error);
     });
 };

@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import { LocaleProvider } from 'antd';
-import ptBR from 'antd/lib/locale-provider/pt_BR';
+import ptBRAntd from 'antd/lib/locale-provider/pt_BR';
+import 'moment/locale/pt-br';
+import moment from 'moment';
 import reducers from './reducers';
 
 // Layouts
@@ -18,6 +20,8 @@ import LandingPage from './pages/LandingPage';
 // Style
 import './assets/styles/index.less';
 
+moment.locale('pt-br');
+
 const store = createStore(
   reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
@@ -28,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <LocaleProvider locale={ptBR}>
+        <LocaleProvider locale={ptBRAntd}>
           <Router>
             <Switch>
               <LandingPageLayout exact path="/" component={LandingPage}/>

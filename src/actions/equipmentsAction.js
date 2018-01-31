@@ -1,3 +1,5 @@
+import { notification } from 'antd';
+
 import {
   ADD_EQUIPMENT,
   EDIT_EQUIPMENTS,
@@ -7,6 +9,13 @@ import {
   RESET_LIST_EQUIPMENTS
 } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
+
+const notificationError = (title, content) => {
+  notification['error']({
+    message: title,
+    description: content
+  })
+};
 
 export const listEquipments = () => dispatch => {
   return dispatch({ type: LIST_EQUIPMENTS });
@@ -24,45 +33,101 @@ export const searchEquipments = name => dispatch => {
     });
 };
 
-export const addEquipment = data => dispatch => {
-  console.log(data)
-  let newData = { useOfMonth: [] };
+const convertUseOfMonth = (useOfMonth) => {
 
-  data.date.useOfMonth.map((item) => {
+  let newUseOfMonth = [];
 
-    let { useOfMonth } = newData;
+  useOfMonth.map((item) => {
 
-    let dates = {
-      dateInit: item.dateInit.format("YYYY-MM-DD"),
-      dateFinish: item.dateFinish.format("YYYY-MM-DD"),
-      timeInit: item.timeInit.format("HH:mm"),
-      timeFinish: item.timeFinish.format("HH:mm")
-    };
+    let dates = {};
 
-    useOfMonth.push(dates);
+    if(typeof(item.dateInit) !== 'string' || typeof(item.dateFinish) !== 'string') {
+      dates = { ...dates,
+        dateInit: item.dateInit.format('YYYY-MM-DD'),
+        dateFinish: item.dateFinish.format('YYYY-MM-DD'),
+      };
+    } else {
+      dates = { ...dates,
+        dateInit: item.dateInit,
+        dateFinish: item.dateFinish
+      };
+    }
 
-    return item;
+    if(typeof(item.timeInit) !== 'string') {
+      dates = { ...dates,
+        timeInit: item.timeInit.format('HH:mm')
+      };
+    } else {
+      dates = { ...dates,
+        timeInit: item.timeInit
+      };
+    }
+
+    if(typeof(item.timeFinish) !== 'string') {
+      dates = { ...dates,
+        timeFinish: item.timeFinish.format('HH:mm')
+      };
+    } else {
+      dates = { ...dates,
+        timeFinish: item.timeFinish
+      };
+    }
+
+    newUseOfMonth.push(dates);
+
+    return item
   });
 
-  newData.power = data.power;
-  newData.quantity = data.quantity;
+  return newUseOfMonth;
 
-  const teste = {
-    powerDistribuitorId: "019EA005-6182-4F8D-95A4-DE3D86CBA51B",
+};
+
+const convertEquipment = (data, useOfMonth, isRequest = false) => {
+  if(isRequest) {
+    return {
+      power: data.power,
+      quantity: data.quantity,
+      useOfMonth
+    }
+  } else {
+    return {
+      nameEquipment: data.nameEquipment,
+      power: data.power,
+      quantity: data.quantity,
+      date: {
+        useOfMonth
+      }
+    }
+  }
+};
+
+const createObj = data => {
+
+  const useOfMonth = convertUseOfMonth(data.date.useOfMonth);
+  const equipment = convertEquipment(data, useOfMonth, true);
+
+  return {
+    powerDistribuitorId: '019EA005-6182-4F8D-95A4-DE3D86CBA51B',
     month : 1,
-    equipments: [
-      newData
+    equipments : [
+      equipment
     ]
-  };
+  }
+};
 
-  post('calculate', teste)
+export const addEquipment = data => dispatch => {
+
+  let newObj = createObj(data);
+  const newData = convertEquipment(data, convertUseOfMonth(data.date.useOfMonth));
+
+  post('calculate', newObj)
     .then(response => {
-      data.date.timeOfUse = response[0].timeOfUse;
-      data.whiteTariff = response[0].whiteTariffEnergySpending;
-      data.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
       return dispatch({
         type: ADD_EQUIPMENT,
-        data
+        data: newData
       })
     });
   }
@@ -74,46 +139,76 @@ export const removeEquipments = index => dispatch => {
   });
 };
 
-//TODO: converter data
+export const editEquipments = (data, index) => dispatch => {
 
-export const editEquipments = (dataItem, index) => dispatch => {
-  post("calculate", dataItem).then(response => {
-    dataItem.date.timeOfUse = response[0].timeOfUse;
-    dataItem.whiteTariff = response[0].whiteTariffEnergySpending;
-    dataItem.conventionalTariff = response[0].conventionalTariffEnergySpending;
-    return dispatch({
-      type: EDIT_EQUIPMENTS,
-      dataItem,
-      index
+  let newObj = createObj(data);
+  const newData = convertEquipment(data, convertUseOfMonth(data.date.useOfMonth));
+
+  post('calculate', newObj)
+    .then(response => {
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      dispatch({
+        type: EDIT_EQUIPMENTS,
+        dataItem: newData,
+        index,
+      })
+    })
+    .catch(data => {
+      if(data.power < 0.01) {
+        notificationError('Erro ao Editar', 'Potencia tem que ser maior que 0.01');
+      } else if(data.quantity % 1 !== 0) {
+        notificationError('Erro ao Editar', 'Quantidade deve ser um número inteiro');
+      }
     });
-  });
-};
+  };
+
 
 export const addUseOfMonth = (data, index) => dispatch => {
-  const date = { useOfMonth: data.date.useOfMonth.concat(data.useOfMonth) };
 
-  const item = { ...data, date };
+  const { dates, ...restData } = data;
 
-  const { useOfMonth, ...dataItem } = item;
+  restData.date.useOfMonth.push(dates);
 
-  post("calculate", dataItem).then(response => {
-    dataItem.date.timeOfUse = response[0].timeOfUse;
-    dataItem.whiteTariff = response[0].whiteTariffEnergySpending;
-    dataItem.conventionalTariff = response[0].conventionalTariffEnergySpending;
-    return dispatch({
-      type: EDIT_EQUIPMENTS,
-      dataItem,
-      index
+  let newObj = createObj(restData);
+  const newData = convertEquipment(restData, convertUseOfMonth(restData.date.useOfMonth));
+
+  post('calculate', newObj)
+    .then(response => {
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: EDIT_EQUIPMENTS,
+        dataItem: newData,
+        index,
+      })
     });
-  });
-};
+  };
 
-export const editUseOfMonth = (data, index) => dispatch => {
-  return dispatch({
-    type: EDIT_USE_OF_MONTH,
-    data,
-    index
-  });
+
+export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
+
+  const { dateTime, ...restData } = data;
+
+  restData.date.useOfMonth[indexDate] = dateTime;
+
+  let newObj = createObj(restData);
+  const newData = convertEquipment(restData, convertUseOfMonth(restData.date.useOfMonth));
+
+  post('calculate', newObj)
+    .then(response => {
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: EDIT_USE_OF_MONTH,
+        data: newData,
+        indexEquipment,
+        indexDate
+      })
+    });
 };
 
 export const resetListEquipments = dispatch => {

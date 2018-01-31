@@ -36,7 +36,8 @@ class AddEquipments extends Component {
         power: power,
         quantity: quantity,
         date: {
-          useOfMonth: useOfMonth
+          useOfMonth: useOfMonth,
+          timeOfUse: ''
         }
       };
 
