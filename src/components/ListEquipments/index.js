@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Icon, InputNumber, Table } from 'antd';
+import { Button, Icon, InputNumber, Table, notification } from 'antd';
+
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 import ColTimeOfUse from "../ColTimeOfUse";
@@ -101,43 +102,48 @@ class ListEquipments extends Component {
 
     let { date } = listEquipments[indexEquipment];
 
-
-    if(isTime === 'timeInit') {
-      dateTime = {
-        dateInit: date.useOfMonth[indexDate].dateInit,
-        dateFinish: date.useOfMonth[indexDate].dateFinish,
-        timeInit: data,
-        timeFinish: date.useOfMonth[indexDate].timeFinish
-      }
-    } else if(isTime === 'timeFinish') {
-      dateTime = {
-        dateInit: date.useOfMonth[indexDate].dateInit,
-        dateFinish: date.useOfMonth[indexDate].dateFinish,
-        timeInit: date.useOfMonth[indexDate].timeInit,
-        timeFinish: data,
-      }
+    if(date.useOfMonth[indexDate].timeFinish > date.useOfMonth[indexDate].timeInit) {
+      notification['error']({
+        message: 'Horas invalidas',
+        description: 'A hora inicial deve ser menor que a final'
+      })
     } else {
-      if(Array.isArray(data)) {
+      if(isTime === 'timeInit') {
         dateTime = {
-          dateInit: data[0],
-          dateFinish: data[1],
+          dateInit: date.useOfMonth[indexDate].dateInit,
+          dateFinish: date.useOfMonth[indexDate].dateFinish,
+          timeInit: data,
+          timeFinish: date.useOfMonth[indexDate].timeFinish
+        }
+      } else if(isTime === 'timeFinish') {
+        dateTime = {
+          dateInit: date.useOfMonth[indexDate].dateInit,
+          dateFinish: date.useOfMonth[indexDate].dateFinish,
           timeInit: date.useOfMonth[indexDate].timeInit,
-          timeFinish: date.useOfMonth[indexDate].timeFinish,
+          timeFinish: data,
         }
       } else {
-        dateTime = {
-          dateInit: data,
-          dateFinish: data,
-          timeInit: date.useOfMonth[indexDate].timeInit,
-          timeFinish: date.useOfMonth[indexDate].timeFinish,
+        if(Array.isArray(data)) {
+          dateTime = {
+            dateInit: data[0],
+            dateFinish: data[1],
+            timeInit: date.useOfMonth[indexDate].timeInit,
+            timeFinish: date.useOfMonth[indexDate].timeFinish,
+          }
+        } else {
+          dateTime = {
+            dateInit: data,
+            dateFinish: data,
+            timeInit: date.useOfMonth[indexDate].timeInit,
+            timeFinish: date.useOfMonth[indexDate].timeFinish,
+          }
         }
       }
+
+      const newdata = { ...listEquipments[indexEquipment], dateTime}
+
+      editUseOfMonth(newdata, indexEquipment, indexDate)
     }
-
-    const newdata = { ...listEquipments[indexEquipment], dateTime}
-
-    editUseOfMonth(newdata, indexEquipment, indexDate)
-
   };
 
   formattNumber = value => {
@@ -191,6 +197,7 @@ class ListEquipments extends Component {
           editUseOfMonth={this.editUseOfMonth}
           addUseOfMonth={this.addUseOfMonth}
           index={index}
+          submitData={() => {}}
         />
       );
     }
