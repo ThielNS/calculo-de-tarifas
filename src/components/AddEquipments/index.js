@@ -158,57 +158,6 @@ class AddEquipments extends Component {
     })
   };
 
-  editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
-
-    const { useOfMonth } = this.state;
-
-    let dateTime = {};
-
-    if(isTime === 'timeInit') {
-      dateTime = {
-        dateInit: useOfMonth[indexDate].dateInit,
-        dateFinish: useOfMonth[indexDate].dateFinish,
-        timeInit: data,
-        timeFinish: useOfMonth[indexDate].timeFinish
-      }
-    } else if(isTime === 'timeFinish') {
-      dateTime = {
-        dateInit: useOfMonth[indexDate].dateInit,
-        dateFinish: useOfMonth[indexDate].dateFinish,
-        timeInit: useOfMonth[indexDate].timeInit,
-        timeFinish: data,
-      }
-    } else {
-      if(Array.isArray(data)) {
-        dateTime = {
-          dateInit: data[0],
-          dateFinish: data[1],
-          timeInit: useOfMonth[indexDate].timeInit,
-          timeFinish: useOfMonth[indexDate].timeFinish,
-        }
-      } else {
-        dateTime = {
-          dateInit: data,
-          dateFinish: data,
-          timeInit: useOfMonth[indexDate].timeInit,
-          timeFinish: useOfMonth[indexDate].timeFinish,
-        }
-      }
-    }
-
-    const newUseOfMonth = useOfMonth.map((item, index) => {
-      if(index === indexDate) {
-        item = dateTime
-      }
-      return item;
-    });
-
-
-    this.setState({
-      useOfMonth: newUseOfMonth
-    })
-  };
-
   submitData = () => {
     this.setState(state => ({
       send: !state.send
