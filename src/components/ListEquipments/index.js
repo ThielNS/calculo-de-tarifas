@@ -15,7 +15,6 @@ class ListEquipments extends Component {
       rowForm: {
 
       },
-
       columns: [
         {
           title: "Equipamentos",
@@ -60,8 +59,7 @@ class ListEquipments extends Component {
       ],
       formatter: {
         formatter: value => `${value}W`,
-        parser: value => value.replace('W', ''),
-        step: 0.1
+        parser: value => value.replace('W', '')
       }
     }
   }
@@ -69,6 +67,7 @@ class ListEquipments extends Component {
   editEquipment = (value, type, data, index) => {
 
     const { nameEquipment, power, quantity, date  } = data;
+    const { editEquipments } = this.props;
 
     let item;
 
@@ -82,7 +81,7 @@ class ListEquipments extends Component {
 
     let newData = { nameEquipment, ...item };
 
-    this.props.editEquipments(newData, index)
+    editEquipments(newData, index)
   };
 
 
@@ -169,8 +168,8 @@ class ListEquipments extends Component {
 
     return(
       <InputNumber
-        min={0.1}
         value={number}
+        min={1}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
