@@ -37,15 +37,21 @@ const convertUseOfMonth = (useOfMonth) => {
 
   let newUseOfMonth = [];
 
+
   useOfMonth.map((item) => {
 
     let dates = {};
 
     if(typeof(item.dateInit) !== 'string' || typeof(item.dateFinish) !== 'string') {
-      dates = { ...dates,
-        dateInit: item.dateInit.format('YYYY-MM-DD'),
-        dateFinish: item.dateFinish.format('YYYY-MM-DD'),
-      };
+      if(!item.dateInit || !item.dateFinish) {
+        notificationError('Data invalida', 'A data não pode ser nula')
+      } else {
+        dates = {
+          ...dates,
+          dateInit: item.dateInit.format ('YYYY-MM-DD'),
+          dateFinish: item.dateFinish.format ('YYYY-MM-DD'),
+        };
+      }
     } else {
       dates = { ...dates,
         dateInit: item.dateInit,
@@ -54,9 +60,13 @@ const convertUseOfMonth = (useOfMonth) => {
     }
 
     if(typeof(item.timeInit) !== 'string') {
-      dates = { ...dates,
-        timeInit: item.timeInit.format('HH:mm')
-      };
+      if(!item.timeInit) {
+        notificationError('Hora invalida', 'A Hora não pode ser nula')
+      } else {
+        dates = { ...dates,
+          timeInit: item.timeInit.format('HH:mm')
+        };
+      }
     } else {
       dates = { ...dates,
         timeInit: item.timeInit
@@ -64,9 +74,13 @@ const convertUseOfMonth = (useOfMonth) => {
     }
 
     if(typeof(item.timeFinish) !== 'string') {
-      dates = { ...dates,
-        timeFinish: item.timeFinish.format('HH:mm')
-      };
+      if(!item.timeFinish) {
+        notificationError('Hora invalida, A Hora não pode ser nula')
+      } else {
+        dates = { ...dates,
+          timeFinish: item.timeFinish.format('HH:mm')
+        };
+      }
     } else {
       dates = { ...dates,
         timeFinish: item.timeFinish

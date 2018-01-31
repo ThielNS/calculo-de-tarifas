@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
+import { Modal as BoxModal, Radio, DatePicker, TimePicker, notification } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
 
@@ -8,7 +8,7 @@ const formatDate = 'DD/MM/YYYY';
 
 const formatTime = 'HH:mm';
 
-class Modal extends Component {
+class ModalTimeOfUse extends Component {
 
   constructor(props) {
     super(props);
@@ -49,23 +49,30 @@ class Modal extends Component {
 
       if(dateInit && dateFinish && timeInit && timeFinish) {
 
-        const date = {
-          dateInit: dateInit,
-          dateFinish: dateFinish,
-          timeInit: timeInit,
-          timeFinish: timeFinish
-        };
+        if(moment(timeInit, formatTime) > moment(timeFinish, formatTime)) {
+          notification['error']({
+            message: 'Horas invalidas',
+            description: 'A hora inicial deve ser menor que a final'
+          })
+        }  else {
+          const date = {
+            dateInit: dateInit,
+            dateFinish: dateFinish,
+            timeInit: timeInit,
+            timeFinish: timeFinish
+          };
 
-        addUseOfMonth(date, index);
+          addUseOfMonth(date, index);
 
-        this.setState({
-          dateInit: null,
-          dateFinish: null,
-          timeInit: null,
-          timeFinish: null
-        });
+          this.setState({
+            dateInit: null,
+            dateFinish: null,
+            timeInit: null,
+            timeFinish: null
+          });
 
-        this.forceUpdate();
+          this.forceUpdate();
+        }
       }
   };
 
@@ -193,6 +200,21 @@ class Modal extends Component {
     ));
   };
 
+  enableOnOk = () => {
+
+    const { closeModal } = this.props;
+    const { useOfMonth } = this.props;
+
+    if(useOfMonth.length > 0) {
+      return closeModal(true);
+    } else {
+      return notification['error']({
+        message: 'Não há data e hora cadastrada',
+        description: 'Adicione uma data e uma hora para concluir'
+      });
+    }
+  };
+
   render() {
 
     const { nameEquipment, visibleModal, closeModal } = this.props;
@@ -207,7 +229,7 @@ class Modal extends Component {
           title={`Tempo de Uso - ${nameEquipment}`}
           style={{width: '600px'}}
           visible={visibleModal}
-          onOk={() => closeModal(true)}
+          onOk={() => this.enableOnOk()}
           onCancel={closeModal}
         >
           <RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>
@@ -262,4 +284,4 @@ class Modal extends Component {
   }
 }
 
-export default Modal;
+export default ModalTimeOfUse;
