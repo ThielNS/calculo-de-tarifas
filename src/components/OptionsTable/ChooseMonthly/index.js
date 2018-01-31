@@ -15,7 +15,7 @@ class ChooseMonthly extends Component {
 
   handleChange = key => {
     localStorage.setItem("monthIndex", key);
-    console.log(key);
+    //console.log(key);
   };
 
   getMonths() {
@@ -40,8 +40,6 @@ class ChooseMonthly extends Component {
   }
 
   render() {
-    const { listMonths } = this.props;
-    console.log(listMonths);
 
     return (
       <div className="content-select option-left">

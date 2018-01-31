@@ -19,16 +19,11 @@ class chooseDistribuitors extends Component {
   }
 
   handleChange = value => {
-    /*  const { itemsEquipments } = this.props;
-    */
-
-    const { itemsEquipments } = this.props;
-    console.log(itemsEquipments);
 
     this.setState({ powerDistribuitorId: value });
-    console.log(`Selected ${value}`);
+   //console.log(`Selected ${value}`);
     localStorage.setItem("powerDistribuitorId", value);
-    console.log(localStorage.getItem("powerDistribuitorId"));
+    //console.log(localStorage.getItem("powerDistribuitorId"));
     //this.props.listCalculateEquipments(itemsEquipments, value);
   };
 
@@ -44,7 +39,6 @@ class chooseDistribuitors extends Component {
 
   render() {
     const {itemsDistribuitors} = this.props;
-    console.log(itemsDistribuitors, 'aqui')
     return (
       <div className="content-select">
         <i className="label-distribuitors">Concessionárias</i>
