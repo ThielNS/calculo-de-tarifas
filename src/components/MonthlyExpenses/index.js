@@ -100,7 +100,6 @@ class MonthlyExpenses extends Component {
 
         {listEquipments.length >= 1 ? (
           <div className="expense-feedback">
-            <p>
               {this.getDifferenceTariffs() < 0 ? (
                 <div>
                   <span className="highlight-rate rate-white">
@@ -128,7 +127,6 @@ class MonthlyExpenses extends Component {
               ) : (
                 ""
               )}
-            </p>
           </div>
         ) : (
           <div className="expense-feedback">

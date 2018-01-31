@@ -1,11 +1,12 @@
 import { LIST_DISTRIBUITORS, LIST_EQUIPMENTS_DISTRIBUITOR } from "./constants";
-import { initialState } from "./initialState";
+import { initialState, localStorageSetItem } from "./initialState";
 
 export const powerDistribuitorReducer = (state = initialState, action) => {
     switch (action.type) {
         case LIST_DISTRIBUITORS:
 
             const { data } = action;
+            localStorageSetItem(data)
             
             return data;
 

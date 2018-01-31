@@ -7,8 +7,7 @@ import ChooseDistribuitors from "../components/OptionsTable/ChooseDistribuitors"
 const mapStateToProps = state => {
     return {
         itemsDistribuitors: state.powerDistribuitorReducer,
-        itemsEquipments: state.equipmentsReducer,
-        itemsCalculateEquipments: state.powerDistribuitorReducer,
+        itemsCalculateEquipments: state.powerDistribuitorReducer
     };
 };
 
@@ -16,12 +15,9 @@ const mapDispatchToProps = dispatch => ({
     listDistribuitors: () => {
         return dispatch(listDistribuitors());
     },
-    listEquipments: () => {
-        return dispatch(listEquipments());
-    },
     listCalculateEquipments: (itemsEquipments, itemsDistribuitors) => {
         return dispatch(listCalculateEquipments(itemsEquipments, itemsDistribuitors))
-    },
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseDistribuitors);

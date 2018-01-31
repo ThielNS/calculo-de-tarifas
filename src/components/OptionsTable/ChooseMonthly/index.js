@@ -50,9 +50,8 @@ class ChooseMonthly extends Component {
           className="select-monthly"
           showSearch
           style={{ width: 200 }}
-          placeholder="Janeiro"
           optionFilterProp="children"
-          firstActiveValue={this.getCurrentMonth()}
+          defaultValue={this.getCurrentMonth()}
           onChange={this.handleChange}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=

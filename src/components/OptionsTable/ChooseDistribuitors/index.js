@@ -7,17 +7,21 @@ class chooseDistribuitors extends Component {
     super(props);
 
     this.state = {
-      powerDistribuitorId: ""
+      powerDistribuitorId: ''
     };
   }
 
   componentDidMount() {
     this.props.listDistribuitors();
+    this.setState({
+      powerDistribuitorId: this.props.itemsDistribuitors[1].id
+    })
   }
 
   handleChange = value => {
     /*  const { itemsEquipments } = this.props;
     */
+
     const { itemsEquipments } = this.props;
     console.log(itemsEquipments);
 
@@ -25,8 +29,7 @@ class chooseDistribuitors extends Component {
     console.log(`Selected ${value}`);
     localStorage.setItem("powerDistribuitorId", value);
     console.log(localStorage.getItem("powerDistribuitorId"));
-    this.props.listCalculateEquipments(itemsEquipments, value);
-    
+    //this.props.listCalculateEquipments(itemsEquipments, value);
   };
 
   renderOptions() {
@@ -40,14 +43,16 @@ class chooseDistribuitors extends Component {
   }
 
   render() {
+    const {itemsDistribuitors} = this.props;
+    console.log(itemsDistribuitors, 'aqui')
     return (
       <div className="content-select">
         <i className="label-distribuitors">Concessionárias</i>
         <Select
           showSearch
           style={{ width: 200 }}
-          placeholder="AES Eletropaulo"
           optionFilterProp="children"
+          defaultValue={itemsDistribuitors[0].id}
           onChange={this.handleChange}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=

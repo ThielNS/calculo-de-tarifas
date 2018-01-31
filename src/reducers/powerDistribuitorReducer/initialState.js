@@ -1,4 +1,4 @@
-let itemsDistribuitors = localStorage.getItem('list');
+let itemsDistribuitors = localStorage.getItem('itemsDistribuitors');
 
 itemsDistribuitors = itemsDistribuitors ? JSON.parse(itemsDistribuitors) : [];
 
