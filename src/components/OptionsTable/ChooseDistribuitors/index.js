@@ -13,28 +13,27 @@ class chooseDistribuitors extends Component {
 
   componentDidMount() {
     this.props.listDistribuitors();
-    this.props.listEquipments();
-  }
-
-  renderOptions() {
-    const { Option } = Select;
-    const { itemsDistribuitors } = this.props;
-    return itemsDistribuitors.map((item, index) => (
-      <Option key={index} value={item.id}>
-        {item.name}
-      </Option>
-    ));
   }
 
   handleChange = value => {
     /*  const { itemsEquipments } = this.props;
     */
+    this.props.listCalculateEquipments();
     this.setState({ powerDistribuitorId: value });
     console.log(`Selected ${value}`);
     localStorage.setItem("powerDistribuitorId", value);
-    localStorage.getItem("powerDistribuitorId");
-    console.log(localStorage.getItem("powerDistribuitorId"));
+    console.log(localStorage.getItem("powerDistribuitorId"))
   };
+
+  renderOptions() {
+    const { Option } = Select;
+    const { itemsDistribuitors } = this.props;
+    return itemsDistribuitors.map((item, index) => (
+      <Option key={localStorage.getItem("powerDistribuitorId")} value={item.id}>
+        {item.name}
+      </Option>
+    ));
+  }
 
   render() {
     return (

@@ -25,12 +25,11 @@ class MonthlyExpenses extends Component {
     const { listEquipments } = this.props;
     let whiteTariffs = [0.0];
 
-    if(listEquipments[{}] >= 1) {
       Object.keys(listEquipments).forEach(function(key) {
         var valueWhiteTariff = listEquipments[key]["whiteTariff"];
         whiteTariffs.push(valueWhiteTariff);
       });
-    }
+    
     
     return whiteTariffs.reduce((a, b) => {
       return a + b;
@@ -41,12 +40,12 @@ class MonthlyExpenses extends Component {
     const { listEquipments } = this.props;
     let conventionalTariffs = [0.0];
 
-    if(listEquipments[{}] >=1 ){
+  
       Object.keys(listEquipments).forEach(key => {
         var valueConventionalTariff = listEquipments[key]["conventionalTariff"];
         conventionalTariffs.push(valueConventionalTariff);
       });
-    }
+    
 
     return conventionalTariffs.reduce((a, b) => {
       return a + b;
