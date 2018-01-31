@@ -15,21 +15,30 @@ export const listDistribuitors = (index, dataItem) => dispatch => {
     .catch(Error => {});
 };
 
-const powerdistribuitorId = "019EA005-6182-4F8D-95A4-DE3D86CBA51B";
-const monthIndex = 1;
+export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
+  console.log(data);
+  console.log(distribuitorId);
 
-export const listCalculateEquipments = data => dispatch => { 
-    console.log(data);
-    return post("calculate", data)
-    .then(data => {
+  data.map(item => {
+    item.useOfMonth = item.date.useOfMonth;
+    return item;
+  });
+  
+
+  console.log(data);
+  const teste = {
+    powerDistribuitorId: distribuitorId,
+    month: 1,
+    equipments: data
+  };
+  return post("calculate", teste)
+    .then(response => {
       return dispatch({
         type: LIST_EQUIPMENTS_DISTRIBUITOR,
         data
       });
     })
-    .catch(error => {
-      console.log("error");
-    });
+    .catch(error => {});
 };
 
 /* export const listCalculateEquipments = data => dispatch => {

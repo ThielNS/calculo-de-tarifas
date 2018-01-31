@@ -25,9 +25,8 @@ export const searchEquipments = name => dispatch => {
 };
 
 export const addEquipment = data => dispatch => {
-
+  console.log(data)
   let newData = { useOfMonth: [] };
-
 
   data.date.useOfMonth.map((item) => {
 

@@ -19,8 +19,8 @@ const mapDispatchToProps = dispatch => ({
     listEquipments: () => {
         return dispatch(listEquipments());
     },
-    listCalculateEquipments: () => {
-        return dispatch(listCalculateEquipments())
+    listCalculateEquipments: (itemsEquipments, itemsDistribuitors) => {
+        return dispatch(listCalculateEquipments(itemsEquipments, itemsDistribuitors))
     },
 });
 
