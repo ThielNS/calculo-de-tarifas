@@ -62,7 +62,7 @@ const equipmentsReducer = (state = initialState, action) => {
 
       localStorageSetItem(editState);
 
-      return state;
+      return editState;
 
     default:
       return state;

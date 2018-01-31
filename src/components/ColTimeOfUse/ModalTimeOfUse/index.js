@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
-import { editUseOfMonth } from "../../../actions/equipmentsAction";
 
 const { RangePicker } = DatePicker;
 const formatDate = 'DD/MM/YYYY';
+
 const formatTime = 'HH:mm';
 
 class Modal extends Component {
@@ -29,6 +29,18 @@ class Modal extends Component {
     this.setState({
       valueRadio: e.target.value,
     })
+  };
+
+  convertDate = value => {
+    if(typeof(value) === 'string') {
+      const year = value.substr(0, 4);
+      const month = value.substr(5, 2);
+      const day = value.substr(8, 2);
+
+      return `${day}/${month}/${year}`;
+    } else {
+      return value
+    }
   };
 
   componentDidUpdate() {
@@ -71,7 +83,7 @@ class Modal extends Component {
     })
   };
 
-  changeTime = (currentTime, propType, indexDate =  null) => {
+  changeTime = (currentTime, propType) => {
     this.setState({
       [propType]: currentTime,
     })
@@ -106,8 +118,8 @@ class Modal extends Component {
 
   };
 
-  convertMoment = value => {
-    return value !== null ? moment(value) : null;
+  convertMoment = (value, format) => {
+    return value !== null ? moment(value, format) : null;
   };
 
   renderDate = (item, indexDate) => {
@@ -126,7 +138,7 @@ class Modal extends Component {
             disabledDate={this.disabledDate}
             format={formatDate}
             className="_margin-right"
-            defaultValue={[convertMoment(item.dateInit), convertMoment(item.dateFinish)]}
+            defaultValue={[convertMoment(this.convertDate(item.dateInit), formatDate), convertMoment(this.convertDate(item.dateFinish), formatDate)]}
           />
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
         </div>
@@ -139,7 +151,7 @@ class Modal extends Component {
             disabledDate={this.disabledDate}
             format={formatDate}
             className="_margin-right"
-            defaultValue={convertMoment(item.dateInit)}
+            defaultValue={convertMoment(this.convertDate(item.dateInit), formatDate)}
           />
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
         </div>
@@ -154,14 +166,14 @@ class Modal extends Component {
     return (
       <div className="row ant-col-sm-12">
         <TimePicker
-          defaultValue={this.convertMoment(timeInit)}
+          defaultValue={this.convertMoment(timeInit, formatTime)}
           format={formatTime}
           placeholder="Hora inicio"
           className="imput-time _margin-right"
           onChange={data => editUseOfMonth(data, indexDate, index, 'timeInit')}
         />
         <TimePicker
-          defaultValue={this.convertMoment(timeFinish)}
+          defaultValue={this.convertMoment(timeFinish, formatTime)}
           format={formatTime}
           placeholder="Hora fim"
           className="imput-time"
