@@ -2,6 +2,7 @@ import {
   LIST_DISTRIBUITORS,
   LIST_EQUIPMENTS_DISTRIBUITOR
 } from "../reducers/powerDistribuitorReducer/constants";
+import { convertUseOfMonth, convertEquipment } from "./equipmentsAction";
 import { get, post } from "../modules/request";
 
 export const listDistribuitors = (index, dataItem) => dispatch => {
@@ -15,27 +16,43 @@ export const listDistribuitors = (index, dataItem) => dispatch => {
     .catch(Error => {});
 };
 
-export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
-  console.log(data);
-  console.log(distribuitorId);
-
-  data.map(item => {
-    item.useOfMonth = item.date.useOfMonth;
-    return item;
-  });
-  
-
-  console.log(data);
-  const teste = {
+const createObject = (data, distribuitorId) => {
+  return {
     powerDistribuitorId: distribuitorId,
     month: 1,
     equipments: data
   };
-  return post("calculate", teste)
+};
+
+export const updateEquipments = (response, data) => {
+  return data.map((item, index) => {
+    item = convertEquipment(item, convertUseOfMonth(item.date.useOfMonth));
+    item.date.timeOfUse = response[index].timeOfUse;
+    item.whiteTariff = response[index].whiteTariffEnergySpending;
+    item.conventionalTariff = response[index].conventionalTariffEnergySpending;
+    return item;
+  });
+};
+
+export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
+  console.log(data);
+  console.log(distribuitorId);
+
+  const newData = data.map(item => {
+    const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
+    item = convertEquipment(item, newUseOfMonth, true);
+    return item;
+  });
+
+  let newObject = createObject(newData, distribuitorId);
+
+  console.log(newObject);
+
+  return post("calculate", newObject)
     .then(response => {
       return dispatch({
         type: LIST_EQUIPMENTS_DISTRIBUITOR,
-        data
+        dataList: updateEquipments(response, data)
       });
     })
     .catch(error => {});

@@ -33,7 +33,7 @@ export const searchEquipments = name => dispatch => {
     });
 };
 
-const convertUseOfMonth = (useOfMonth) => {
+export const convertUseOfMonth = (useOfMonth) => {
 
   let newUseOfMonth = [];
 
@@ -96,7 +96,7 @@ const convertUseOfMonth = (useOfMonth) => {
 
 };
 
-const convertEquipment = (data, useOfMonth, isRequest = false) => {
+export const convertEquipment = (data, useOfMonth, isRequest = false) => {
   if(isRequest) {
     return {
       power: data.power,
