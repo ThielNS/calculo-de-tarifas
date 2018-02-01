@@ -5,7 +5,8 @@ import {
   LIST_EQUIPMENTS,
   REMOVE_EQUIPMENTS,
   RESET_LIST_EQUIPMENTS,
-  LIST_EQUIPMENTS_DISTRIBUITOR
+  LIST_EQUIPMENTS_DISTRIBUITOR,
+  UPDATE_MONTH_EQUIPMENTS
 } from "./constants";
 import { initialState, localStorageSetItem } from "./initialState";
 
@@ -65,6 +66,13 @@ const equipmentsReducer = (state = initialState, action) => {
       localStorageSetItem(dataList);
 
       return dataList;
+
+    case UPDATE_MONTH_EQUIPMENTS:
+      let { updateData } = action;
+      localStorageSetItem(updateData);
+
+      return updateData;
+
     default:
       return state;
   }

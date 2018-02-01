@@ -6,9 +6,10 @@ import {
   EDIT_USE_OF_MONTH,
   LIST_EQUIPMENTS,
   REMOVE_EQUIPMENTS,
-  RESET_LIST_EQUIPMENTS
+  RESET_LIST_EQUIPMENTS, UPDATE_MONTH_EQUIPMENTS
 } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
+import { createObject, updateEquipments } from "./powerDistribuitorAction";
 
 const notificationError = (title, content) => {
   notification['error']({
@@ -119,10 +120,13 @@ const createObj = data => {
 
   const useOfMonth = convertUseOfMonth(data.date.useOfMonth);
   const equipment = convertEquipment(data, useOfMonth, true);
+  const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
+  const monthIndex = localStorage.getItem('monthIndex');
+  const month = Math.floor(monthIndex) + 1;
 
   return {
-    powerDistribuitorId: '019EA005-6182-4F8D-95A4-DE3D86CBA51B',
-    month : 1,
+    powerDistribuitorId: powerDistribuitorId,
+    month : month,
     equipments : [
       equipment
     ]
@@ -144,7 +148,7 @@ export const addEquipment = data => dispatch => {
         data: newData
       })
     });
-  }
+  };
 
 export const removeEquipments = index => dispatch => {
   return dispatch({
@@ -221,6 +225,56 @@ export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
         data: newData,
         indexEquipment,
         indexDate
+      })
+    });
+};
+
+const convertDate = (date, month) => {
+
+  let year = date.substr(0, 4);
+  let day = date.substr(8, 2);
+  let newMonth;
+
+  if(month <= 9) {
+    newMonth = `0${month + 1}`
+  } else {
+    newMonth = month + 1
+  }
+
+  return `${year}-${newMonth}-${day}`;
+};
+
+export const changeListEquipments = (dataList, changeValue, method = null) => {
+   return dataList.map(item => {
+    item.date.useOfMonth.map(dateTime => {
+
+      dateTime.dateInit = convertDate(dateTime.dateInit, changeValue);
+      dateTime.dateFinish = convertDate(dateTime.dateFinish, changeValue);
+
+      return dateTime
+    });
+
+    return item
+  })
+};
+
+export const updateMonthEquipments = (dataList, month) => dispatch => {
+
+  const newDataList = changeListEquipments(dataList, month);
+
+  const newData = newDataList.map(item => {
+    const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
+    item = convertEquipment(item, newUseOfMonth, true);
+    return item;
+  });
+
+  const newObj = createObject(newData, localStorage.getItem('powerDistribuitorId'));
+
+  post('calculate', newObj)
+    .then(response => {
+      return dispatch({
+        type: UPDATE_MONTH_EQUIPMENTS,
+        updateData: updateEquipments(response, newDataList)
       })
     });
 };

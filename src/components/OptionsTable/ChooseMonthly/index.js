@@ -13,9 +13,13 @@ class ChooseMonthly extends Component {
     this.state = {};
   }
 
-  handleChange = key => {
-    localStorage.setItem("monthIndex", key);
-    //console.log(key);
+  handleChange = value => {
+
+    const { listEquipments, updateMonthEquipments } = this.props;
+
+    localStorage.setItem("monthIndex", value);
+    updateMonthEquipments(listEquipments, value)
+
   };
 
   getMonths() {
@@ -34,9 +38,13 @@ class ChooseMonthly extends Component {
 
   getCurrentMonth() {
     const date = new Date();
-    const currentMonth = date.getMonth();
-    /* console.log(currentMonth)
- */ return currentMonth;
+    const month = localStorage.getItem('monthIndex');
+
+    if(month) {
+      return Math.floor(month)
+    } else {
+      return date.getMonth();
+    }
   }
 
   render() {

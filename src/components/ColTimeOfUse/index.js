@@ -27,12 +27,12 @@ class ColTimeOfUse extends Component {
 
     return (
       <div className="set-time">
-        <div onClick={this.toggleModal}>
+        <button style={{ border: 'none', backgroundColor: 'transparent', padding: '5px'}} onClick={this.toggleModal}>
           <span className="_padding-small-right">
             {timeOfUse}
           </span>
           <Icon type="calendar"/>
-        </div>
+        </button>
         <ModalTimeOfUse
           nameEquipment={nameEquipment}
           visibleModal={visibleModal}

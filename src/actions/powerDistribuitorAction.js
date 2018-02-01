@@ -16,10 +16,13 @@ export const listDistribuitors = (index, dataItem) => dispatch => {
     .catch(Error => {});
 };
 
-const createObject = (data, distribuitorId) => {
+export const createObject = (data, distribuitorId) => {
+
+  const monthIndex = Math.floor(localStorage.getItem('monthIndex')) + 1;
+
   return {
     powerDistribuitorId: distribuitorId,
-    month: 1,
+    month: monthIndex,
     equipments: data
   };
 };
