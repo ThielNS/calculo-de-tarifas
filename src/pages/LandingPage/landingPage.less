@@ -31,8 +31,11 @@
     }
     .content-links {
       margin-top: 80px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
-      a.link-difference {
+      .link-difference {
         text-decoration: none;
         color: @bg-card;
       }
@@ -46,10 +49,10 @@
       font-size: 18px;
       background-color: @bg-card;
       height: 50px;
+      text-align: center;
       width: 230px;
       outline: none;
       cursor: pointer;
-      margin-top: 60px;
       color: @primary-color;
       font-weight: bold;
       text-transform: uppercase;

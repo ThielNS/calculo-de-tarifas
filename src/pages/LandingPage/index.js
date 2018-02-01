@@ -30,15 +30,19 @@ class LandingPage extends Component {
               <Link to="/list" className="btn-calculate">
                 Calcular tarifa
               </Link>
-              <a href="#white-tariff" className="link-difference">
-                <span>Qual a diferença entre as tarifas?</span>
-              </a>
+              <Anchor affix={false} >
+                <LinkAnchor
+                  href="#white-tariff"
+                  title={<span className="link-difference">Qual a diferença entre as tarifas?</span>} 
+                />
+              </Anchor>
             </div>
             <div className="down-arrow">
               <Anchor affix={false}>
-              <LinkAnchor href="#white-tariff" title={<Icon type="down" className="icon-arrow" />}>
-                
-              </LinkAnchor>
+                <LinkAnchor
+                  href="#white-tariff"
+                  title={<Icon type="down" className="icon-arrow" />}
+                />
               </Anchor>
             </div>
           </div>
