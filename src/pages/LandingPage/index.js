@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Icon } from "antd";
-import { Link } from "react-router-dom";
 import Logo from "../../assets/images/LogoLandingPage.png";
 import DrawDifference from "../../assets/images/difference-illustration.png";
 import Footer from "../../components/Footer";
@@ -28,13 +27,13 @@ class LandingPage extends Component {
               <span>Qual a diferença entre as tarifas?</span>
             </div>
             <div className="down-arrow">
-              <Link to="#">
-                <Icon type="down" className="icon-arrow" />
-              </Link>
+              <Anchor>
+                <Link href="#test-anchor" title='teste'/>
+              </Anchor>
             </div>
           </div>
         </section>
-        <section className="white-tariff">
+        <section className="white-tariff" id="test-anchor">
           <div className="about">
             <div className="difference-tariffs">
               <div className="title">
