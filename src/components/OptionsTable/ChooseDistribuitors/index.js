@@ -31,15 +31,25 @@ class chooseDistribuitors extends Component {
   renderOptions() {
     const { Option } = Select;
     const { itemsDistribuitors } = this.props;
-    return itemsDistribuitors.map((item, index) => (
-      <Option key={localStorage.getItem("powerDistribuitorId")} value={item.id}>
+    return itemsDistribuitors.map(item => (
+      <Option key={item.id} value={item.id}>
         {item.name}
       </Option>
     ));
   }
 
-  render() {
+  defaultValue = () => {
     const {itemsDistribuitors} = this.props;
+    const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
+
+    if(powerDistribuitorId) {
+      return powerDistribuitorId
+    } else {
+      return itemsDistribuitors[0].id
+    }
+  };
+
+  render() {
     return (
       <div className="content-select">
         <i className="label-distribuitors">Concessionárias</i>
@@ -47,7 +57,7 @@ class chooseDistribuitors extends Component {
           showSearch
           style={{ width: 200 }}
           optionFilterProp="children"
-          defaultValue={itemsDistribuitors[0].id}
+          defaultValue={this.defaultValue()}
           onChange={this.handleChange}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
