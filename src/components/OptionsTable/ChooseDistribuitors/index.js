@@ -7,15 +7,12 @@ class chooseDistribuitors extends Component {
     super(props);
 
     this.state = {
-      powerDistribuitorId: ''
     };
   }
 
   componentDidMount() {
     this.props.listDistribuitors();
-    this.setState({
-      powerDistribuitorId: this.props.itemsDistribuitors[1].id
-    })
+
   }
 
   handleChange = value => {

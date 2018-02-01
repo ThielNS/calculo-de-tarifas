@@ -1,101 +1,132 @@
 @import "../../assets/styles/_variable";
 
 .banner {
-    background-image: url("../../assets/images/bg-conta-amarelo.png");
-    background-repeat: no-repeat;
-    height: 100vh;
-    color: @bg-card;
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-top: 1px;
+  background-image: url("../../assets/images/bg-conta-amarelo.png");
+  background-repeat: no-repeat;
+  height: 100vh;
+  color: @bg-card;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 1px;
+  display: flex;
+  align-items: center;
+
+  .content-banner {
+    width: 1100px;
+    margin: 0 auto;
+
+    .title {
+      color: @bg-card;
+      font-size: 55px;
+      width: 740px;
+      padding-top: 65px;
+      font-weight: bold;
+    }
+    .subtitle {
+      color: @bg-card;
+      font-size: 40px;
+      width: 600px;
+      font-weight: bold;
+      margin-top: 40px;
+    }
+    .content-links {
+      span {
+        margin-left: 20px;
+        font-size: 20px;
+      }
+    }
+    .btn-calculate {
+      font-size: 18px;
+      background-color: @bg-card;
+      height: 50px;
+      width: 230px;
+      outline: none;
+      cursor: pointer;
+      margin-top: 40px;
+      color: @primary-color;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 55px;
+    }
+  }
+  .down-arrow {
+    position: relative;
     display: flex;
-    align-items: center;
+    align-content: center;
+    justify-content: center;
 
-    .content-banner {
-        width: 1100px;
-        margin: 0 auto;
-
-        .title {
-            color: @bg-card;
-            font-size: 55px;
-            width: 740px;
-            padding-top: 65px;
-            font-weight: bold;
-        }
-        .subtitle{
-            color: @bg-card;        
-            font-size: 40px;
-            width: 600px;
-            font-weight: bold;
-            margin-top: 30px;
-        
-        }
-        .content-links {
-    
-            span {
-                margin-left: 20px;
-                font-size: 20px;
-            }
-        }
-        .btn-calculate {
-            font-size: 18px;
-            background-color: @bg-card;
-            height: 50px;
-            width: 230px;
-            outline: none;
-            cursor: pointer;
-            color: @primary-color;
-            font-weight: bold;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 55px;
-            
-        }
-       
+    .icon-arrow {
+      color: @bg-card;
+      font-size: 60px;
+      margin-top: 150px;
     }
-    .down-arrow {
-        position: relative;
-        display: flex;
-        align-content: center;
-        justify-content: center;
-    }
-   
+  }
 }
-
 .white-tariff {
-    
-    background-color: @bg-card;
-    
-    .title-difference {
-        font-size: 45px;
-    }
-    .illustration-difference {
-        width: 1020px;
-        margin-left: -120px;
+  height: 100vh;
+  background: @bg-card;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  .title {
+    text-align: center;
+
+    .title-difference {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: @gray-dark-text-color;
+      font-size: 50px;
     }
-    .about {
-        display: flex;
-        
+  }
+
+  .content-difference {
+    text-align: initial;
+    margin-top: 40px;
+    width: 1000px;
+    margin-left: 100px;
+
+    .description {
+      font-size: 35px;
     }
-    .content-difference {
-        font-size: 25px;
+
+    .illustration-difference {
+      margin-top: 20px;
     }
+
+    .calculate-tariffs {
+      display: flex;
+      margin-top: 15px;
+      justify-content: center;
+    }
+
     .btn-calculate-tariff {
-        font-size: 18px;
-        margin-top: 15px;
-        background-color: @primary-color;
-        height: 50px;
-        width: 220px;
-        outline: none;
-        cursor: pointer;
-        color: @bg-card;
-        font-weight: bold;
-        text-transform: uppercase;
-        border: none;
-        border-radius: 55px;
+      font-size: 18px;
+      background: -webkit-gradient(
+        linear,
+        0% 0%,
+        0% 100%,
+        from(@primary-color),
+        to(@yellow-light-color)
+      );
+      background: -webkit-linear-gradient(
+        0% 0%,
+        0% 100%,
+        from(@primary-color),
+        to(@yellow-light-color)
+      );
+      height: 60px;
+      width: 230px;
+      outline: none;
+      cursor: pointer;
+      margin-top: 40px;
+      color: @bg-card;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 55px;
     }
-    .difference-tariffs {
-        margin-top: 140px;
-    }
+  }
 }

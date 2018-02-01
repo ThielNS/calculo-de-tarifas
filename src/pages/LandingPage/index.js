@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Icon } from "antd";
+import { Link } from "react-router-dom";
 import Logo from "../../assets/images/LogoLandingPage.png";
-import DownArrow from "../../assets/images/down-arrow.png";
-import DrawDifference from "../../assets/images/draw-landing-page.png";
+import DrawDifference from "../../assets/images/difference-illustration.png";
 import Footer from "../../components/Footer";
 import "./landingPage.less";
 
@@ -21,32 +22,48 @@ class LandingPage extends Component {
               </h2>
             </div>
             <div className="content-links">
-              <button className="btn-calculate">Calcular tarifa</button>
+              <Link to="/list">
+                <button className="btn-calculate">Calcular tarifa</button>
+              </Link>
               <span>Qual a diferença entre as tarifas?</span>
             </div>
             <div className="down-arrow">
-              <img src={DownArrow} alt="" />
+              <Link to="#">
+                <Icon type="down" className="icon-arrow" />
+              </Link>
             </div>
           </div>
         </section>
         <section className="white-tariff">
           <div className="about">
-            <div>
-              <img
-                src={DrawDifference}
-                className="illustration-difference"
-                alt=""
-              />
-            </div>
             <div className="difference-tariffs">
-              <h1 className="title-difference">Qual a diferença?</h1>
-              <span className="border-bottom" />
-              <p className="content-difference">
-                Com a tarifa branca há três tipos de cobranças com preços
-                diferentes ao longo do dia, de acordo com o horário de uso dos
-                equipamentos.
-              </p>
-              <button className="btn-calculate-tariff">Calcular tarifa</button>
+              <div className="title">
+                <h1 className="title-difference">Qual a diferença?</h1>
+                <span className="border-bottom" />
+              </div>
+              <div className="content-difference">
+                <p className="description">
+                  Com a tarifa branca há três tipos de cobranças com preços
+                  diferentes ao longo do dia, de acordo com o horário de uso dos
+                  equipamentos.
+                </p>
+
+                <div>
+                  <img
+                    src={DrawDifference}
+                    className="illustration-difference"
+                    alt=""
+                  />
+                </div>
+                <div className="calculate-tariffs">
+                  <Link to="/list">
+                    <button className="btn-calculate-tariff">
+                      Calcular tarifa
+                    </button>
+                  </Link>
+                </div>
+                <div />
+              </div>
             </div>
           </div>
         </section>
