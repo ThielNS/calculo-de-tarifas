@@ -231,14 +231,14 @@ class ListEquipments extends Component {
 
   render() {
 
-    const { columns, formatter, rowForm } = this.state;
+    const { columns, formatter } = this.state;
     const { listEquipments } = this.props;
 
     
     return (
       <div className="card">
         <Table
-          dataSource={[...listEquipments, rowForm]}
+          dataSource={[...listEquipments]}
           columns={columns}
           pagination={false}
           className="list-equipmets"
