@@ -274,37 +274,47 @@ class ModalTimeOfUse extends Component {
           <div>
             <div className="row _margin-top">
               {valueRadio === 'continuous' ? (
-                <RangePicker
-                  onChange={this.changeRangePicker}
-                  dateRender={this.dateRender}
-                  disabledDate={this.disabledDate}
-                  format={'DD/MM/YYYY'}
-                  className="_margin-right"
-                  value={[dateInit, dateFinish]}
-                />
+                <div>
+                  <label>Data inicial/final</label>
+                  <RangePicker
+                    onChange={this.changeRangePicker}
+                    dateRender={this.dateRender}
+                    disabledDate={this.disabledDate}
+                    format={'DD/MM/YYYY'}
+                    className="_margin-right"
+                    value={[dateInit, dateFinish]}
+                  />
+                </div>
               ) : (
-                <DatePicker
-                  onChange={this.changeDatePicker}
-                  disabledDate={this.disabledDate}
-                  format={'DD/MM/YYYY'}
-                  className="_margin-right"
-                  value={dateInit}
-                />
+                <div>
+                  <label>Dia</label>
+                  <DatePicker
+                    onChange={this.changeDatePicker}
+                    disabledDate={this.disabledDate}
+                    format={'DD/MM/YYYY'}
+                    className="_margin-right"
+                    value={dateInit}
+                  />
+                </div>
               )}
-              <TimePicker
-                value={this.convertMoment(timeInit)}
-                format={formatTime}
-                placeholder="Hora inicio"
-                className="imput-time _margin-right"
-                onChange={data => this.changeTime(data, 'timeInit')}
-              />
-              <TimePicker
-                value={this.convertMoment(timeFinish)}
-                format={formatTime}
-                placeholder="Hora fim"
-                className="imput-time"
-                onChange={data => this.changeTime(data, 'timeFinish')}
-              />
+              <div className="imput-time _margin-right">
+                <label>Hora inicial</label>
+                <TimePicker
+                  value={this.convertMoment(timeInit)}
+                  format={formatTime}
+                  placeholder="Hora inicio"
+                  onChange={data => this.changeTime(data, 'timeInit')}
+                />
+              </div>
+              <div className="imput-time">
+                <label>Hora final</label>
+                <TimePicker
+                  value={this.convertMoment(timeFinish)}
+                  format={formatTime}
+                  placeholder="Hora fim"
+                  onChange={data => this.changeTime(data, 'timeFinish')}
+                />
+              </div>
             </div>
           </div>
         </BoxModal>
