@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Modal as BoxModal, Radio, DatePicker, TimePicker, notification } from 'antd';
+import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
+import { notification } from "../../../modules/feedback";
 
 const { RangePicker } = DatePicker;
 const formatDate = 'DD/MM/YYYY';
@@ -54,15 +55,17 @@ class ModalTimeOfUse extends Component {
       if(dateInit && dateFinish && timeInit && timeFinish) {
 
         if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
-          notification['error']({
-            message: 'Minuto Invalido',
-            description: 'O minuto da hora final deve ser maior que o minuto da hora inicial'
-          })
+          notification(
+            'Minuto inválido',
+            'O minuto da hora final deve ser maior que o minuto da hora inicial',
+            'error'
+          )
         } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
-          notification['error']({
-            message: 'Hora invalida',
-            description: 'A hora final deve ser maior ou igual que a hora inicial'
-          })
+          notification(
+            'Hora inválida',
+            'A hora final deve ser maior ou igual à hora inicial',
+            'error'
+          )
         } else {
           const date = {
             dateInit: dateInit,
@@ -213,18 +216,33 @@ class ModalTimeOfUse extends Component {
     ));
   };
 
-  enableOnOk = () => {
+  changeOnOk = () => {
 
-    const { closeModal } = this.props;
-    const { useOfMonth } = this.props;
+    const { closeModal, useOfMonth } = this.props;
 
     if(useOfMonth.length > 0) {
       return closeModal(true);
     } else {
-      return notification['error']({
-        message: 'Não há data e hora cadastrada',
-        description: 'Adicione uma data e uma hora para concluir'
+      notification(
+        'Não há data e hora cadastrada',
+        'Adicione uma data e uma hora para concluir',
+        'error'
+      );
+    }
+  };
+
+  changeOnCancel = () => {
+    const { closeModal } = this.props;
+    const { timeInit, timeFinish } = this.state;
+
+    if(timeInit && timeFinish) {
+      this.setState({
+        timeInit: null,
+        timeFinish: null,
       });
+      closeModal()
+    } else {
+      closeModal()
     }
   };
 
@@ -242,8 +260,8 @@ class ModalTimeOfUse extends Component {
           title={`Tempo de Uso - ${nameEquipment}`}
           style={{width: '600px'}}
           visible={visibleModal}
-          onOk={() => this.enableOnOk()}
-          onCancel={closeModal}
+          onOk={() => this.changeOnOk()}
+          onCancel={() => this.changeOnCancel()}
         >
           <RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>
             <RadioButton value="continuous">Uso Contínuo</RadioButton>
