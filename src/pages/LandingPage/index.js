@@ -1,11 +1,17 @@
 import React, { Component } from "react";
-import { Icon } from "antd";
+import { Icon, Anchor } from "antd";
+import { Link } from "react-router-dom";
 import Logo from "../../assets/images/LogoLandingPage.png";
 import DrawDifference from "../../assets/images/difference-illustration.png";
 import Footer from "../../components/Footer";
 import "./landingPage.less";
 
+const LinkAnchor = Anchor.Link;
+
 class LandingPage extends Component {
+  componentDidUpdate() {
+    window.scrollTo(0, 0);
+  }
   render() {
     return (
       <div>
@@ -21,51 +27,60 @@ class LandingPage extends Component {
               </h2>
             </div>
             <div className="content-links">
-              <Link to="/list">
-                <button className="btn-calculate">Calcular tarifa</button>
+              <Link to="/list" className="btn-calculate">
+                Calcular tarifa
               </Link>
-              <span>Qual a diferença entre as tarifas?</span>
+              <Anchor affix={false} >
+                <LinkAnchor
+                  href="#white-tariff"
+                  title={<span className="link-difference">Qual a diferença entre as tarifas?</span>}
+                />
+              </Anchor>
             </div>
             <div className="down-arrow">
-              <Anchor>
-                <Link href="#test-anchor" title='teste'/>
+              <Anchor affix={false}>
+                <LinkAnchor
+                  href="#white-tariff"
+                  title={<Icon type="down" className="icon-arrow" />}
+                />
               </Anchor>
             </div>
           </div>
         </section>
-        <section className="white-tariff" id="test-anchor">
-          <div className="about">
-            <div className="difference-tariffs">
-              <div className="title">
-                <h1 className="title-difference">Qual a diferença?</h1>
-                <span className="border-bottom" />
-              </div>
-              <div className="content-difference">
-                <p className="description">
-                  Com a tarifa branca há três tipos de cobranças com preços
-                  diferentes ao longo do dia, de acordo com o horário de uso dos
-                  equipamentos.
-                </p>
 
-                <div>
-                  <img
-                    src={DrawDifference}
-                    className="illustration-difference"
-                    alt=""
-                  />
+        <div id="white-tariff">
+          <section className="white-tariff">
+            <div className="about">
+              <div className="difference-tariffs">
+                <div className="title">
+                  <h1 className="title-difference">Qual a diferença?</h1>
+                  <span className="border-bottom" />
                 </div>
-                <div className="calculate-tariffs">
-                  <Link to="/list">
-                    <button className="btn-calculate-tariff">
+                <div className="content-difference">
+                  <p className="description">
+                    Com a tarifa branca há três tipos de cobranças com preços
+                    diferentes ao longo do dia, de acordo com o horário de uso
+                    dos equipamentos.
+                  </p>
+                  <div>
+                    <img
+                      src={DrawDifference}
+                      className="illustration-difference"
+                      alt=""
+                    />
+                  </div>
+                  <div className="calculate-tariffs">
+                    <Link to="/list" className="btn-calculate-tariff">
                       Calcular tarifa
-                    </button>
-                  </Link>
+                    </Link>
+                  </div>
+                  <div />
                 </div>
-                <div />
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
+
         <Footer />
       </div>
     );

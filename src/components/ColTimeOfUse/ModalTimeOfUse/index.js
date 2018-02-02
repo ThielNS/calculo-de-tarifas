@@ -8,15 +8,18 @@ const formatDate = 'DD/MM/YYYY';
 
 const formatTime = 'HH:mm';
 
+const month = Math.floor(localStorage.getItem('monthIndex'));
+const dateMonth = new Date().getMonth();
+const newMonth = month ? month : dateMonth;
+
 class ModalTimeOfUse extends Component {
 
   constructor(props) {
-    const month = Math.floor(localStorage.getItem('monthIndex'));
     super(props);
     this.state = {
       valueRadio: 'continuous',
-      dateInit: moment().month(month),
-      dateFinish: moment().month(month),
+      dateInit: moment().month(newMonth),
+      dateFinish: moment().month(newMonth),
       timeInit: null,
       timeFinish: null,
       editDateInit: null,
@@ -118,12 +121,10 @@ class ModalTimeOfUse extends Component {
 
   disabledDate = current => {
 
-    const month = localStorage.getItem('monthIndex');
-
     if(!current) return false;
 
     const cMonth = current.month();
-    const mMonth = moment().month(month).month();
+    const mMonth = moment().month(newMonth).month();
     const cYear = current.year();
     const mYear = moment().year();
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, InputNumber, Row, Select } from "antd";
+import { Col, InputNumber, Row, Select, notification } from "antd";
 import "./addEquipments.less";
 import ColTimeOfUse from "../ColTimeOfUse";
 
@@ -31,25 +31,36 @@ class AddEquipments extends Component {
       useOfMonth.length > 0 &&
       send
     ) {
-      const dataInfo = {
-        nameEquipment: nameEquipment,
-        power: power,
-        quantity: quantity,
-        date: {
-          useOfMonth: useOfMonth,
-          timeOfUse: ''
-        }
-      };
 
-      addEquipment(dataInfo);
+      const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
 
-      this.setState({
-        nameEquipment: "",
-        power: 0,
-        quantity: 1,
-        useOfMonth: [],
-        send: !send
-      });
+      if(powerDistribuitorId) {
+
+        const dataInfo = {
+          nameEquipment: nameEquipment,
+          power: power,
+          quantity: quantity,
+          date: {
+            useOfMonth: useOfMonth,
+            timeOfUse: ''
+          }
+        };
+
+        addEquipment(dataInfo);
+
+        this.setState({
+          nameEquipment: "",
+          power: 0,
+          quantity: 1,
+          useOfMonth: [],
+          send: !send
+        });
+      } else {
+        notification['error']({
+          message: 'Distribuidora não encontrada',
+          description: 'Adicione uma distribuidora'
+        })
+      }
     }
   }
 
