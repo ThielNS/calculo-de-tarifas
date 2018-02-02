@@ -53,12 +53,17 @@ class ModalTimeOfUse extends Component {
 
       if(dateInit && dateFinish && timeInit && timeFinish) {
 
-        if(moment(timeInit, formatTime) > moment(timeFinish, formatTime)) {
+        if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
           notification['error']({
-            message: 'Horas invalidas',
-            description: 'A hora inicial deve ser menor que a final'
+            message: 'Minuto Invalido',
+            description: 'O minuto da hora final deve ser maior que o minuto da hora inicial'
           })
-        }  else {
+        } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
+          notification['error']({
+            message: 'Hora invalida',
+            description: 'A hora final deve ser maior ou igual que a hora inicial'
+          })
+        } else {
           const date = {
             dateInit: dateInit,
             dateFinish: dateFinish,
