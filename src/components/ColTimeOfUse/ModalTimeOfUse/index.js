@@ -147,12 +147,11 @@ class ModalTimeOfUse extends Component {
 
   renderDate = (item, indexDate) => {
 
-    const { valueRadio } = this.state;
     const { editUseOfMonth, index } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
-    if(item.dateInit !== item.dateFinish && valueRadio === 'continuous' ) {
+    if(item.dateInit !== item.dateFinish) {
       return (
         <div className="row">
           <RangePicker
@@ -166,7 +165,7 @@ class ModalTimeOfUse extends Component {
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
         </div>
       )
-    } else if(item.dateInit === item.dateFinish && valueRadio === 'daily' ) {
+    } else if(item.dateInit === item.dateFinish) {
       return (
         <div className="row">
           <DatePicker
@@ -248,8 +247,11 @@ class ModalTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, visibleModal, closeModal } = this.props;
+    const { nameEquipment, visibleModal, useOfMonth } = this.props;
     const { valueRadio, dateInit, dateFinish, timeInit, timeFinish } = this.state;
+    const marginTop = useOfMonth.length > 0 ? '_margin-bottom' : '';
+    const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
+
 
     const RadioGroup = Radio.Group;
     const RadioButton = Radio.Button;
@@ -263,14 +265,14 @@ class ModalTimeOfUse extends Component {
           onOk={() => this.changeOnOk()}
           onCancel={() => this.changeOnCancel()}
         >
+          <div className={marginTop}>
+            {labelInsert}
+            {this.renderDatePicker()}
+          </div>
           <RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>
             <RadioButton value="continuous">Uso Contínuo</RadioButton>
             <RadioButton value="daily">Uso Diário</RadioButton>
           </RadioGroup>
-          <div className="_margin-top">
-            {this.renderDatePicker()}
-          </div>
-
           <div>
             <div className="row _margin-top">
               {valueRadio === 'continuous' ? (
