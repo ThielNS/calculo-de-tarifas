@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Icon, InputNumber, Table, notification, Input } from 'antd';
+import { Button, Icon, InputNumber, Table, Input } from 'antd';
 
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 import ColTimeOfUse from "../ColTimeOfUse";
+import moment from "moment";
+import { notification } from "../../modules/feedback";
+import { validateHours } from "../../modules/validations";
 
 class ListEquipments extends Component {
 
@@ -120,11 +123,14 @@ class ListEquipments extends Component {
 
     let { date } = listEquipments[indexEquipment];
 
-    if(date.useOfMonth[indexDate].timeFinish > date.useOfMonth[indexDate].timeInit) {
-      notification['error']({
-        message: 'Horas invalidas',
-        description: 'A hora inicial deve ser menor que a final'
-      })
+    let { timeInit, timeFinish } = date.useOfMonth[indexDate];
+
+    if(validateHours(timeInit, timeFinish)) {
+      notification (
+        'Hora inválida',
+        'A hora final deve ser maior ou igual à hora inicial',
+        'error'
+      )
     } else {
       if(isTime === 'timeInit') {
         dateTime = {
@@ -211,8 +217,6 @@ class ListEquipments extends Component {
 
     const { modal, toggleModal } = this.props;
 
-    console.log(value, data, index)
-
     if(value) {
       return(
         <ColTimeOfUse
@@ -232,14 +236,14 @@ class ListEquipments extends Component {
 
   render() {
 
-    const { columns, formatter } = this.state;
+    const { columns, formatter, rowForm } = this.state;
     const { listEquipments } = this.props;
 
     
     return (
       <div className="card" style={{marginBottom: '120px'}}>
         <Table
-          dataSource={[...listEquipments]}
+          dataSource={[...listEquipments, rowForm]}
           columns={columns}
           pagination={false}
           className="list-equipmets"

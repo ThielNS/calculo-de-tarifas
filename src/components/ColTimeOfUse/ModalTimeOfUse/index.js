@@ -252,9 +252,8 @@ class ModalTimeOfUse extends Component {
     const marginTop = useOfMonth.length > 0 ? '_margin-bottom' : '';
     const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
 
-
-    const RadioGroup = Radio.Group;
-    const RadioButton = Radio.Button;
+    // const RadioGroup = Radio.Group;
+    // const RadioButton = Radio.Button;
 
     return (
       <div className="modal-time-of-use">
@@ -269,12 +268,12 @@ class ModalTimeOfUse extends Component {
             {labelInsert}
             {this.renderDatePicker()}
           </div>
-          <RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>
-            <RadioButton value="continuous">Uso Contínuo</RadioButton>
-            <RadioButton value="daily">Uso Diário</RadioButton>
-          </RadioGroup>
+          {/*<RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>*/}
+            {/*<RadioButton value="continuous">Uso Contínuo</RadioButton>*/}
+            {/*<RadioButton value="daily">Uso Diário</RadioButton>*/}
+          {/*</RadioGroup>*/}
           <div>
-            <div className="row _margin-top">
+            <div className="row">
               {valueRadio === 'continuous' ? (
                 <div>
                   <label>Data inicial/final</label>
