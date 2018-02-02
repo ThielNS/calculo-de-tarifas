@@ -77,8 +77,8 @@ class ModalTimeOfUse extends Component {
           addUseOfMonth(date, index);
 
           this.setState({
-            dateInit: null,
-            dateFinish: null,
+            dateInit: moment().month(newMonth),
+            dateFinish: moment().month(newMonth),
             timeInit: null,
             timeFinish: null
           });
