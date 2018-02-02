@@ -7,7 +7,7 @@ import MonthlyExpenditureContainer from "../../containers/MonthlyExpensesContain
 const MainPage = () => {
   return (
     <Row>
-      <Col span={12} offset={6}>
+      <Col span={16} offset={4}>
         <MonthlyExpenditureContainer />
         <OptionsTable />
         <ListEquipmentsContainer />

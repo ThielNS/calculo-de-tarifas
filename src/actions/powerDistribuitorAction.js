@@ -17,8 +17,7 @@ export const listDistribuitors = (index, dataItem) => dispatch => {
 };
 
 export const createObject = (data, distribuitorId) => {
-
-  const monthIndex = Math.floor(localStorage.getItem('monthIndex')) + 1;
+  const monthIndex = Math.floor(localStorage.getItem("monthIndex")) + 1;
 
   return {
     powerDistribuitorId: distribuitorId,
@@ -38,9 +37,6 @@ export const updateEquipments = (response, data) => {
 };
 
 export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
-  console.log(data);
-  console.log(distribuitorId);
-
   const newData = data.map(item => {
     const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
     item = convertEquipment(item, newUseOfMonth, true);
@@ -48,8 +44,6 @@ export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
   });
 
   let newObject = createObject(newData, distribuitorId);
-
-  console.log(newObject);
 
   return post("calculate", newObject)
     .then(response => {
