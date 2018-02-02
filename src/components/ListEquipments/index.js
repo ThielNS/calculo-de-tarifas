@@ -200,6 +200,7 @@ class ListEquipments extends Component {
       <InputNumber
         value={number}
         min={1}
+        max={255}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
