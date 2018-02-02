@@ -13,7 +13,10 @@
         color: @gray-dark-color;
         font-size: 17px;
     }
-
+    .white-rate{
+        font-weight: bold;
+        color: @gray-light-color;
+    }
     h3 {
         line-height: 0.2; 
     }
@@ -33,15 +36,15 @@
         display: flex;
         justify-content: space-around;
 
-        i {
+        span {
             color: #b2b2b2;
         }
 
         .conventional-rate {
-            h3 {
-                font-weight: bold;
-                color: @gray-light-color;
-            }
+
+            font-weight: bold;
+            color: @gray-light-color;
+            
         }
     }
     .cash-difference {
@@ -66,8 +69,7 @@
     .title-card {
         text-align: center;
     }
-    i {
-        font-style: normal;      
+    span {
         font-size: 15px;  
     }
 }

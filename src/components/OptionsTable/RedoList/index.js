@@ -18,21 +18,24 @@ class RedoList extends Component {
         });
     }
     handleOk = () => {
-        //console.log('List clean');
-        
+        this.props.resetListEquipments();
+
         this.setState({
             okText: 'Sim',
             confirmLoading: true,
+
         });
-        setTimeout(() => {
+        setTimeout(() => {            
             this.setState({
                 okText: 'Sim',
                 visible: false,
                 confirmLoading: false,
             });
         });
+        
     }
     handleCancel = () => {
+        
         this.setState({
             visible: false,
             text: 'Cancelar'
@@ -46,7 +49,7 @@ class RedoList extends Component {
                 <Button icon="reload" onClick={this.showModal} className="btn-redo-list">Refazer Lista</Button>
                 <Modal title="Refazer lista"
                     visible={visible}
-                    onOk={this.handleOk}
+                    onOk={() => this.handleOk()}
                     confirmLoading={confirmLoading}
                     onCancel={this.handleCancel}
                     okText="Confirmar"

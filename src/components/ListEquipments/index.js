@@ -236,7 +236,7 @@ class ListEquipments extends Component {
 
     
     return (
-      <div className="card">
+      <div className="card" style={{marginBottom: '120px'}}>
         <Table
           dataSource={[...listEquipments]}
           columns={columns}

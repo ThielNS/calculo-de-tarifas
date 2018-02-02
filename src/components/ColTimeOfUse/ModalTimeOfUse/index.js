@@ -8,14 +8,18 @@ const formatDate = 'DD/MM/YYYY';
 
 const formatTime = 'HH:mm';
 
+const month = Math.floor(localStorage.getItem('monthIndex'));
+const dateMonth = new Date().getMonth();
+const newMonth = month ? month : dateMonth;
+
 class ModalTimeOfUse extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       valueRadio: 'continuous',
-      dateInit: null,
-      dateFinish: null,
+      dateInit: moment().month(newMonth),
+      dateFinish: moment().month(newMonth),
       timeInit: null,
       timeFinish: null,
       editDateInit: null,
@@ -97,7 +101,10 @@ class ModalTimeOfUse extends Component {
   };
 
   dateRender = current => {
-    if(current.month() === 0) {
+
+    const month = localStorage.getItem('monthIndex');
+
+    if(current.month() === month) {
       return (
         <div className="ant-calendar-date">
           {current.date()}
@@ -105,7 +112,7 @@ class ModalTimeOfUse extends Component {
       )
     } else {
       return (
-        <div className="ant-calendar-date" style={{color: '#eee'}}>
+        <div className="ant-calendar-date">
           {current.date()}
         </div>
       )
@@ -117,9 +124,10 @@ class ModalTimeOfUse extends Component {
     if(!current) return false;
 
     const cMonth = current.month();
-    const mMonth = moment().month();
+    const mMonth = moment().month(newMonth).month();
     const cYear = current.year();
     const mYear = moment().year();
+
 
     return cMonth < mMonth || cMonth !== mMonth || cYear !== mYear;
 
@@ -249,7 +257,6 @@ class ModalTimeOfUse extends Component {
                   disabledDate={this.disabledDate}
                   format={'DD/MM/YYYY'}
                   className="_margin-right"
-
                   value={[dateInit, dateFinish]}
                 />
               ) : (

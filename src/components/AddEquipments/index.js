@@ -1,51 +1,66 @@
-import React, { Component } from 'react';
-import { Col, InputNumber, Row, Select } from "antd";
-import './addEquipments.less';
+import React, { Component } from "react";
+import { Col, InputNumber, Row, Select, notification } from "antd";
+import "./addEquipments.less";
 import ColTimeOfUse from "../ColTimeOfUse";
 
 class AddEquipments extends Component {
-
   constructor(props) {
     super(props);
-     this.state = {
-       equipments: [],
-       nameEquipment: '',
-       power: 0,
-       quantity: 1,
-       timeOfUse: '00:00',
-       useOfMonth: [],
-       whiteTariff: '-',
-       conventionalTariff: '-',
-       placeholder: `Inserir item`,
-       send: false,
-     }
+    this.state = {
+      equipments: [],
+      nameEquipment: "",
+      power: 0,
+      quantity: 1,
+      timeOfUse: "00:00",
+      useOfMonth: [],
+      whiteTariff: "-",
+      conventionalTariff: "-",
+      placeholder: `Inserir item`,
+      send: false
+    };
   }
 
   componentDidUpdate() {
     const { nameEquipment, power, quantity, useOfMonth, send } = this.state;
     const { addEquipment } = this.props;
 
-    if(nameEquipment && power > 0.01 && quantity >= 1 && useOfMonth.length > 0 && send) {
+    if (
+      nameEquipment &&
+      power > 0.01 &&
+      quantity >= 1 &&
+      useOfMonth.length > 0 &&
+      send
+    ) {
 
-      const dataInfo = {
-        nameEquipment: nameEquipment,
-        power: power,
-        quantity: quantity,
-        date: {
-          useOfMonth: useOfMonth,
-          timeOfUse: ''
-        }
-      };
+      const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
 
-      addEquipment(dataInfo);
+      if(powerDistribuitorId) {
 
-      this.setState({
-        nameEquipment: '',
-        power: 0,
-        quantity: 1,
-        useOfMonth: [],
-        send: !send,
-      })
+        const dataInfo = {
+          nameEquipment: nameEquipment,
+          power: power,
+          quantity: quantity,
+          date: {
+            useOfMonth: useOfMonth,
+            timeOfUse: ''
+          }
+        };
+
+        addEquipment(dataInfo);
+
+        this.setState({
+          nameEquipment: "",
+          power: 0,
+          quantity: 1,
+          useOfMonth: [],
+          send: !send
+        });
+      } else {
+        notification['error']({
+          message: 'Distribuidora não encontrada',
+          description: 'Adicione uma distribuidora'
+        })
+      }
     }
   }
 
@@ -59,50 +74,47 @@ class AddEquipments extends Component {
     });
   };
 
-  handleChange = (value) => {
-
+  handleChange = value => {
     const { searchEquipments } = this.props;
     this.setState({ nameEquipment: value });
 
     searchEquipments(value)
       .then(data => {
-        this.setState({ equipments: data })
+        this.setState({ equipments: data });
       })
       .catch(e => {
-        console.log(e, 'erro');
-      })
+        console.log(e, "erro");
+      });
   };
 
   handleSelect = (value, option) => {
-
     const { power } = option.props;
 
     this.setState({
       nameEquipment: value,
       power
-    })
+    });
   };
 
   inputNumber = (number, type) => {
-
     let { formatter } = this.props;
-    formatter = (type === 'power') ? formatter : {};
+    formatter = type === "power" ? formatter : {};
 
-    return(
+    return (
       <InputNumber
         min={1}
         value={number}
         {...formatter}
         onChange={value => this.changeNumber(value, type)}
       />
-    )
+    );
   };
 
   changeNumber = (value, type) => {
-    if(type === 'quantity') {
-      this.setState({ quantity: value })
-    } else if(type === 'power') {
-      this.setState({ power: value })
+    if (type === "quantity") {
+      this.setState({ quantity: value });
+    } else if (type === "power") {
+      this.setState({ power: value });
     }
   };
 
@@ -159,21 +171,27 @@ class AddEquipments extends Component {
 
   submitData = () => {
     this.setState(state => ({
-      send: !state.send,
-    }))
+      send: !state.send
+    }));
   };
 
   render() {
-
-    const { equipments, timeOfUse, nameEquipment, power, quantity, useOfMonth, placeholder, whiteTariff, conventionalTariff } = this.state;
+    const {
+      equipments,
+      timeOfUse,
+      nameEquipment,
+      power,
+      quantity,
+      useOfMonth,
+      placeholder,
+      whiteTariff,
+      conventionalTariff
+    } = this.state;
 
     const { Option } = Select;
 
     const options = equipments.map((item, index) => (
-      <Option
-        key={item.name}
-        power={item.defaultPower}
-      >
+      <Option key={item.name} power={item.defaultPower}>
         {`${item.name} | ${item.defaultPower}W`}
       </Option>
     ));
@@ -196,16 +214,13 @@ class AddEquipments extends Component {
           </Select>
         </Col>
         <Col span="3" className="_margin-right">
-          {this.inputNumber(power, 'power')}
+          {this.inputNumber(power, "power")}
         </Col>
         <Col span="3" className="_margin-right">
-          {this.inputNumber(quantity, 'quantity')}
+          {this.inputNumber(quantity, "quantity")}
         </Col>
 
-        <Col
-          span="3"
-          className="_margin-right"
-        >
+        <Col span="3" className="_margin-right">
           <ColTimeOfUse
             timeOfUse={timeOfUse}
             nameEquipment={nameEquipment}

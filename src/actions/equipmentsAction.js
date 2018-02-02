@@ -1,10 +1,15 @@
 import { notification } from 'antd';
 
 import {
-  ADD_EQUIPMENT, EDIT_EQUIPMENTS, EDIT_USE_OF_MONTH, LIST_EQUIPMENTS,
-  REMOVE_EQUIPMENTS
+  ADD_EQUIPMENT,
+  EDIT_EQUIPMENTS,
+  EDIT_USE_OF_MONTH,
+  LIST_EQUIPMENTS,
+  REMOVE_EQUIPMENTS,
+  RESET_LIST_EQUIPMENTS, UPDATE_MONTH_EQUIPMENTS
 } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
+import { createObject, updateEquipments } from "./powerDistribuitorAction";
 
 const notificationError = (title, content) => {
   notification['error']({
@@ -14,10 +19,11 @@ const notificationError = (title, content) => {
 };
 
 export const listEquipments = () => dispatch => {
-  return dispatch({ type: LIST_EQUIPMENTS })
+  return dispatch({ type: LIST_EQUIPMENTS });
 };
 
 export const searchEquipments = name => dispatch => {
+  //const limit = 5;
 
   const limit = 5;
 
@@ -25,10 +31,10 @@ export const searchEquipments = name => dispatch => {
     .then(data => data)
     .catch(error => {
       console.error(error);
-    })
+    });
 };
 
-const convertUseOfMonth = (useOfMonth) => {
+export const convertUseOfMonth = (useOfMonth) => {
 
   let newUseOfMonth = [];
 
@@ -91,7 +97,7 @@ const convertUseOfMonth = (useOfMonth) => {
 
 };
 
-const convertEquipment = (data, useOfMonth, isRequest = false) => {
+export const convertEquipment = (data, useOfMonth, isRequest = false) => {
   if(isRequest) {
     return {
       power: data.power,
@@ -114,10 +120,15 @@ const createObj = data => {
 
   const useOfMonth = convertUseOfMonth(data.date.useOfMonth);
   const equipment = convertEquipment(data, useOfMonth, true);
+  const newMonth = Math.floor(localStorage.getItem('monthIndex'));
+  const dateMonth = new Date().getMonth();
+  const monthIndex = newMonth ? newMonth : dateMonth;
+  const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
+  const month = Math.floor(monthIndex) + 1;
 
   return {
-    powerDistribuitorId: '019EA005-6182-4F8D-95A4-DE3D86CBA51B',
-    month : 1,
+    powerDistribuitorId: powerDistribuitorId,
+    month : month,
     equipments : [
       equipment
     ]
@@ -139,15 +150,13 @@ export const addEquipment = data => dispatch => {
         data: newData
       })
     });
-
-
-};
+  };
 
 export const removeEquipments = index => dispatch => {
   return dispatch({
     type: REMOVE_EQUIPMENTS,
     index: index
-  })
+  });
 };
 
 export const editEquipments = (data, index) => dispatch => {
@@ -173,7 +182,8 @@ export const editEquipments = (data, index) => dispatch => {
         notificationError('Erro ao Editar', 'Quantidade deve ser um número inteiro');
       }
     });
-};
+  };
+
 
 export const addUseOfMonth = (data, index) => dispatch => {
 
@@ -195,7 +205,8 @@ export const addUseOfMonth = (data, index) => dispatch => {
         index,
       })
     });
-};
+  };
+
 
 export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
 
@@ -220,8 +231,58 @@ export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
     });
 };
 
-export const resetListEquipments = dispatch => {
-  return dispatch({
-    type: REMOVE_EQUIPMENTS
+const convertDate = (date, month) => {
+
+  let year = date.substr(0, 4);
+  let day = date.substr(8, 2);
+  let newMonth;
+
+  if(month <= 9) {
+    newMonth = `0${month + 1}`
+  } else {
+    newMonth = month + 1
+  }
+
+  return `${year}-${newMonth}-${day}`;
+};
+
+export const changeListEquipments = (dataList, changeValue, method = null) => {
+   return dataList.map(item => {
+    item.date.useOfMonth.map(dateTime => {
+
+      dateTime.dateInit = convertDate(dateTime.dateInit, changeValue);
+      dateTime.dateFinish = convertDate(dateTime.dateFinish, changeValue);
+
+      return dateTime
+    });
+
+    return item
   })
+};
+
+export const updateMonthEquipments = (dataList, month) => dispatch => {
+
+  const newDataList = changeListEquipments(dataList, month);
+
+  const newData = newDataList.map(item => {
+    const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
+    item = convertEquipment(item, newUseOfMonth, true);
+    return item;
+  });
+
+  const newObj = createObject(newData, localStorage.getItem('powerDistribuitorId'));
+
+  post('calculate', newObj)
+    .then(response => {
+      return dispatch({
+        type: UPDATE_MONTH_EQUIPMENTS,
+        updateData: updateEquipments(response, newDataList)
+      })
+    });
+};
+
+export const resetListEquipments = dispatch => {
+  return {
+    type: RESET_LIST_EQUIPMENTS
+  };
 };
