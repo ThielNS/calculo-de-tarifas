@@ -33,7 +33,7 @@ class LandingPage extends Component {
               <Anchor affix={false} >
                 <LinkAnchor
                   href="#white-tariff"
-                  title={<span className="link-difference">Qual a diferença entre as tarifas?</span>} 
+                  title={<span className="link-difference">Qual a diferença entre as tarifas?</span>}
                 />
               </Anchor>
             </div>

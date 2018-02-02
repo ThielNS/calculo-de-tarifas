@@ -10,9 +10,8 @@ class chooseDistribuitors extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.listDistribuitors();
-
   }
 
   handleChange = value => {
@@ -41,8 +40,10 @@ class chooseDistribuitors extends Component {
 
     if(powerDistribuitorId) {
       return powerDistribuitorId
-    } else {
+    } else if(itemsDistribuitors.length > 0) {
       return itemsDistribuitors[0].id
+    } else {
+      return null
     }
   };
 

@@ -37,6 +37,8 @@ export const updateEquipments = (response, data) => {
 };
 
 export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
+
+
   const newData = data.map(item => {
     const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
     item = convertEquipment(item, newUseOfMonth, true);

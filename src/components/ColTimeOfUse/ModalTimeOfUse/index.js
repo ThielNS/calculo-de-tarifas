@@ -1,28 +1,26 @@
 import React, { Component } from "react";
-import {
-  Modal as BoxModal,
-  Radio,
-  DatePicker,
-  TimePicker,
-  notification
-} from "antd";
+import { Modal as BoxModal, Radio, DatePicker, TimePicker } from "antd";
 import moment from "moment";
 import "./ModalTimeOfUse.less";
+import { notification } from "../../../modules/feedback";
+import { validateHours } from "../../../modules/validations";
 
 const { RangePicker } = DatePicker;
 const formatDate = "DD/MM/YYYY";
 
 const formatTime = "HH:mm";
-const newDate = new Date().getMonth();
+
 const month = Math.floor(localStorage.getItem("monthIndex"));
-const momentMonth = month ? month : newDate;
+const dateMonth = new Date().getMonth();
+const newMonth = month ? month : dateMonth;
+
 class ModalTimeOfUse extends Component {
   constructor(props) {
     super(props);
     this.state = {
       valueRadio: "continuous",
-      dateInit: moment().month(momentMonth),
-      dateFinish: moment().month(momentMonth),
+      dateInit: moment().month(newMonth),
+      dateFinish: moment().month(newMonth),
       timeInit: null,
       timeFinish: null,
       editDateInit: null,
@@ -54,12 +52,16 @@ class ModalTimeOfUse extends Component {
     const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const { addUseOfMonth, index } = this.props;
 
+    const convertTimeInit = moment(timeInit).valueOf();
+    const convertTimeFinish = moment(timeFinish).valueOf();
+
     if (dateInit && dateFinish && timeInit && timeFinish) {
-      if (moment(timeInit, formatTime) > moment(timeFinish, formatTime)) {
-        notification["error"]({
-          message: "Horas invalidas",
-          description: "A hora inicial deve ser menor que a final"
-        });
+      if (validateHours(timeInit, timeFinish)) {
+        notification(
+          "Minuto inválido",
+          "O minuto da hora final deve ser maior que o minuto da hora inicial",
+          "error"
+        );
       } else {
         const date = {
           dateInit: dateInit,
@@ -71,8 +73,8 @@ class ModalTimeOfUse extends Component {
         addUseOfMonth(date, index);
 
         this.setState({
-          dateInit: null,
-          dateFinish: null,
+          dateInit: moment().month(newMonth),
+          dateFinish: moment().month(newMonth),
           timeInit: null,
           timeFinish: null
         });
@@ -113,12 +115,11 @@ class ModalTimeOfUse extends Component {
   };
 
   disabledDate = current => {
-
     if (!current) return false;
 
     const cMonth = current.month();
     const mMonth = moment()
-      .month(momentMonth)
+      .month(newMonth)
       .month();
     const cYear = current.year();
     const mYear = moment().year();
@@ -131,12 +132,11 @@ class ModalTimeOfUse extends Component {
   };
 
   renderDate = (item, indexDate) => {
-    const { valueRadio } = this.state;
     const { editUseOfMonth, index } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
-    if (item.dateInit !== item.dateFinish && valueRadio === "continuous") {
+    if (item.dateInit !== item.dateFinish) {
       return (
         <div className="row">
           <RangePicker
@@ -153,7 +153,7 @@ class ModalTimeOfUse extends Component {
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
         </div>
       );
-    } else if (item.dateInit === item.dateFinish && valueRadio === "daily") {
+    } else if (item.dateInit === item.dateFinish) {
       return (
         <div className="row">
           <DatePicker
@@ -181,14 +181,14 @@ class ModalTimeOfUse extends Component {
           defaultValue={this.convertMoment(timeInit, formatTime)}
           format={formatTime}
           placeholder="Hora inicio"
-          className="imput-time _margin-right"
+          className="input-time _margin-right"
           onChange={data => editUseOfMonth(data, indexDate, index, "timeInit")}
         />
         <TimePicker
           defaultValue={this.convertMoment(timeFinish, formatTime)}
           format={formatTime}
           placeholder="Hora fim"
-          className="imput-time"
+          className="input-time"
           onChange={data =>
             editUseOfMonth(data, indexDate, index, "timeFinish")}
         />
@@ -206,22 +206,37 @@ class ModalTimeOfUse extends Component {
     ));
   };
 
-  enableOnOk = () => {
-    const { closeModal } = this.props;
-    const { useOfMonth } = this.props;
+  changeOnOk = () => {
+    const { closeModal, useOfMonth } = this.props;
 
     if (useOfMonth.length > 0) {
       return closeModal(true);
     } else {
-      return notification["error"]({
-        message: "Não há data e hora cadastrada",
-        description: "Adicione uma data e uma hora para concluir"
+      notification(
+        "Não há data e hora cadastrada",
+        "Adicione uma data e uma hora para concluir",
+        "error"
+      );
+    }
+  };
+
+  changeOnCancel = () => {
+    const { closeModal } = this.props;
+    const { timeInit, timeFinish } = this.state;
+
+    if (timeInit && timeFinish) {
+      this.setState({
+        timeInit: null,
+        timeFinish: null
       });
+      closeModal();
+    } else {
+      closeModal();
     }
   };
 
   render() {
-    const { nameEquipment, visibleModal, closeModal } = this.props;
+    const { nameEquipment, visibleModal, useOfMonth } = this.props;
     const {
       valueRadio,
       dateInit,
@@ -229,9 +244,11 @@ class ModalTimeOfUse extends Component {
       timeInit,
       timeFinish
     } = this.state;
+    const marginTop = useOfMonth.length > 0 ? "_margin-bottom" : "";
+    const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
 
-    const RadioGroup = Radio.Group;
-    const RadioButton = Radio.Button;
+    // const RadioGroup = Radio.Group;
+    // const RadioButton = Radio.Button;
 
     return (
       <div className="modal-time-of-use">
@@ -239,53 +256,61 @@ class ModalTimeOfUse extends Component {
           title={`Tempo de Uso - ${nameEquipment}`}
           style={{ width: "600px" }}
           visible={visibleModal}
-          onOk={() => this.enableOnOk()}
-          onCancel={closeModal}
+          onOk={() => this.changeOnOk()}
+          onCancel={() => this.changeOnCancel()}
         >
-          <RadioGroup
-            defaultValue={valueRadio}
-            size="small"
-            onChange={this.handleRadio}
-          >
-            <RadioButton value="continuous">Uso Contínuo</RadioButton>
-            <RadioButton value="daily">Uso Diário</RadioButton>
-          </RadioGroup>
-          <div className="_margin-top">{this.renderDatePicker()}</div>
-
+          <div className={marginTop}>
+            {labelInsert}
+            {this.renderDatePicker()}
+          </div>
+          {/*<RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>*/}
+          {/*<RadioButton value="continuous">Uso Contínuo</RadioButton>*/}
+          {/*<RadioButton value="daily">Uso Diário</RadioButton>*/}
+          {/*</RadioGroup>*/}
           <div>
-            <div className="row _margin-top">
+            <div className="row">
               {valueRadio === "continuous" ? (
-                <RangePicker
-                  onChange={this.changeRangePicker}
-                  dateRender={this.dateRender}
-                  disabledDate={this.disabledDate}
-                  format={"DD/MM/YYYY"}
-                  className="_margin-right"
-                  value={[dateInit, dateFinish]}
-                />
+                <div>
+                  <label>Data inicial/final</label>
+                  <RangePicker
+                    onChange={this.changeRangePicker}
+                    dateRender={this.dateRender}
+                    disabledDate={this.disabledDate}
+                    format={"DD/MM/YYYY"}
+                    className="_margin-right"
+                    value={[dateInit, dateFinish]}
+                  />
+                </div>
               ) : (
-                <DatePicker
-                  onChange={this.changeDatePicker}
-                  disabledDate={this.disabledDate}
-                  format={"DD/MM/YYYY"}
-                  className="_margin-right"
-                  value={dateInit}
-                />
+                <div>
+                  <label>Dia</label>
+                  <DatePicker
+                    onChange={this.changeDatePicker}
+                    disabledDate={this.disabledDate}
+                    format={"DD/MM/YYYY"}
+                    className="_margin-right"
+                    value={dateInit}
+                  />
+                </div>
               )}
-              <TimePicker
-                value={this.convertMoment(timeInit)}
-                format={formatTime}
-                placeholder="Hora inicio"
-                className="imput-time _margin-right"
-                onChange={data => this.changeTime(data, "timeInit")}
-              />
-              <TimePicker
-                value={this.convertMoment(timeFinish)}
-                format={formatTime}
-                placeholder="Hora fim"
-                className="imput-time"
-                onChange={data => this.changeTime(data, "timeFinish")}
-              />
+              <div className="input-time _margin-right">
+                <label>Hora inicial</label>
+                <TimePicker
+                  value={this.convertMoment(timeInit)}
+                  format={formatTime}
+                  placeholder="Hora inicio"
+                  onChange={data => this.changeTime(data, "timeInit")}
+                />
+              </div>
+              <div className="input-time">
+                <label>Hora final</label>
+                <TimePicker
+                  value={this.convertMoment(timeFinish)}
+                  format={formatTime}
+                  placeholder="Hora fim"
+                  onChange={data => this.changeTime(data, "timeFinish")}
+                />
+              </div>
             </div>
           </div>
         </BoxModal>

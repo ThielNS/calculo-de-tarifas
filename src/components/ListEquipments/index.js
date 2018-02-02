@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Icon, InputNumber, Table, notification } from 'antd';
+import { Button, Icon, InputNumber, Table, Input } from 'antd';
 
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 import ColTimeOfUse from "../ColTimeOfUse";
+import moment from "moment";
+import { notification } from "../../modules/feedback";
+import { validateHours } from "../../modules/validations";
 
 class ListEquipments extends Component {
 
@@ -14,12 +17,22 @@ class ListEquipments extends Component {
       quantity: 1,
       useOfMonth: [],
       rowForm: {
-
+        nameEquipment: 'Inserir equipamento',
+        power: 0,
+        quantity: 1,
+        date: {
+          timeOfUse: '0h',
+          useOfMonth: []
+        },
+        whiteTariff: '-',
+        conventionalTariff: '-',
+        form: true
       },
       columns: [
         {
           title: "Equipamentos",
-          dataIndex: "nameEquipment"
+          dataIndex: "nameEquipment",
+          render: this.inputSearch
         },
         {
           title: "Potência",
@@ -65,6 +78,14 @@ class ListEquipments extends Component {
     }
   }
 
+  inputSearch = (value, data, index) => {
+    if(data.form) {
+      return <Input placeholder={data.nameEquipment}/>
+    } else {
+      return data.nameEquipment
+    }
+  };
+
   editEquipment = (value, type, data, index) => {
 
     const { nameEquipment, power, quantity, date  } = data;
@@ -102,11 +123,14 @@ class ListEquipments extends Component {
 
     let { date } = listEquipments[indexEquipment];
 
-    if(date.useOfMonth[indexDate].timeFinish > date.useOfMonth[indexDate].timeInit) {
-      notification['error']({
-        message: 'Horas invalidas',
-        description: 'A hora inicial deve ser menor que a final'
-      })
+    let { timeInit, timeFinish } = date.useOfMonth[indexDate];
+
+    if(validateHours(timeInit, timeFinish)) {
+      notification (
+        'Hora inválida',
+        'A hora final deve ser maior ou igual à hora inicial',
+        'error'
+      )
     } else {
       if(isTime === 'timeInit') {
         dateTime = {
@@ -147,24 +171,30 @@ class ListEquipments extends Component {
   };
 
   formattNumber = value => {
-    const number = parseFloat(value).toFixed(2);
-    return `R$ ${number}`
+    if(typeof(value) === 'string') {
+      return value
+    } else {
+      const number = parseFloat(value).toFixed(2);
+      return `R$ ${number}`
+    }
   };
 
   btnRemove = (value, data, index) => {
 
-    const { removeEquipments } = this.props;
+    if(!data.form) {
+      const { removeEquipments } = this.props;
 
-    return (
-      <Button
-        type="danger"
-        size="small"
-        onClick={() => removeEquipments(index)}
-        ghost
-      >
-        <Icon type="close" />
-      </Button>
-    );
+      return (
+        <Button
+          type="danger"
+          size="small"
+          onClick={() => removeEquipments(index)}
+          ghost
+        >
+          <Icon type="close" />
+        </Button>
+      );
+    }
   };
 
   inputNumber = (number, type, data, index) => {
@@ -176,24 +206,25 @@ class ListEquipments extends Component {
       <InputNumber
         value={number}
         min={1}
+        max={255}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
     )
   };
 
-  timeOfUse = (obj, data, index) => {
+  timeOfUse = (value, data, index) => {
 
     const { modal, toggleModal } = this.props;
 
-    if(obj) {
+    if(value) {
       return(
         <ColTimeOfUse
-          timeOfUse={obj.timeOfUse}
+          timeOfUse={value.timeOfUse}
           nameEquipment={data.nameEquipment}
           modal={modal}
           toggleModal={toggleModal}
-          useOfMonth={obj.useOfMonth}
+          useOfMonth={value.useOfMonth}
           editUseOfMonth={this.editUseOfMonth}
           addUseOfMonth={this.addUseOfMonth}
           index={index}
@@ -205,14 +236,14 @@ class ListEquipments extends Component {
 
   render() {
 
-    const { columns, formatter } = this.state;
+    const { columns, formatter, rowForm } = this.state;
     const { listEquipments } = this.props;
 
     
     return (
       <div className="card" style={{marginBottom: '120px'}}>
         <Table
-          dataSource={listEquipments}
+          dataSource={[...listEquipments, rowForm]}
           columns={columns}
           pagination={false}
           className="list-equipmets"
