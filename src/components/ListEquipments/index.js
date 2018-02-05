@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table, Input } from 'antd';
-
-import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
-import './listEquipments.less';
-import ColTimeOfUse from "../ColTimeOfUse";
-import moment from "moment";
 import { notification } from "../../modules/feedback";
-import { validateHours } from "../../modules/validations";
+import { compareHours } from "../../modules/validations";
+import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
+import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
+import './listEquipments.less';
 
 class ListEquipments extends Component {
 
@@ -117,6 +115,8 @@ class ListEquipments extends Component {
 
   editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
 
+    console.log(data);
+
     const { listEquipments, editUseOfMonth } = this.props;
 
     let dateTime = {};
@@ -125,7 +125,7 @@ class ListEquipments extends Component {
 
     let { timeInit, timeFinish } = date.useOfMonth[indexDate];
 
-    if(validateHours(timeInit, timeFinish)) {
+    if(compareHours(timeInit, timeFinish)) {
       notification (
         'Hora inválida',
         'A hora final deve ser maior ou igual à hora inicial',
@@ -215,11 +215,11 @@ class ListEquipments extends Component {
 
   timeOfUse = (value, data, index) => {
 
-    const { modal, toggleModal } = this.props;
+    const { modal, toggleModal, getMonth } = this.props;
 
     if(value) {
       return(
-        <ColTimeOfUse
+        <ColTimeOfUseContainer
           timeOfUse={value.timeOfUse}
           nameEquipment={data.nameEquipment}
           modal={modal}

@@ -10,6 +10,7 @@ import {
 } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
 import { createObject, updateEquipments } from "./powerDistribuitorAction";
+import { GET_MONTH } from "../reducers/chooseMonthlyReducer/constants";
 
 const notificationError = (title, content) => {
   notification['error']({
@@ -259,6 +260,7 @@ export const changeListEquipments = (dataList, changeValue, method = null) => {
     return item
   })
 };
+
 
 export const updateMonthEquipments = (dataList, month) => dispatch => {
 

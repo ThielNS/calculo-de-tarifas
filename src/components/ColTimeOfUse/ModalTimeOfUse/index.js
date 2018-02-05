@@ -3,15 +3,12 @@ import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
 import { notification } from "../../../modules/feedback";
+import { validateHours, validateMinutes } from "../../../modules/validations";
 
 const { RangePicker } = DatePicker;
 const formatDate = 'DD/MM/YYYY';
 
 const formatTime = 'HH:mm';
-
-const month = Math.floor(localStorage.getItem('monthIndex'));
-const dateMonth = new Date().getMonth();
-const newMonth = month ? month : dateMonth;
 
 class ModalTimeOfUse extends Component {
 
@@ -19,8 +16,8 @@ class ModalTimeOfUse extends Component {
     super(props);
     this.state = {
       valueRadio: 'continuous',
-      dateInit: moment().month(newMonth),
-      dateFinish: moment().month(newMonth),
+      dateInit: moment().month(this.newMonth()),
+      dateFinish: moment().month(this.newMonth()),
       timeInit: null,
       timeFinish: null,
       editDateInit: null,
@@ -48,44 +45,64 @@ class ModalTimeOfUse extends Component {
     }
   };
 
+  month = () => {
+    return this.props.getMonth
+  };
+
+  newMonth = () => {
+    const month = Math.floor(this.month());
+    const dateMonth = new Date().getMonth();
+    return month ? month : dateMonth;
+  };
+
+  async shouldComponentUpdate(nextProps) {
+    if(nextProps.getMonth != this.props.getMonth) {
+      await this.setState(() => ({
+        dateInit: moment().month(this.newMonth()),
+        dateFinish: moment().month(this.newMonth()),
+      }));
+      return true;
+    }
+  }
+
   componentDidUpdate() {
     const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
-    const { addUseOfMonth, index } = this.props;
+    const { addUseOfMonth, index, getMonth } = this.props;
 
-      if(dateInit && dateFinish && timeInit && timeFinish) {
+    if(dateInit && dateFinish && timeInit && timeFinish) {
 
-        if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
-          notification(
-            'Minuto inválido',
-            'O minuto da hora final deve ser maior que o minuto da hora inicial',
-            'error'
-          )
-        } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
-          notification(
-            'Hora inválida',
-            'A hora final deve ser maior ou igual à hora inicial',
-            'error'
-          )
-        } else {
-          const date = {
-            dateInit: dateInit,
-            dateFinish: dateFinish,
-            timeInit: timeInit,
-            timeFinish: timeFinish
-          };
+      if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
+        notification(
+          'Minuto inválido',
+          'O minuto da hora final deve ser maior que o minuto da hora inicial',
+          'error'
+        )
+      } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
+        notification(
+          'Hora inválida',
+          'A hora final deve ser maior ou igual à hora inicial',
+          'error'
+        )
+      } else {
+        const date = {
+          dateInit: dateInit,
+          dateFinish: dateFinish,
+          timeInit: timeInit,
+          timeFinish: timeFinish
+        };
 
-          addUseOfMonth(date, index);
+        addUseOfMonth(date, index);
 
-          this.setState({
-            dateInit: moment().month(newMonth),
-            dateFinish: moment().month(newMonth),
-            timeInit: null,
-            timeFinish: null
-          });
-
-          this.forceUpdate();
-        }
+        this.setState({
+          dateInit: moment().month(this.newMonth()),
+          dateFinish: moment().month(this.newMonth()),
+          timeInit: null,
+          timeFinish: null
+        });
+        console.log(moment().month(this.newMonth()))
       }
+    }
+
   };
 
   changeDatePicker = (date) => {
@@ -109,10 +126,7 @@ class ModalTimeOfUse extends Component {
   };
 
   dateRender = current => {
-
-    const month = localStorage.getItem('monthIndex');
-
-    if(current.month() === month) {
+    if(current.month() === this.month()) {
       return (
         <div className="ant-calendar-date">
           {current.date()}
@@ -132,10 +146,9 @@ class ModalTimeOfUse extends Component {
     if(!current) return false;
 
     const cMonth = current.month();
-    const mMonth = moment().month(newMonth).month();
+    const mMonth = moment().month(this.newMonth()).month();
     const cYear = current.year();
     const mYear = moment().year();
-
 
     return cMonth < mMonth || cMonth !== mMonth || cYear !== mYear;
 
@@ -147,7 +160,7 @@ class ModalTimeOfUse extends Component {
 
   renderDate = (item, indexDate) => {
 
-    const { editUseOfMonth, index } = this.props;
+    const { editUseOfMonth, index, getMonth } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
@@ -185,6 +198,7 @@ class ModalTimeOfUse extends Component {
 
     const { editUseOfMonth, index } = this.props;
 
+
     return (
       <div className="row ant-col-sm-12">
         <TimePicker
@@ -199,6 +213,8 @@ class ModalTimeOfUse extends Component {
           format={formatTime}
           placeholder="Hora fim"
           className="imput-time"
+          disabledHours={() => validateHours(timeInit)}
+          disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
           onChange={data => editUseOfMonth(data, indexDate, index, 'timeFinish')}
         />
       </div>
@@ -247,11 +263,10 @@ class ModalTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, visibleModal, useOfMonth } = this.props;
+    const { nameEquipment, visibleModal, useOfMonth, getMonth } = this.props;
     const { valueRadio, dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const marginTop = useOfMonth.length > 0 ? '_margin-bottom' : '';
     const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
-
     // const RadioGroup = Radio.Group;
     // const RadioButton = Radio.Button;
 
@@ -278,7 +293,7 @@ class ModalTimeOfUse extends Component {
                 <div>
                   <label>Data inicial/final</label>
                   <RangePicker
-                    onChange={this.changeRangePicker}
+s                   onChange={this.changeRangePicker}
                     dateRender={this.dateRender}
                     disabledDate={this.disabledDate}
                     format={'DD/MM/YYYY'}
@@ -313,6 +328,8 @@ class ModalTimeOfUse extends Component {
                   value={this.convertMoment(timeFinish)}
                   format={formatTime}
                   placeholder="Hora fim"
+                  disabledHours={() => validateHours(timeInit)}
+                  disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
                   onChange={data => this.changeTime(data, 'timeFinish')}
                 />
               </div>

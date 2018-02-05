@@ -15,19 +15,21 @@ class ChooseMonthly extends Component {
 
   handleChange = value => {
 
-    const { listEquipments, updateMonthEquipments } = this.props;
+    const { listEquipments, updateMonthEquipments, changeMonth } = this.props;
 
-    localStorage.setItem("monthIndex", value);
-    updateMonthEquipments(listEquipments, value)
+    changeMonth(value);
+    updateMonthEquipments(listEquipments, value);
 
   };
 
   getMonths() {
     const m = new Moment();
     let listMonths = [];
+    const { getMonth } = this.props;
+
     for (let i = 0; i < 12; i++) {
       listMonths.push(
-        <Option key={localStorage.getItem("monthIndex")} value={i}>
+        <Option key={getMonth} value={i}>
           {m.month(i).format("MMMM")}
         </Option>
       );
@@ -38,10 +40,10 @@ class ChooseMonthly extends Component {
 
   getCurrentMonth() {
     const date = new Date();
-    const month = localStorage.getItem('monthIndex');
+    const { getMonth } = this.props;
 
-    if(month) {
-      return Math.floor(month)
+    if(getMonth) {
+      return Math.floor(getMonth)
     } else {
       return date.getMonth();
     }

@@ -22,7 +22,7 @@ class ColTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, timeOfUse, useOfMonth, editUseOfMonth, addUseOfMonth, index } = this.props;
+    const { nameEquipment, timeOfUse, useOfMonth, editUseOfMonth, addUseOfMonth, index, getMonth } = this.props;
     const { visibleModal } = this.state;
 
     return (
@@ -34,6 +34,7 @@ class ColTimeOfUse extends Component {
           <Icon type="calendar"/>
         </button>
         <ModalTimeOfUse
+          getMonth={getMonth}
           nameEquipment={nameEquipment}
           visibleModal={visibleModal}
           closeModal={this.toggleModal}
