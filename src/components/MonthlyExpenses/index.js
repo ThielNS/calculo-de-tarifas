@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./monthlyExpenses.less";
+import { formatNumber } from "../../modules/feedback";
 
 class MonthlyExpenses extends Component {
   constructor(props) {
@@ -16,17 +17,12 @@ class MonthlyExpenses extends Component {
     this.props.listCalculateTariffs();
   }
 
-  formattNumber = value => {
-    const number = parseFloat(value).toFixed(2);
-    return `R$ ${number}`;
-  };
-
   getWhiteTariffs() {
     const { listEquipments } = this.props;
     let whiteTariffs = [0.0];
 
       Object.keys(listEquipments).forEach(function(key) {
-        var valueWhiteTariff = listEquipments[key]["whiteTariff"];
+        const valueWhiteTariff = listEquipments[key]["whiteTariff"];
         whiteTariffs.push(valueWhiteTariff);
       });
     
@@ -42,7 +38,7 @@ class MonthlyExpenses extends Component {
 
   
       Object.keys(listEquipments).forEach(key => {
-        var valueConventionalTariff = listEquipments[key]["conventionalTariff"];
+        const valueConventionalTariff = listEquipments[key]["conventionalTariff"];
         conventionalTariffs.push(valueConventionalTariff);
       });
     
@@ -77,7 +73,7 @@ class MonthlyExpenses extends Component {
                 Tarifa branca
               </h3>
               <span className="rate">
-                {this.formattNumber(this.getWhiteTariffs())}
+                {formatNumber(this.getWhiteTariffs())}
               </span>
             </div>
             <div>
@@ -91,7 +87,7 @@ class MonthlyExpenses extends Component {
                 Tarifa convencional
               </h3>
               <span className="rate">
-                {this.formattNumber(this.getConventionalTariffs())}
+                {formatNumber(this.getConventionalTariffs())}
               </span>
             </div>
           </div>
@@ -107,7 +103,7 @@ class MonthlyExpenses extends Component {
                   </span>{" "}
                   é mais adequada. Você economizará{" "}
                   <span className="highlight-rate cash-difference">
-                    {this.formattNumber(Math.abs(this.getDifferenceTariffs()))}
+                    {formatNumber(Math.abs(this.getDifferenceTariffs()))}
                   </span>{" "}
                 </div>
               ) : this.getDifferenceTariffs() > 0 ? (
@@ -117,7 +113,7 @@ class MonthlyExpenses extends Component {
                   </span>{" "}
                   é mais adequada. Você economizará{" "}
                   <span className="highlight-rate cash-difference">
-                    {this.formattNumber(Math.abs(this.getDifferenceTariffs()))}
+                    {formatNumber(Math.abs(this.getDifferenceTariffs()))}
                   </span>
                 </div>
               ) : this.getDifferenceTariffs() === 0 ? (

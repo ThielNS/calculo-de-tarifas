@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table, Input } from 'antd';
-import { notification } from "../../modules/feedback";
+import { formatNumber, notification } from "../../modules/feedback";
 import { compareHours } from "../../modules/validations";
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
@@ -56,14 +56,14 @@ class ListEquipments extends Component {
           dataIndex: "whiteTariff",
           key: "whiteTariff",
           className: "column-right",
-          render: price => this.formattNumber(price)
+          render: price => formatNumber(price)
         },
         {
           title: "Tarifa Convencional",
           dataIndex: "conventionalTariff",
           key: "conventionalTariff",
           className: "column-right",
-          render: price => this.formattNumber(price)
+          render: price => formatNumber(price)
         },
         {
           render: this.btnRemove
@@ -170,15 +170,6 @@ class ListEquipments extends Component {
     }
   };
 
-  formattNumber = value => {
-    if(typeof(value) === 'string') {
-      return value
-    } else {
-      const number = parseFloat(value).toFixed(2);
-      return `R$ ${number}`
-    }
-  };
-
   btnRemove = (value, data, index) => {
 
     if(!data.form) {
@@ -200,13 +191,13 @@ class ListEquipments extends Component {
   inputNumber = (number, type, data, index) => {
 
     let { formatter} = this.state;
-    formatter = (type === 'power') ? formatter : {};
+    formatter = (type === 'power') ? formatter : {
+      max: 255 };
 
     return(
       <InputNumber
         value={number}
         min={1}
-        max={255}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
@@ -215,7 +206,7 @@ class ListEquipments extends Component {
 
   timeOfUse = (value, data, index) => {
 
-    const { modal, toggleModal, getMonth } = this.props;
+    const { modal, toggleModal } = this.props;
 
     if(value) {
       return(
@@ -251,7 +242,6 @@ class ListEquipments extends Component {
           footer={() =>
             <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
-              formattNumber={this.formattNumber.bind(this)}
               formatter={formatter}
             />
           }
