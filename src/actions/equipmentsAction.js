@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 
 import {
-  ADD_EQUIPMENT,
+  ADD_EQUIPMENT, DELETE_DATES,
   EDIT_EQUIPMENTS,
   EDIT_USE_OF_MONTH,
   LIST_EQUIPMENTS,
@@ -39,10 +39,9 @@ export const convertUseOfMonth = (useOfMonth) => {
 
   let newUseOfMonth = [];
 
-
   useOfMonth.map((item) => {
 
-    let dates = {};
+    let dates = { id: item.id };
 
     if(typeof(item.dateInit) !== 'string' || typeof(item.dateFinish) !== 'string') {
       if(!item.dateInit || !item.dateFinish) {
@@ -289,4 +288,12 @@ export const resetListEquipments = dispatch => {
   return {
     type: RESET_LIST_EQUIPMENTS
   };
+};
+
+export  const deleteDates = (indexEquipment, indexDate) => dispatch => {
+  return dispatch ({
+    type: DELETE_DATES,
+    indexEquipment,
+    indexDate
+  })
 };

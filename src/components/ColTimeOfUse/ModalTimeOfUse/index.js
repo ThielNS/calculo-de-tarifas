@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal as BoxModal, Radio, DatePicker, TimePicker } from 'antd';
+import { Modal as BoxModal, Radio, DatePicker, TimePicker, Icon } from 'antd';
 import moment from "moment";
 import './ModalTimeOfUse.less';
 import { notification } from "../../../modules/feedback";
@@ -16,16 +16,14 @@ class ModalTimeOfUse extends Component {
     super(props);
     this.state = {
       valueRadio: 'continuous',
+      id: 0,
       dateInit: moment().month(this.newMonth()),
       dateFinish: moment().month(this.newMonth()),
       timeInit: null,
       timeFinish: null,
-      editDateInit: null,
-      editDateFinish: null,
-      editTimeInit: null,
-      editTimeFinish: null,
     }
   }
+
 
   convertDate = value => {
     if(typeof(value) === 'string') {
@@ -49,6 +47,7 @@ class ModalTimeOfUse extends Component {
     return month !== null ? month : dateMonth;
   };
 
+
   async shouldComponentUpdate(nextProps) {
     if(nextProps.getMonth !== this.props.getMonth) {
       await this.setState(() => ({
@@ -60,8 +59,9 @@ class ModalTimeOfUse extends Component {
   }
 
   componentDidUpdate() {
-    const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
+    const { id, dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const { addUseOfMonth, index } = this.props;
+    const newId = id + 1;
 
     if(dateInit && dateFinish && timeInit && timeFinish) {
 
@@ -79,6 +79,7 @@ class ModalTimeOfUse extends Component {
         )
       } else {
         const date = {
+          id: newId,
           dateInit: dateInit,
           dateFinish: dateFinish,
           timeInit: timeInit,
@@ -88,12 +89,12 @@ class ModalTimeOfUse extends Component {
         addUseOfMonth(date, index);
 
         this.setState({
+          id: newId,
           dateInit: moment().month(this.newMonth()),
           dateFinish: moment().month(this.newMonth()),
           timeInit: null,
           timeFinish: null
         });
-        console.log(moment().month(this.newMonth()))
       }
     }
 
@@ -153,7 +154,7 @@ class ModalTimeOfUse extends Component {
 
   renderDate = (item, indexDate) => {
 
-    const { editUseOfMonth, index } = this.props;
+    const { editUseOfMonth, index, deleteDates } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
@@ -169,6 +170,9 @@ class ModalTimeOfUse extends Component {
             defaultValue={[convertMoment(this.convertDate(item.dateInit), formatDate), convertMoment(this.convertDate(item.dateFinish), formatDate)]}
           />
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
+          <button onClick={() => deleteDates(index, indexDate)}>
+            <Icon type="delete" />
+          </button>
         </div>
       )
     } else if(item.dateInit === item.dateFinish) {
@@ -182,9 +186,13 @@ class ModalTimeOfUse extends Component {
             defaultValue={convertMoment(this.convertDate(item.dateInit), formatDate)}
           />
           {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
+          <button onClick={() => deleteDates(index, indexDate)}>
+            <Icon type="delete" />
+          </button>
         </div>
       )
     }
+
   };
 
   renderTime = (timeInit = null, timeFinish = null, indexDate) => {
@@ -215,13 +223,15 @@ class ModalTimeOfUse extends Component {
   };
 
   renderDatePicker = () => {
-    const { useOfMonth } = this.props;
+    const { useOfMonth, index } = this.props;
 
-    return useOfMonth.map((item, index) => (
-      <div key={index} className="_margin-bottom">
-        {this.renderDate(item, index)}
+    return useOfMonth.map((item, indexDate) => {
+      //FIXME: Resolver esta gambiarra
+      return (
+      <div key={Math.random()} className="_margin-bottom">
+        {this.renderDate(item, indexDate)}
       </div>
-    ));
+    )});
   };
 
   changeOnOk = () => {

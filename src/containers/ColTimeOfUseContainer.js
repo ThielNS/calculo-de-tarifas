@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import ColTimeOfUse from "../components/ColTimeOfUse";
+import {deleteDates} from "../actions/equipmentsAction";
 
 const mapStateToProps = state => {
   return {
@@ -8,4 +9,8 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps)(ColTimeOfUse)
+const mapDispatchToProps = {
+  deleteDates
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColTimeOfUse)

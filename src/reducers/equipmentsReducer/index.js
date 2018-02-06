@@ -6,7 +6,7 @@ import {
   REMOVE_EQUIPMENTS,
   RESET_LIST_EQUIPMENTS,
   LIST_EQUIPMENTS_DISTRIBUITOR,
-  UPDATE_MONTH_EQUIPMENTS
+  UPDATE_MONTH_EQUIPMENTS, DELETE_DATES
 } from "./constants";
 import { initialState, localStorageSetItem } from "./initialState";
 
@@ -14,7 +14,19 @@ const equipmentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_EQUIPMENT:
       const { data } = action;
+      const id = 1;
       const newState = state.concat(data);
+
+      const newStateId = newState.map(equipment => {
+        equipment.date.useOfMonth.map(dateTime => {
+          dateTime.id = id + 1;
+          return dateTime
+        });
+        return equipment
+      });
+
+      console.log(newStateId)
+
       localStorageSetItem(newState);
 
       return newState;
@@ -61,6 +73,7 @@ const equipmentsReducer = (state = initialState, action) => {
       localStorageSetItem(editState);
 
       return editState;
+
     case LIST_EQUIPMENTS_DISTRIBUITOR:
       let { dataList } = action;
       localStorageSetItem(dataList);
@@ -72,6 +85,27 @@ const equipmentsReducer = (state = initialState, action) => {
       localStorageSetItem(updateData);
 
       return updateData;
+
+    case DELETE_DATES:
+      const { indexEquipment, indexDate } = action;
+
+      let useOfMonth = state[indexEquipment].date.useOfMonth;
+
+      const newUseOfMonth = [
+        ...useOfMonth.slice(0, indexDate),
+        ...useOfMonth.slice(indexDate + 1)
+      ];
+
+      const resultState = state.map((equipment, indexE) => {
+        if(indexE === indexEquipment) {
+          equipment.date.useOfMonth = newUseOfMonth
+        }
+        return equipment
+      });
+
+      localStorageSetItem(resultState);
+      console.log(resultState);
+      return resultState;
 
     default:
       return state;
