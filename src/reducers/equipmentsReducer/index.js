@@ -6,7 +6,9 @@ import {
   REMOVE_EQUIPMENTS,
   RESET_LIST_EQUIPMENTS,
   LIST_EQUIPMENTS_DISTRIBUITOR,
-  UPDATE_MONTH_EQUIPMENTS, DELETE_DATES
+  UPDATE_MONTH_EQUIPMENTS,
+  DELETE_DATES,
+  EDIT_NAME_EQUIPMENT
 } from "./constants";
 import { initialState, localStorageSetItem } from "./initialState";
 
@@ -106,6 +108,21 @@ const equipmentsReducer = (state = initialState, action) => {
       localStorageSetItem(resultState);
       console.log(resultState);
       return resultState;
+
+    case EDIT_NAME_EQUIPMENT:
+
+      const { indexState, nameEquipment } = action;
+
+      const editNameEquipment = state.map((item, index) => {
+        if(index === indexState) {
+          item.nameEquipment = nameEquipment
+        }
+
+        return item;
+      });
+
+      localStorageSetItem(editNameEquipment);
+      return editNameEquipment ;
 
     default:
       return state;

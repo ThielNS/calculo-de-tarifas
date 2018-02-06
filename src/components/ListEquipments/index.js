@@ -77,10 +77,12 @@ class ListEquipments extends Component {
   }
 
   inputSearch = (value, data, index) => {
+    const { editNameEquipment } = this.props;
+
     if(data.form) {
       return <Input placeholder={data.nameEquipment}/>
     } else {
-      return data.nameEquipment
+      return <Input value={data.nameEquipment || ''} onChange={name => editNameEquipment(name.target.value, index)} />
     }
   };
 

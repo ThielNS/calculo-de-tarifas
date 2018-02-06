@@ -2,7 +2,7 @@ import { notification } from 'antd';
 
 import {
   ADD_EQUIPMENT, DELETE_DATES,
-  EDIT_EQUIPMENTS,
+  EDIT_EQUIPMENTS, EDIT_NAME_EQUIPMENT,
   EDIT_USE_OF_MONTH,
   LIST_EQUIPMENTS,
   REMOVE_EQUIPMENTS,
@@ -290,10 +290,18 @@ export const resetListEquipments = dispatch => {
   };
 };
 
-export  const deleteDates = (indexEquipment, indexDate) => dispatch => {
+export const deleteDates = (indexEquipment, indexDate) => dispatch => {
   return dispatch ({
     type: DELETE_DATES,
     indexEquipment,
     indexDate
+  })
+};
+
+export const editNameEquipment = (nameEquipment, indexEquipment) => dispatch => {
+  return dispatch ({
+    type: EDIT_NAME_EQUIPMENT,
+    indexState: indexEquipment,
+    nameEquipment
   })
 };
