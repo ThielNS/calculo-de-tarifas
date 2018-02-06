@@ -122,8 +122,10 @@ const createObj = data => {
   const useOfMonth = convertUseOfMonth(data.date.useOfMonth);
   const equipment = convertEquipment(data, useOfMonth, true);
   const newMonth = Math.floor(localStorage.getItem('monthIndex'));
+
   const dateMonth = new Date().getMonth();
-  const monthIndex = newMonth ? newMonth : dateMonth;
+  const monthIndex = newMonth !== null ? newMonth : dateMonth;
+
   const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
   const month = Math.floor(monthIndex) + 1;
 

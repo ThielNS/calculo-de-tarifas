@@ -23,14 +23,12 @@ class ChooseMonthly extends Component {
   };
 
   getMonths() {
-    const m = new Moment();
     let listMonths = [];
-    const { getMonth } = this.props;
 
     for (let i = 0; i < 12; i++) {
       listMonths.push(
-        <Option key={getMonth} value={i}>
-          {m.month(i).format("MMMM")}
+        <Option key={i} value={i}>
+          {Moment().month(i).format("MMMM")}
         </Option>
       );
     }
@@ -39,13 +37,12 @@ class ChooseMonthly extends Component {
   }
 
   getCurrentMonth() {
-    const date = new Date();
     const { getMonth } = this.props;
 
-    if(getMonth) {
-      return Math.floor(getMonth)
+    if(getMonth !== null) {
+      return getMonth
     } else {
-      return date.getMonth();
+      return Moment().month();
     }
   }
 

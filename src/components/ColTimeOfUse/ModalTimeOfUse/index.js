@@ -27,12 +27,6 @@ class ModalTimeOfUse extends Component {
     }
   }
 
-  handleRadio = e => {
-    this.setState({
-      valueRadio: e.target.value,
-    })
-  };
-
   convertDate = value => {
     if(typeof(value) === 'string') {
       const year = value.substr(0, 4);
@@ -51,12 +45,12 @@ class ModalTimeOfUse extends Component {
 
   newMonth = () => {
     const month = Math.floor(this.month());
-    const dateMonth = new Date().getMonth();
-    return month ? month : dateMonth;
+    const dateMonth = moment().month();
+    return month !== null ? month : dateMonth;
   };
 
   async shouldComponentUpdate(nextProps) {
-    if(nextProps.getMonth != this.props.getMonth) {
+    if(nextProps.getMonth !== this.props.getMonth) {
       await this.setState(() => ({
         dateInit: moment().month(this.newMonth()),
         dateFinish: moment().month(this.newMonth()),
@@ -67,7 +61,7 @@ class ModalTimeOfUse extends Component {
 
   componentDidUpdate() {
     const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
-    const { addUseOfMonth, index, getMonth } = this.props;
+    const { addUseOfMonth, index } = this.props;
 
     if(dateInit && dateFinish && timeInit && timeFinish) {
 
@@ -144,13 +138,12 @@ class ModalTimeOfUse extends Component {
   disabledDate = current => {
 
     if(!current) return false;
-
     const cMonth = current.month();
     const mMonth = moment().month(this.newMonth()).month();
     const cYear = current.year();
     const mYear = moment().year();
 
-    return cMonth < mMonth || cMonth !== mMonth || cYear !== mYear;
+    return cMonth !== mMonth || cYear !== mYear;
 
   };
 
@@ -160,7 +153,7 @@ class ModalTimeOfUse extends Component {
 
   renderDate = (item, indexDate) => {
 
-    const { editUseOfMonth, index, getMonth } = this.props;
+    const { editUseOfMonth, index } = this.props;
     const { RangePicker } = DatePicker;
     const convertMoment = this.convertMoment;
 
@@ -263,12 +256,10 @@ class ModalTimeOfUse extends Component {
 
   render() {
 
-    const { nameEquipment, visibleModal, useOfMonth, getMonth } = this.props;
+    const { nameEquipment, visibleModal, useOfMonth } = this.props;
     const { valueRadio, dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const marginTop = useOfMonth.length > 0 ? '_margin-bottom' : '';
     const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
-    // const RadioGroup = Radio.Group;
-    // const RadioButton = Radio.Button;
 
     return (
       <div className="modal-time-of-use">
@@ -283,10 +274,6 @@ class ModalTimeOfUse extends Component {
             {labelInsert}
             {this.renderDatePicker()}
           </div>
-          {/*<RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>*/}
-            {/*<RadioButton value="continuous">Uso Contínuo</RadioButton>*/}
-            {/*<RadioButton value="daily">Uso Diário</RadioButton>*/}
-          {/*</RadioGroup>*/}
           <div>
             <div className="row">
               {valueRadio === 'continuous' ? (
