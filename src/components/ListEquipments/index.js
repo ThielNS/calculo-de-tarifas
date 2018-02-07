@@ -4,7 +4,6 @@ import { Button, Icon, InputNumber, Table, Input } from 'antd';
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import './listEquipments.less';
 import ColTimeOfUse from "../ColTimeOfUse";
-import moment from "moment";
 import { notification } from "../../modules/feedback";
 import { validateHours } from "../../modules/validations";
 
@@ -80,7 +79,7 @@ class ListEquipments extends Component {
 
   inputSearch = (value, data, index) => {
     if(data.form) {
-      return <Input placeholder={data.nameEquipment}/>
+      return <Input defaultValue={data.nameEquipment}/>
     } else {
       return data.nameEquipment
     }

@@ -1,4 +1,4 @@
- //const API_URL = "http://192.168.2.203:80";
+//const API_URL = "http://192.168.2.203:80";
 const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{

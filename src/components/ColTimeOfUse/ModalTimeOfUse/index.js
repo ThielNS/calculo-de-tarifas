@@ -48,7 +48,7 @@ class ModalTimeOfUse extends Component {
     }
   };
 
-  componentDidUpdate() {
+  componentWillUpdate() {
     const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const { addUseOfMonth, index } = this.props;
 
