@@ -79,7 +79,7 @@ class ListEquipments extends Component {
 
   inputSearch = (value, data, index) => {
     if(data.form) {
-      return <Input defaultValue={data.nameEquipment}/>
+      return <Input placeholder={data.nameEquipment}/>
     } else {
       return data.nameEquipment
     }
