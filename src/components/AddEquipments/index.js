@@ -190,6 +190,8 @@ class AddEquipments extends Component {
 
     const { Option } = Select;
 
+    const { getMonth } = this.props;
+
     const options = equipments.map((item, index) => (
       <Option key={item.name} power={item.defaultPower}>
         {`${item.name} | ${item.defaultPower}W`}
@@ -225,6 +227,7 @@ class AddEquipments extends Component {
             timeOfUse={timeOfUse}
             nameEquipment={nameEquipment}
             useOfMonth={useOfMonth}
+            getMonth={getMonth}
             addUseOfMonth={this.addUseOfMonth}
             editUseOfMonth={this.editUseOfMonth}
             submitData={this.submitData}

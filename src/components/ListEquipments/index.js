@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Icon, InputNumber, Table, Input } from 'antd';
-
+import { formatNumber, notification } from "../../modules/feedback";
+import { compareHours } from "../../modules/validations";
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
+import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
 import './listEquipments.less';
-import ColTimeOfUse from "../ColTimeOfUse";
-import { notification } from "../../modules/feedback";
-import { validateHours } from "../../modules/validations";
 
 class ListEquipments extends Component {
 
@@ -57,14 +56,14 @@ class ListEquipments extends Component {
           dataIndex: "whiteTariff",
           key: "whiteTariff",
           className: "column-right",
-          render: price => this.formattNumber(price)
+          render: price => formatNumber(price)
         },
         {
           title: "Tarifa Convencional",
           dataIndex: "conventionalTariff",
           key: "conventionalTariff",
           className: "column-right",
-          render: price => this.formattNumber(price)
+          render: price => formatNumber(price)
         },
         {
           render: this.btnRemove
@@ -78,10 +77,12 @@ class ListEquipments extends Component {
   }
 
   inputSearch = (value, data, index) => {
+    const { editNameEquipment } = this.props;
+
     if(data.form) {
-      return <Input placeholder={data.nameEquipment}/>
+      return null
     } else {
-      return data.nameEquipment
+      return <Input value={data.nameEquipment} onChange={name => editNameEquipment(name.target.value, index)} />
     }
   };
 
@@ -116,6 +117,8 @@ class ListEquipments extends Component {
 
   editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
 
+    console.log(data);
+
     const { listEquipments, editUseOfMonth } = this.props;
 
     let dateTime = {};
@@ -124,7 +127,7 @@ class ListEquipments extends Component {
 
     let { timeInit, timeFinish } = date.useOfMonth[indexDate];
 
-    if(validateHours(timeInit, timeFinish)) {
+    if(compareHours(timeInit, timeFinish)) {
       notification (
         'Hora inválida',
         'A hora final deve ser maior ou igual à hora inicial',
@@ -169,15 +172,6 @@ class ListEquipments extends Component {
     }
   };
 
-  formattNumber = value => {
-    if(typeof(value) === 'string') {
-      return value
-    } else {
-      const number = parseFloat(value).toFixed(2);
-      return `R$ ${number}`
-    }
-  };
-
   btnRemove = (value, data, index) => {
 
     if(!data.form) {
@@ -199,13 +193,13 @@ class ListEquipments extends Component {
   inputNumber = (number, type, data, index) => {
 
     let { formatter} = this.state;
-    formatter = (type === 'power') ? formatter : {};
+    formatter = (type === 'power') ? formatter : {
+      max: 255 };
 
     return(
       <InputNumber
         value={number}
         min={1}
-        max={255}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
@@ -214,11 +208,12 @@ class ListEquipments extends Component {
 
   timeOfUse = (value, data, index) => {
 
-    const { modal, toggleModal } = this.props;
+    const { modal, toggleModal, listEquipments } = this.props;
 
     if(value) {
       return(
-        <ColTimeOfUse
+        <ColTimeOfUseContainer
+          listEquipments={listEquipments}
           timeOfUse={value.timeOfUse}
           nameEquipment={data.nameEquipment}
           modal={modal}
@@ -250,7 +245,6 @@ class ListEquipments extends Component {
           footer={() =>
             <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
-              formattNumber={this.formattNumber.bind(this)}
               formatter={formatter}
             />
           }

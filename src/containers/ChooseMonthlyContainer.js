@@ -1,23 +1,18 @@
 import { connect } from "react-redux";
 import ChooseMonthly from "../components/OptionsTable/ChooseMonthly";
-import { getMonth } from "../actions/chooseMonths";
 import { updateMonthEquipments } from "../actions/equipmentsAction";
+import { changeMonth } from "../actions/chooseMonths";
 
 const mapStateToProps = state => {
   return {
-    listMonths: state.listMonthly,
-    monthIndex: state.chooseMonthlyReducer,
+    getMonth: state.getMonth,
     listEquipments: state.equipmentsReducer
   };
 };
 
-const mapDispatchToProps = () => dispatch => ({
-  getMonth: () => {
-    return dispatch(getMonth());
-  },
-  updateMonthEquipments: (dataList, month) => {
-    return dispatch(updateMonthEquipments(dataList, month))
-  }
+const mapDispatchToProps = ({
+  updateMonthEquipments,
+  changeMonth
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseMonthly);

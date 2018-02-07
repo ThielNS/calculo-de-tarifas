@@ -1,9 +1,8 @@
-import {GET_MONTH} from "../reducers/chooseMonthlyReducer/constants";
+import { GET_MONTH } from "../reducers/chooseMonthlyReducer/constants";
 
-export const getMonth = (monthIndex) => dispatch => {
-    return {
-      type: GET_MONTH,
-      monthIndex
-    };
-  };
-  
+export const changeMonth = (monthIndex) => dispatch => {
+  return dispatch({
+    type: GET_MONTH,
+    value: monthIndex
+  })
+};

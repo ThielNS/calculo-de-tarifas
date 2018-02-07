@@ -1,40 +1,29 @@
-import React, { Component } from "react";
-import { Modal as BoxModal, Radio, DatePicker, TimePicker } from "antd";
+import React, { Component } from 'react';
+import { Modal as BoxModal, Button, DatePicker, TimePicker, Icon } from 'antd';
 import moment from "moment";
 import "./ModalTimeOfUse.less";
 import { notification } from "../../../modules/feedback";
-import { validateHours } from "../../../modules/validations";
+import { validateHours, validateMinutes } from "../../../modules/validations";
+import DateUse from './DateUse';
 
 const { RangePicker } = DatePicker;
 const formatDate = "DD/MM/YYYY";
 
 const formatTime = "HH:mm";
 
-const month = Math.floor(localStorage.getItem("monthIndex"));
-const dateMonth = new Date().getMonth();
-const newMonth = month ? month : dateMonth;
-
 class ModalTimeOfUse extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      valueRadio: "continuous",
-      dateInit: moment().month(newMonth),
-      dateFinish: moment().month(newMonth),
+      valueRadio: 'continuous',
+      id: 0,
+      dateInit: moment().month(this.newMonth()),
+      dateFinish: moment().month(this.newMonth()),
       timeInit: null,
       timeFinish: null,
-      editDateInit: null,
-      editDateFinish: null,
-      editTimeInit: null,
-      editTimeFinish: null
-    };
+    }
   }
 
-  handleRadio = e => {
-    this.setState({
-      valueRadio: e.target.value
-    });
-  };
 
   convertDate = value => {
     if (typeof value === "string") {
@@ -48,22 +37,49 @@ class ModalTimeOfUse extends Component {
     }
   };
 
-  componentWillUpdate() {
-    const { dateInit, dateFinish, timeInit, timeFinish } = this.state;
+  month = () => {
+    return this.props.getMonth
+  };
+
+  newMonth = () => {
+    const month = Math.floor(this.month());
+    const dateMonth = moment().month();
+    return month !== null ? month : dateMonth;
+  };
+
+
+  async shouldComponentUpdate(nextProps) {
+    if(nextProps.getMonth !== this.props.getMonth) {
+      await this.setState(() => ({
+        dateInit: moment().month(this.newMonth()),
+        dateFinish: moment().month(this.newMonth()),
+      }));
+      return true;
+    }
+  }
+
+  componentDidUpdate() {
+    const { id, dateInit, dateFinish, timeInit, timeFinish } = this.state;
     const { addUseOfMonth, index } = this.props;
+    const newId = id + 1;
 
-    const convertTimeInit = moment(timeInit).valueOf();
-    const convertTimeFinish = moment(timeFinish).valueOf();
+    if(dateInit && dateFinish && timeInit && timeFinish) {
 
-    if (dateInit && dateFinish && timeInit && timeFinish) {
-      if (validateHours(timeInit, timeFinish)) {
+      if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
         notification(
-          "Minuto inválido",
-          "O minuto da hora final deve ser maior que o minuto da hora inicial",
-          "error"
-        );
+          'Minuto inválido',
+          'O minuto da hora final deve ser maior que o minuto da hora inicial',
+          'error'
+        )
+      } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
+        notification(
+          'Hora inválida',
+          'A hora final deve ser maior ou igual à hora inicial',
+          'error'
+        )
       } else {
         const date = {
+          id: newId,
           dateInit: dateInit,
           dateFinish: dateFinish,
           timeInit: timeInit,
@@ -73,16 +89,16 @@ class ModalTimeOfUse extends Component {
         addUseOfMonth(date, index);
 
         this.setState({
-          dateInit: moment().month(newMonth),
-          dateFinish: moment().month(newMonth),
+          id: newId,
+          dateInit: moment().month(this.newMonth()),
+          dateFinish: moment().month(this.newMonth()),
           timeInit: null,
           timeFinish: null
         });
-
-        this.forceUpdate();
       }
     }
-  }
+
+  };
 
   changeDatePicker = date => {
     this.setState({
@@ -105,26 +121,27 @@ class ModalTimeOfUse extends Component {
   };
 
   dateRender = current => {
-    const month = localStorage.getItem("monthIndex");
-
-    if (current.month() === month) {
-      return <div className="ant-calendar-date">{current.date()}</div>;
+    if(current.month() === this.month()) {
+      return (
+        <div className="ant-calendar-date">
+          {current.date()}
+        </div>
+      )
     } else {
       return <div className="ant-calendar-date">{current.date()}</div>;
     }
   };
 
   disabledDate = current => {
-    if (!current) return false;
 
+    if(!current) return false;
     const cMonth = current.month();
-    const mMonth = moment()
-      .month(newMonth)
-      .month();
+    const mMonth = moment().month(this.newMonth()).month();
     const cYear = current.year();
     const mYear = moment().year();
 
-    return cMonth < mMonth || cMonth !== mMonth || cYear !== mYear;
+    return cMonth !== mMonth || cYear !== mYear;
+
   };
 
   convertMoment = (value, format) => {
@@ -132,48 +149,68 @@ class ModalTimeOfUse extends Component {
   };
 
   renderDate = (item, indexDate) => {
-    const { editUseOfMonth, index } = this.props;
-    const { RangePicker } = DatePicker;
-    const convertMoment = this.convertMoment;
+    return (
+    <DateUse
+      {...this.props}
+      convertMoment={this.convertMoment}
+      item={item}
+      indexDate={indexDate}
+      convertDate={this.convertDate}
+      dateRender={this.dateRender}
+      disabledDate={this.disabledDate}
+      renderTime={this.renderTime}
+    />)
+    // const { editUseOfMonth, index, deleteDates, listEquipments } = this.props;
+    // const { RangePicker } = DatePicker;
+    // const convertMoment = this.convertMoment;
 
-    if (item.dateInit !== item.dateFinish) {
-      return (
-        <div className="row">
-          <RangePicker
-            onChange={data => editUseOfMonth(data, indexDate, index)}
-            dateRender={this.dateRender}
-            disabledDate={this.disabledDate}
-            format={formatDate}
-            className="_margin-right"
-            defaultValue={[
-              convertMoment(this.convertDate(item.dateInit), formatDate),
-              convertMoment(this.convertDate(item.dateFinish), formatDate)
-            ]}
-          />
-          {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
-        </div>
-      );
-    } else if (item.dateInit === item.dateFinish) {
-      return (
-        <div className="row">
-          <DatePicker
-            onChange={data => editUseOfMonth(data, indexDate, index)}
-            disabledDate={this.disabledDate}
-            format={formatDate}
-            className="_margin-right"
-            defaultValue={convertMoment(
-              this.convertDate(item.dateInit),
-              formatDate
-            )}
-          />
-          {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
-        </div>
-      );
-    }
+    // if (item.dateInit !== item.dateFinish) {
+    //   return (
+    //     <div className="row">
+    //       <RangePicker
+    //         onChange={data => editUseOfMonth(data, indexDate, index)}
+    //         dateRender={this.dateRender}
+    //         disabledDate={this.disabledDate}
+    //         format={formatDate}
+    //         className="_margin-right"
+    //         defaultValue={[
+    //           convertMoment(this.convertDate(item.dateInit), formatDate),
+    //           convertMoment(this.convertDate(item.dateFinish), formatDate)
+    //         ]}
+    //       />
+    //       {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
+
+    //       <button onClick={() => deleteDates(listEquipments, index, indexDate)}>
+    //         <Icon type="delete" />
+    //       </button>
+    //     </div>
+    //   );
+    // } else if (item.dateInit === item.dateFinish) {
+    //   return (
+    //     <div className="row">
+    //       <DatePicker
+    //         onChange={data => editUseOfMonth(data, indexDate, index)}
+    //         disabledDate={this.disabledDate}
+    //         format={formatDate}
+    //         className="_margin-right"
+    //         defaultValue={convertMoment(
+    //           this.convertDate(item.dateInit),
+    //           formatDate
+    //         )}
+    //       />
+    //       {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
+    //       <button onClick={() => deleteDates(listEquipments, index, indexDate)}>
+    //         <Icon type="delete" />
+    //       </button>
+    //     </div>
+    //   );
+    // }
+
   };
 
   renderTime = (timeInit = null, timeFinish = null, indexDate) => {
     const { editUseOfMonth, index } = this.props;
+
 
     return (
       <div className="row ant-col-sm-12">
@@ -188,22 +225,35 @@ class ModalTimeOfUse extends Component {
           defaultValue={this.convertMoment(timeFinish, formatTime)}
           format={formatTime}
           placeholder="Hora fim"
-          className="input-time"
-          onChange={data =>
-            editUseOfMonth(data, indexDate, index, "timeFinish")}
+          className="imput-time"
+          disabledHours={() => validateHours(timeInit)}
+          disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
+          onChange={data => editUseOfMonth(data, indexDate, index, 'timeFinish')}
         />
       </div>
     );
   };
 
   renderDatePicker = () => {
-    const { useOfMonth } = this.props;
+    const { useOfMonth, index } = this.props;
 
-    return useOfMonth.map((item, index) => (
-      <div key={index} className="_margin-bottom">
-        {this.renderDate(item, index)}
+    return useOfMonth.map((item, indexDate) => {
+      //FIXME: Resolver esta gambiarra
+      return (
+      <div key={Math.random()} className="_margin-bottom">
+        <DateUse
+          key={indexDate}
+          {...this.props}
+          convertMoment={this.convertMoment}
+          item={item}
+          indexDate={indexDate}
+          convertDate={this.convertDate}
+          dateRender={this.dateRender}
+          disabledDate={this.disabledDate}
+          renderTime={this.renderTime}
+        />
       </div>
-    ));
+    )});
   };
 
   changeOnOk = () => {
@@ -247,9 +297,6 @@ class ModalTimeOfUse extends Component {
     const marginTop = useOfMonth.length > 0 ? "_margin-bottom" : "";
     const labelInsert = useOfMonth.length ? <label>Inseridos:</label> : null;
 
-    // const RadioGroup = Radio.Group;
-    // const RadioButton = Radio.Button;
-
     return (
       <div className="modal-time-of-use">
         <BoxModal
@@ -263,17 +310,13 @@ class ModalTimeOfUse extends Component {
             {labelInsert}
             {this.renderDatePicker()}
           </div>
-          {/*<RadioGroup defaultValue={valueRadio} size="small" onChange={this.handleRadio}>*/}
-          {/*<RadioButton value="continuous">Uso Contínuo</RadioButton>*/}
-          {/*<RadioButton value="daily">Uso Diário</RadioButton>*/}
-          {/*</RadioGroup>*/}
           <div>
             <div className="row">
               {valueRadio === "continuous" ? (
                 <div>
                   <label>Data inicial/final</label>
                   <RangePicker
-                    onChange={this.changeRangePicker}
+s                   onChange={this.changeRangePicker}
                     dateRender={this.dateRender}
                     disabledDate={this.disabledDate}
                     format={"DD/MM/YYYY"}
@@ -308,7 +351,9 @@ class ModalTimeOfUse extends Component {
                   value={this.convertMoment(timeFinish)}
                   format={formatTime}
                   placeholder="Hora fim"
-                  onChange={data => this.changeTime(data, "timeFinish")}
+                  disabledHours={() => validateHours(timeInit)}
+                  disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
+                  onChange={data => this.changeTime(data, 'timeFinish')}
                 />
               </div>
             </div>

@@ -1,12 +1,9 @@
-let listMonths = localStorage.getItem('listMonths');
+let monthIndex = localStorage.getItem('monthIndex');
 
+monthIndex = monthIndex ? monthIndex : null;
 
-listMonths = listMonths ? JSON.parse(listMonths) : [];
-
-export const initialState = listMonths;
-
-
+export const initialState = Math.floor(monthIndex);
 
 export const localStorageSetItem = value => {
-  localStorage.setItem('listMonths', JSON.stringify(value));
+  localStorage.setItem('monthIndex', JSON.stringify(value));
 };

@@ -4,13 +4,14 @@ import AddEquipment from "../components/AddEquipments";
 
 const mapStateToProps = state => {
   return {
-    listEquipments: state.equipmentsReducer
+    listEquipments: state.equipmentsReducer,
+    getMonth: state.getMonth,
   }
 };
 
 const mapDispatchToProps = {
   searchEquipments,
-  addEquipment
+  addEquipment,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddEquipment);

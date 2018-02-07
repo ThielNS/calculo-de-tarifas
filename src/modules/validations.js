@@ -2,12 +2,42 @@ import moment from "moment";
 
 const formatHours = 'HH:mm';
 
-export const validateHours = (hourInit, hourFinish) => {
-  const timeInit = moment(hourInit, formatHours).valueOf();
-  const timeFinish = moment(hourFinish, formatHours).valueOf();
+export const validateHours = (timeInit) => {
+  const hour = moment(timeInit, formatHours).hour();
+  const hours = [];
 
-  console.log(timeInit)
-  console.log(timeFinish)
-  console.log((timeFinish-timeInit));
-  return timeInit >= timeFinish;
+  for(let i = 0; i < hour; i++) {
+    hours.push(i);
+  }
+
+  return hours;
+};
+
+export const validateMinutes = (timeInit, timeFinish) => {
+  const hourInit = moment(timeInit, formatHours).hour();
+  const hourFinish = moment(timeFinish, formatHours).hours();
+  const minute = moment(timeInit, formatHours).minute();
+  const minutes = [];
+
+  if(hourFinish === hourInit) {
+    for(let i =0; i <= minute; i++) {
+      minutes.push (i);
+    }
+  }
+
+  return minutes;
+};
+
+export  const compareHours = (timeInit, timeFinish) => {
+  const hourInit = moment(timeInit, formatHours).hour();
+  const hourFinish = moment(timeFinish, formatHours).hours();
+  const minuteInit = moment(timeInit, formatHours).minute();
+  const minuteFinish = moment(timeFinish, formatHours).minute();
+
+  if(hourInit === hourFinish) {
+    return minuteFinish <= minuteInit;
+  } else {
+    return false;
+  }
+
 };
