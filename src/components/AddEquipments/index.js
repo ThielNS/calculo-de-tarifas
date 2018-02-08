@@ -31,18 +31,16 @@ class AddEquipments extends Component {
       useOfMonth.length > 0 &&
       send
     ) {
+      const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
 
-      const powerDistribuitorId = localStorage.getItem('powerDistribuitorId');
-
-      if(powerDistribuitorId) {
-
+      if (powerDistribuitorId) {
         const dataInfo = {
           nameEquipment: nameEquipment,
           power: power,
           quantity: quantity,
           date: {
             useOfMonth: useOfMonth,
-            timeOfUse: ''
+            timeOfUse: ""
           }
         };
 
@@ -56,10 +54,10 @@ class AddEquipments extends Component {
           send: !send
         });
       } else {
-        notification['error']({
-          message: 'Distribuidora não encontrada',
-          description: 'Adicione uma distribuidora'
-        })
+        notification["error"]({
+          message: "Distribuidora não encontrada",
+          description: "Adicione uma distribuidora"
+        });
       }
     }
   }
@@ -96,6 +94,20 @@ class AddEquipments extends Component {
     });
   };
 
+  deleteDates = (data, indexEquipment, indexDate) => {
+    
+    const { useOfMonth } = this.state;
+
+    const newuseOfMonth = [
+      ...useOfMonth.slice(0, indexDate),
+      ...useOfMonth.slice(indexDate + 1)
+    ];
+
+    this.setState({
+      useOfMonth: newuseOfMonth,
+    })
+  }
+
   inputNumber = (number, type) => {
     let { formatter } = this.props;
     formatter = type === "power" ? formatter : {};
@@ -119,54 +131,52 @@ class AddEquipments extends Component {
   };
 
   editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
-
     const { useOfMonth } = this.state;
 
     let dateTime = {};
 
-    if(isTime === 'timeInit') {
+    if (isTime === "timeInit") {
       dateTime = {
         dateInit: useOfMonth[indexDate].dateInit,
         dateFinish: useOfMonth[indexDate].dateFinish,
         timeInit: data,
         timeFinish: useOfMonth[indexDate].timeFinish
-      }
-    } else if(isTime === 'timeFinish') {
+      };
+    } else if (isTime === "timeFinish") {
       dateTime = {
         dateInit: useOfMonth[indexDate].dateInit,
         dateFinish: useOfMonth[indexDate].dateFinish,
         timeInit: useOfMonth[indexDate].timeInit,
-        timeFinish: data,
-      }
+        timeFinish: data
+      };
     } else {
-      if(Array.isArray(data)) {
+      if (Array.isArray(data)) {
         dateTime = {
           dateInit: data[0],
           dateFinish: data[1],
           timeInit: useOfMonth[indexDate].timeInit,
-          timeFinish: useOfMonth[indexDate].timeFinish,
-        }
+          timeFinish: useOfMonth[indexDate].timeFinish
+        };
       } else {
         dateTime = {
           dateInit: data,
           dateFinish: data,
           timeInit: useOfMonth[indexDate].timeInit,
-          timeFinish: useOfMonth[indexDate].timeFinish,
-        }
+          timeFinish: useOfMonth[indexDate].timeFinish
+        };
       }
     }
 
     const newUseOfMonth = useOfMonth.map((item, index) => {
-      if(index === indexDate) {
-        item = dateTime
+      if (index === indexDate) {
+        item = dateTime;
       }
       return item;
     });
 
-
     this.setState({
       useOfMonth: newUseOfMonth
-    })
+    });
   };
 
   submitData = () => {
@@ -231,6 +241,7 @@ class AddEquipments extends Component {
             addUseOfMonth={this.addUseOfMonth}
             editUseOfMonth={this.editUseOfMonth}
             submitData={this.submitData}
+            deleteDates={this.deleteDates}
           />
         </Col>
         <Col span="2" className="price _margin-right">
