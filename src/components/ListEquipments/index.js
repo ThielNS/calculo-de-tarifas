@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
-import { Button, Icon, InputNumber, Table, Input } from 'antd';
+import React, { Component } from "react";
+import { Button, Icon, InputNumber, Table, Input, Select } from "antd";
 import { formatNumber, notification } from "../../modules/feedback";
 import { compareHours } from "../../modules/validations";
 import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
-import './listEquipments.less';
+import ColTimeOfUse from "../ColTimeOfUse";
+import SelectEquipments from "../SelectEquipments";
+import "./listEquipments.less";
 
 class ListEquipments extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,15 +16,15 @@ class ListEquipments extends Component {
       quantity: 1,
       useOfMonth: [],
       rowForm: {
-        nameEquipment: 'Inserir equipamento',
+        nameEquipment: "",
         power: 0,
         quantity: 1,
         date: {
-          timeOfUse: '0h',
+          timeOfUse: "0h",
           useOfMonth: []
         },
-        whiteTariff: '-',
-        conventionalTariff: '-',
+        whiteTariff: 0.00,
+        conventionalTariff: 0.00,
         form: true
       },
       columns: [
@@ -36,13 +37,15 @@ class ListEquipments extends Component {
           title: "Potência",
           dataIndex: "power",
           key: "power",
-          render: (value, data, index) => this.inputNumber(value, 'power', data, index)
+          render: (value, data, index) =>
+            this.inputNumber(value, "power", data, index)
         },
         {
           title: "Quantidade",
           dataIndex: "quantity",
           key: "quantity",
-          render: (value, data, index) => this.inputNumber(value, 'quantity', data, index)
+          render: (value, data, index) =>
+            this.inputNumber(value, "quantity", data, index)
         },
         {
           title: "Tempo de Uso",
@@ -67,58 +70,119 @@ class ListEquipments extends Component {
         },
         {
           render: this.btnRemove
-        },
+        }
       ],
       formatter: {
         formatter: value => `${value}W`,
-        parser: value => value.replace('W', '')
+        parser: value => value.replace("W", "")
+      },
+      send: false,
+    };
+  }
+
+  componentDidUpdate() {
+    const { rowForm, send } = this.state;
+    const {nameEquipment, power, quantity, date } = rowForm;
+    const {useOfMonth} = date;
+    const { addEquipment } = this.props;
+
+    if (
+      nameEquipment &&
+      power > 0.01 &&
+      quantity >= 1 &&
+      useOfMonth.length > 0 &&
+      send
+    ) {
+      const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
+
+      if (powerDistribuitorId) {
+        
+        addEquipment(rowForm);
+
+        this.setState({
+          rowForm: {
+            nameEquipment: "",
+            power: 0,
+            quantity: 1,
+            date: {
+              timeOfUse: "0h",              
+              useOfMonth: [],
+            },
+            whiteTariff: 0.00,
+            conventionalTariff: 0.00,
+            form: true
+          },
+          send: !send
+        });
+      } else {
+        notification["error"]({
+          message: "Distribuidora não encontrada",
+          description: "Adicione uma distribuidora"
+        });
       }
     }
   }
 
   inputSearch = (value, data, index) => {
-    const { editNameEquipment } = this.props;
-
-    if(data.form) {
-      return null
+    const { editNameEquipment, searchEquipments } = this.props;
+    
+    if (data.form) {
+      return (
+        <SelectEquipments
+          searchEquipments={searchEquipments}
+          handleChangeEquipment={this.handleChangeEquipment}
+        />
+      );
     } else {
-      return <Input value={data.nameEquipment} onChange={name => editNameEquipment(name.target.value, index)} />
+      return (
+        <Input
+          value={data.nameEquipment}
+          onChange={name => editNameEquipment(name.target.value, index)}
+        />
+      );
     }
   };
 
   editEquipment = (value, type, data, index) => {
-
-    const { nameEquipment, power, quantity, date  } = data;
+    const { nameEquipment, power, quantity, date } = data;
     const { editEquipments } = this.props;
 
     let item;
 
-    if(type === 'power') {
+    if (type === "power") {
       item = { power: value, quantity, date };
-    } else if(type === 'quantity') {
+    } else if (type === "quantity") {
       item = { quantity: value, power, date };
-    } else if(type === 'date') {
+    } else if (type === "date") {
       item = { date: value, power, quantity };
     }
 
     let newData = { nameEquipment, ...item };
 
-    editEquipments(newData, index)
+    editEquipments(newData, index);
   };
 
+  handleChangeEquipment = (powerEquipment, name) => {
+    let { rowForm } = this.state;
+    const { power, nameEquipment, ...restRowForm } = rowForm;
+    this.setState({
+      rowForm: {
+        ...restRowForm,
+        power: powerEquipment,
+        nameEquipment: name
+      }
+    });
+  };
 
   addUseOfMonth = (dates, index) => {
     const { listEquipments } = this.props;
 
-    const data = { ...listEquipments[index], dates, index};
+    const data = { ...listEquipments[index], dates, index };
 
-    this.props.addUseOfMonth(data, index)
+    this.props.addUseOfMonth(data, index);
   };
 
   editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
-
-    console.log(data);
-
     const { listEquipments, editUseOfMonth } = this.props;
 
     let dateTime = {};
@@ -127,54 +191,53 @@ class ListEquipments extends Component {
 
     let { timeInit, timeFinish } = date.useOfMonth[indexDate];
 
-    if(compareHours(timeInit, timeFinish)) {
-      notification (
-        'Hora inválida',
-        'A hora final deve ser maior ou igual à hora inicial',
-        'error'
-      )
+    if (compareHours(timeInit, timeFinish)) {
+      notification(
+        "Hora inválida",
+        "A hora final deve ser maior ou igual à hora inicial",
+        "error"
+      );
     } else {
-      if(isTime === 'timeInit') {
+      if (isTime === "timeInit") {
         dateTime = {
           dateInit: date.useOfMonth[indexDate].dateInit,
           dateFinish: date.useOfMonth[indexDate].dateFinish,
           timeInit: data,
           timeFinish: date.useOfMonth[indexDate].timeFinish
-        }
-      } else if(isTime === 'timeFinish') {
+        };
+      } else if (isTime === "timeFinish") {
         dateTime = {
           dateInit: date.useOfMonth[indexDate].dateInit,
           dateFinish: date.useOfMonth[indexDate].dateFinish,
           timeInit: date.useOfMonth[indexDate].timeInit,
-          timeFinish: data,
-        }
+          timeFinish: data
+        };
       } else {
-        if(Array.isArray(data)) {
+        if (Array.isArray(data)) {
           dateTime = {
             dateInit: data[0],
             dateFinish: data[1],
             timeInit: date.useOfMonth[indexDate].timeInit,
-            timeFinish: date.useOfMonth[indexDate].timeFinish,
-          }
+            timeFinish: date.useOfMonth[indexDate].timeFinish
+          };
         } else {
           dateTime = {
             dateInit: data,
             dateFinish: data,
             timeInit: date.useOfMonth[indexDate].timeInit,
-            timeFinish: date.useOfMonth[indexDate].timeFinish,
-          }
+            timeFinish: date.useOfMonth[indexDate].timeFinish
+          };
         }
       }
 
-      const newdata = { ...listEquipments[indexEquipment], dateTime}
+      const newdata = { ...listEquipments[indexEquipment], dateTime };
 
-      editUseOfMonth(newdata, indexEquipment, indexDate)
+      editUseOfMonth(newdata, indexEquipment, indexDate);
     }
   };
 
   btnRemove = (value, data, index) => {
-
-    if(!data.form) {
+    if (!data.form) {
       const { removeEquipments } = this.props;
 
       return (
@@ -190,28 +253,80 @@ class ListEquipments extends Component {
     }
   };
 
+  changeNumber = (value, type) => {
+    let { rowForm } = this.state;
+    const { power, quantity, ...restRowForm } = rowForm;
+
+    if (type === "quantity") {
+      this.setState({
+        rowForm: {
+          quantity: value,
+          power,
+          ...restRowForm
+        }
+      });
+    } else if (type === "power") {
+      this.setState({
+        rowForm: {
+          power: value,
+          quantity,
+          ...restRowForm
+        }
+      });
+    }
+  };
+
   inputNumber = (number, type, data, index) => {
+    let { formatter } = this.state;
 
-    let { formatter} = this.state;
-    formatter = (type === 'power') ? formatter : {
-      max: 255 };
-
-    return(
+    formatter =
+      type === "power"
+        ? formatter
+        : {
+            max: 255
+          };
+    if (data.form) {
+      return (
+        <InputNumber
+          value={number}
+          min={1}
+          {...formatter}
+          onChange={value => this.changeNumber(value, type)}
+        />
+      );
+    }
+    return (
       <InputNumber
         value={number}
         min={1}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
-    )
+    );
   };
 
   timeOfUse = (value, data, index) => {
+    const { modal, toggleModal, listEquipments, getMonth } = this.props;
 
-    const { modal, toggleModal, listEquipments } = this.props;
-
-    if(value) {
-      return(
+    if (data.form) {
+      return (
+        <ColTimeOfUse
+          listEquipments={listEquipments}
+          timeOfUse={value.timeOfUse}
+          nameEquipment={data.nameEquipment}
+          modal={modal}
+          toggleModal={toggleModal}
+          useOfMonth={value.useOfMonth}
+          editUseOfMonth={this.editUseOfMonthInsert}
+          addUseOfMonth={this.addUseOfMonthInsert}
+          deleteDates={this.deleteDates}
+          index={index}
+          submitData={this.submitData}
+          getMonth={getMonth}
+        />
+      );
+    } else {
+      return (
         <ColTimeOfUseContainer
           listEquipments={listEquipments}
           timeOfUse={value.timeOfUse}
@@ -228,26 +343,123 @@ class ListEquipments extends Component {
     }
   };
 
-  render() {
+  addUseOfMonthInsert = dateTime => {
+    const { rowForm } = this.state;
+    let { date, ...restDate } = rowForm;
 
+    date.useOfMonth.push(dateTime);
+
+    this.setState({
+      rowForm: {
+        date,
+        ...restDate
+      }
+    });
+  };
+
+  editUseOfMonthInsert = (data, indexDate, indexEquipment, isTime = null) => {
+    const { rowForm } = this.state;
+    const { useOfMonth, timeOfUse } = rowForm.date;
+    let { ...restRowForm } = rowForm
+
+    let dateTime = {};
+
+    if (isTime === "timeInit") {
+      dateTime = {
+        dateInit: useOfMonth[indexDate].dateInit,
+        dateFinish: useOfMonth[indexDate].dateFinish,
+        timeInit: {...data},
+        timeFinish: useOfMonth[indexDate].timeFinish
+      };
+    } else if (isTime === "timeFinish") {
+      dateTime = {
+        dateInit: useOfMonth[indexDate].dateInit,
+        dateFinish: useOfMonth[indexDate].dateFinish,
+        timeInit: useOfMonth[indexDate].timeInit,
+        timeFinish: data
+      };
+    } else {
+      if (Array.isArray(data)) {
+        dateTime = {
+          dateInit: data[0],
+          dateFinish: data[1],
+          timeInit: useOfMonth[indexDate].timeInit,
+          timeFinish: useOfMonth[indexDate].timeFinish
+        };
+      } else {
+        dateTime = {
+          dateInit: data,
+          dateFinish: data,
+          timeInit: useOfMonth[indexDate].timeInit,
+          timeFinish: useOfMonth[indexDate].timeFinish
+        };
+      }
+    }
+
+    const newUseOfMonth = useOfMonth.map((item, index) => {
+      if (index === indexDate) {
+        item = dateTime;
+      }
+      return item;
+    });
+
+    debugger
+
+    this.setState({
+      rowForm: {
+        ...restRowForm,
+        date: {
+          useOfMonth: newUseOfMonth,
+          timeOfUse
+        }
+      }
+    });
+  };
+
+  submitData = () => {
+    this.setState(state => ({
+      send: !state.send
+    }));
+  };
+
+  deleteDates = (data, indexEquipment, indexDate) => {
+    const { date, ...restRowForm } = this.state.rowForm;
+    const { useOfMonth, timeOfUse } = date;
+
+    const newUseOfMonth = [
+      ...useOfMonth.slice(0, indexDate),
+      ...useOfMonth.slice(indexDate + 1)
+    ];
+
+    this.setState({
+      rowForm: {
+        date: {
+          useOfMonth: newUseOfMonth,
+          timeOfUse          
+        },
+        ...restRowForm
+      }
+    })
+  }
+
+  render() {
     const { columns, formatter, rowForm } = this.state;
     const { listEquipments } = this.props;
 
-    
     return (
-      <div className="card" style={{marginBottom: '120px'}}>
+      <div className="card" style={{ marginBottom: "120px" }}>
         <Table
           dataSource={[...listEquipments, rowForm]}
           columns={columns}
           pagination={false}
           className="list-equipmets"
           rowKey={(data, index) => index}
-          footer={() =>
+          footer={() => (
             <AddEquipmentsContainer
               inputNumber={this.inputNumber.bind(this)}
               formatter={formatter}
             />
-          }
+          )}
         />
       </div>
     );
