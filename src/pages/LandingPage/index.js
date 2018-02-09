@@ -18,7 +18,9 @@ class LandingPage extends Component {
         <section className="banner">
           <div className="content-banner">
             <div>
-              <img src={Logo} alt="" />
+              <div className="logo">
+                <img src={Logo} alt=""/>
+              </div>
               <h1 className="title">
                 A tarifa branca já está em vigor na sua conta de luz
               </h1>
@@ -37,7 +39,8 @@ class LandingPage extends Component {
                 />
               </Anchor>
             </div>
-            <div className="down-arrow">
+          </div>
+          <div className="down-arrow">
               <Anchor affix={false}>
                 <LinkAnchor
                   href="#white-tariff"
@@ -45,7 +48,6 @@ class LandingPage extends Component {
                 />
               </Anchor>
             </div>
-          </div>
         </section>
 
         <div id="white-tariff">
@@ -58,9 +60,8 @@ class LandingPage extends Component {
                 </div>
                 <div className="content-difference">
                   <p className="description">
-                    Com a tarifa branca há três tipos de cobranças com preços
-                    diferentes ao longo do dia, de acordo com o horário de uso
-                    dos equipamentos.
+                    A tarifa branca é um nova opção para os consumidores, já vigente em 2018, sobre a 
+                    variação do valor da conta de energia de acordo com o dia e o horário de consumo.
                   </p>
                   <div>
                     <img
@@ -81,7 +82,7 @@ class LandingPage extends Component {
           </section>
         </div>
 
-        <Footer />
+        <Footer className="footer-landing"/>
       </div>
     );
   }

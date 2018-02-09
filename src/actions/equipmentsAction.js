@@ -13,7 +13,6 @@ import {
 } from "../reducers/equipmentsReducer/constants";
 import { get, post } from "../modules/request";
 import { createObject, updateEquipments } from "./powerDistribuitorAction";
-import { GET_MONTH } from "../reducers/chooseMonthlyReducer/constants";
 
 const notificationError = (title, content) => {
   notification["error"]({

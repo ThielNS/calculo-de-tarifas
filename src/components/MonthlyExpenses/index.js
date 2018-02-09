@@ -62,7 +62,7 @@ class MonthlyExpenses extends Component {
         <div className="account-spend">
           <h2 className="title-card">Gasto Mensal</h2>
           <div className="rates-content _margin-top">
-            <div>
+            <div className="rates-item">
               <h3
                 className={
                   this.getWhiteTariffs() < this.getConventionalTariffs()
@@ -76,7 +76,7 @@ class MonthlyExpenses extends Component {
                 {formatNumber(this.getWhiteTariffs())}
               </span>
             </div>
-            <div>
+            <div className="rates-item">
               <h3
                 className={
                   this.getConventionalTariffs() < this.getWhiteTariffs()

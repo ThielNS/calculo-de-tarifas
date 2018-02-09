@@ -54,7 +54,6 @@ class ChooseMonthly extends Component {
         <Select
           className="select-monthly"
           showSearch
-          style={{ width: 200 }}
           optionFilterProp="children"
           defaultValue={this.getCurrentMonth()}
           onChange={this.handleChange}

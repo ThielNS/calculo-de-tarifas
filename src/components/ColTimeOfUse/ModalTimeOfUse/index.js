@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
-import { Modal as BoxModal, Button, DatePicker, TimePicker, Icon } from 'antd';
+import React, { Component } from "react";
+import { Modal as BoxModal, DatePicker, TimePicker } from "antd";
 import moment from "moment";
 import "./ModalTimeOfUse.less";
 import { notification } from "../../../modules/feedback";
-import { validateHours, validateMinutes } from "../../../modules/validations";
-import DateUse from './DateUse';
+import {
+  validateHours,
+  validateMinutes,
+} from "../../../modules/validations";
+import DateUse from "./DateUse";
 
 const { RangePicker } = DatePicker;
-const formatDate = "DD/MM/YYYY";
 
 const formatTime = "HH:mm";
 
@@ -15,15 +17,15 @@ class ModalTimeOfUse extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      valueRadio: 'continuous',
+      valueRadio: "continuous",
       id: 0,
       dateInit: moment().month(this.newMonth()),
       dateFinish: moment().month(this.newMonth()),
       timeInit: null,
       timeFinish: null,
-    }
+      endOpen: false,
+    };
   }
-
 
   convertDate = value => {
     if (typeof value === "string") {
@@ -38,7 +40,7 @@ class ModalTimeOfUse extends Component {
   };
 
   month = () => {
-    return this.props.getMonth
+    return this.props.getMonth;
   };
 
   newMonth = () => {
@@ -47,12 +49,11 @@ class ModalTimeOfUse extends Component {
     return month !== null ? month : dateMonth;
   };
 
-
   async shouldComponentUpdate(nextProps) {
-    if(nextProps.getMonth !== this.props.getMonth) {
+    if (nextProps.getMonth !== this.props.getMonth) {
       await this.setState(() => ({
         dateInit: moment().month(this.newMonth()),
-        dateFinish: moment().month(this.newMonth()),
+        dateFinish: moment().month(this.newMonth())
       }));
       return true;
     }
@@ -63,20 +64,22 @@ class ModalTimeOfUse extends Component {
     const { addUseOfMonth, index } = this.props;
     const newId = id + 1;
 
-    if(dateInit && dateFinish && timeInit && timeFinish) {
-
-      if(moment(timeInit).hour() === moment(timeFinish).hour() && moment(timeInit).minute() >= moment(timeFinish).minute()) {
+    if (dateInit && dateFinish && timeInit && timeFinish) {
+      if (
+        moment(timeInit).hour() === moment(timeFinish).hour() &&
+        moment(timeInit).minute() >= moment(timeFinish).minute()
+      ) {
         notification(
-          'Minuto inválido',
-          'O minuto da hora final deve ser maior que o minuto da hora inicial',
-          'error'
-        )
-      } else if(moment(timeInit).hour() > moment(timeFinish).hour()) {
+          "Minuto inválido",
+          "O minuto da hora final deve ser maior que o minuto da hora inicial",
+          "error"
+        );
+      } else if (moment(timeInit).hour() > moment(timeFinish).hour()) {
         notification(
-          'Hora inválida',
-          'A hora final deve ser maior ou igual à hora inicial',
-          'error'
-        )
+          "Hora inválida",
+          "A hora final deve ser maior ou igual à hora inicial",
+          "error"
+        );
       } else {
         const date = {
           id: newId,
@@ -97,8 +100,7 @@ class ModalTimeOfUse extends Component {
         });
       }
     }
-
-  };
+  }
 
   changeDatePicker = date => {
     this.setState({
@@ -121,27 +123,23 @@ class ModalTimeOfUse extends Component {
   };
 
   dateRender = current => {
-    if(current.month() === this.month()) {
-      return (
-        <div className="ant-calendar-date">
-          {current.date()}
-        </div>
-      )
+    if (current.month() === this.month()) {
+      return <div className="ant-calendar-date">{current.date()}</div>;
     } else {
       return <div className="ant-calendar-date">{current.date()}</div>;
     }
   };
 
   disabledDate = current => {
-
-    if(!current) return false;
+    if (!current) return false;
     const cMonth = current.month();
-    const mMonth = moment().month(this.newMonth()).month();
+    const mMonth = moment()
+      .month(this.newMonth())
+      .month();
     const cYear = current.year();
     const mYear = moment().year();
 
     return cMonth !== mMonth || cYear !== mYear;
-
   };
 
   convertMoment = (value, format) => {
@@ -150,16 +148,17 @@ class ModalTimeOfUse extends Component {
 
   renderDate = (item, indexDate) => {
     return (
-    <DateUse
-      {...this.props}
-      convertMoment={this.convertMoment}
-      item={item}
-      indexDate={indexDate}
-      convertDate={this.convertDate}
-      dateRender={this.dateRender}
-      disabledDate={this.disabledDate}
-      renderTime={this.renderTime}
-    />)
+      <DateUse
+        {...this.props}
+        convertMoment={this.convertMoment}
+        item={item}
+        indexDate={indexDate}
+        convertDate={this.convertDate}
+        dateRender={this.dateRender}
+        disabledDate={this.disabledDate}
+        renderTime={this.renderTime}
+      />
+    );
     // const { editUseOfMonth, index, deleteDates, listEquipments } = this.props;
     // const { RangePicker } = DatePicker;
     // const convertMoment = this.convertMoment;
@@ -205,13 +204,10 @@ class ModalTimeOfUse extends Component {
     //     </div>
     //   );
     // }
-
   };
 
   renderTime = (timeInit = null, timeFinish = null, indexDate) => {
     const { editUseOfMonth, index } = this.props;
-
-
     return (
       <div className="row ant-col-sm-12">
         <TimePicker
@@ -227,33 +223,35 @@ class ModalTimeOfUse extends Component {
           placeholder="Hora fim"
           className="imput-time"
           disabledHours={() => validateHours(timeInit)}
-          disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
-          onChange={data => editUseOfMonth(data, indexDate, index, 'timeFinish')}
+          disabledMinutes={hour => validateMinutes(timeInit, timeFinish)}
+          onChange={data =>
+            editUseOfMonth(data, indexDate, index, "timeFinish")}
         />
       </div>
     );
   };
 
   renderDatePicker = () => {
-    const { useOfMonth, index } = this.props;
+    const { useOfMonth } = this.props;
 
     return useOfMonth.map((item, indexDate) => {
       //FIXME: Resolver esta gambiarra
       return (
-      <div key={Math.random()} className="_margin-bottom">
-        <DateUse
-          key={indexDate}
-          {...this.props}
-          convertMoment={this.convertMoment}
-          item={item}
-          indexDate={indexDate}
-          convertDate={this.convertDate}
-          dateRender={this.dateRender}
-          disabledDate={this.disabledDate}
-          renderTime={this.renderTime}
-        />
-      </div>
-    )});
+        <div key={Math.random()} className="_margin-bottom">
+          <DateUse
+            key={indexDate}
+            {...this.props}
+            convertMoment={this.convertMoment}
+            item={item}
+            indexDate={indexDate}
+            convertDate={this.convertDate}
+            dateRender={this.dateRender}
+            disabledDate={this.disabledDate}
+            renderTime={this.renderTime}
+          />
+        </div>
+      );
+    });
   };
 
   changeOnOk = () => {
@@ -277,13 +275,21 @@ class ModalTimeOfUse extends Component {
     if (timeInit && timeFinish) {
       this.setState({
         timeInit: null,
-        timeFinish: null
+        timeFinish: null,
       });
       closeModal();
     } else {
       closeModal();
     }
   };
+
+handleEndOpenChange = (open) => {
+  if(!open) {
+    this.setState({
+
+    })
+  }
+}
 
   render() {
     const { nameEquipment, visibleModal, useOfMonth } = this.props;
@@ -316,7 +322,8 @@ class ModalTimeOfUse extends Component {
                 <div>
                   <label>Data inicial/final</label>
                   <RangePicker
-s                   onChange={this.changeRangePicker}
+                    s
+                    onChange={this.changeRangePicker}
                     dateRender={this.dateRender}
                     disabledDate={this.disabledDate}
                     format={"DD/MM/YYYY"}
@@ -352,8 +359,9 @@ s                   onChange={this.changeRangePicker}
                   format={formatTime}
                   placeholder="Hora fim"
                   disabledHours={() => validateHours(timeInit)}
-                  disabledMinutes={(hour) => validateMinutes(timeInit, timeFinish)}
-                  onChange={data => this.changeTime(data, 'timeFinish')}
+                  disabledMinutes={hour =>
+                    validateMinutes(timeInit, timeFinish)}
+                  onChange={data => this.changeTime(data, "timeFinish")}
                 />
               </div>
             </div>

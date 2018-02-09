@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Button, Icon, InputNumber, Table, Input, Select } from "antd";
+import { Button, Icon, InputNumber, Table, Input } from "antd";
 import { formatNumber, notification } from "../../modules/feedback";
 import { compareHours } from "../../modules/validations";
-import AddEquipmentsContainer from "../../containers/AddEquipmentsContainer";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
 import ColTimeOfUse from "../ColTimeOfUse";
 import SelectEquipments from "../SelectEquipments";
@@ -115,10 +114,7 @@ class ListEquipments extends Component {
           send: !send
         });
       } else {
-        notification["error"]({
-          message: "Distribuidora não encontrada",
-          description: "Adicione uma distribuidora"
-        });
+        notification("Distribuidora não encontrada","Adicione uma distribuidora",'error');
       }
     }
   }
@@ -443,23 +439,18 @@ class ListEquipments extends Component {
   }
 
   render() {
-    const { columns, formatter, rowForm } = this.state;
+    const { columns, rowForm } = this.state;
     const { listEquipments } = this.props;
 
     return (
-      <div className="card" style={{ marginBottom: "120px" }}>
+      <div className="card _margin-bottom-space">
         <Table
           dataSource={[...listEquipments, rowForm]}
           columns={columns}
           pagination={false}
           className="list-equipmets"
           rowKey={(data, index) => index}
-          footer={() => (
-            <AddEquipmentsContainer
-              inputNumber={this.inputNumber.bind(this)}
-              formatter={formatter}
-            />
-          )}
+          scroll={{x: 900}}
         />
       </div>
     );

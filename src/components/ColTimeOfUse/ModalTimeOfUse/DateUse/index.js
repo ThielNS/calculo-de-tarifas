@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Icon, Button, DatePicker } from "antd";
+import { Button, DatePicker } from "antd";
 
 const formatDate = "DD/MM/YYYY";
 
@@ -24,8 +24,6 @@ class DateUse extends Component {
     const {
       editUseOfMonth,
       index,
-      deleteDates,
-      listEquipments,
       convertMoment,
       convertDate,
       dateRender

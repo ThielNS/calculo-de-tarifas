@@ -209,7 +209,8 @@ class AddEquipments extends Component {
     ));
 
     return (
-      <Row className="add-equipments">
+      <div></div>
+   /*    <Row className="add-equipments">
         <Col span="5">
           <Select
             mode="combobox"
@@ -250,7 +251,7 @@ class AddEquipments extends Component {
         <Col span="4" className="price _margin-right">
           {conventionalTariff}
         </Col>
-      </Row>
+      </Row> */
     );
   }
 }
