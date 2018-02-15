@@ -12,6 +12,11 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
+const fs  = require('fs');
+
+const lessToJs = require('less-vars-to-js');
+const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, '../src/assets/styles/defaultTheme.less'), 'utf8'));
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -149,8 +154,8 @@ module.exports = {
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
               cacheDirectory: true,
-              "plugins": [
-                ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] // `style: true` for less
+              plugins: [
+                ['import', { libraryName: "antd", libraryDirectory: 'es', style: 'css' }]
               ]
             },
           },
@@ -200,7 +205,8 @@ module.exports = {
             }, {
               loader: "less-loader", options: {
                 strictMath: true,
-                noIeCompat: true
+                noIeCompat: true,
+                modifyVars: themeVariables
               }
             }]
           },
