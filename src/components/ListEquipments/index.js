@@ -114,7 +114,7 @@ class ListEquipments extends Component {
           send: !send
         });
       } else {
-        notification("Distribuidora não encontrada","Adicione uma distribuidora",'error');
+        notification("Concessionária não encontrada","Adicione uma Concessionária",'error');
       }
     }
   }
@@ -398,8 +398,6 @@ class ListEquipments extends Component {
       }
       return item;
     });
-
-    debugger
 
     this.setState({
       rowForm: {

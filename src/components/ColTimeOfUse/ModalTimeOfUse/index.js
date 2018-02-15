@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import { Modal as BoxModal, DatePicker, TimePicker } from "antd";
+import { Modal as BoxModal, DatePicker, TimePicker, Row, Col } from "antd";
 import moment from "moment";
 import "./ModalTimeOfUse.less";
 import { notification } from "../../../modules/feedback";
-import {
-  validateHours,
-  validateMinutes,
-} from "../../../modules/validations";
+import { validateHours, validateMinutes } from "../../../modules/validations";
 import DateUse from "./DateUse";
 
 const { RangePicker } = DatePicker;
@@ -23,7 +20,7 @@ class ModalTimeOfUse extends Component {
       dateFinish: moment().month(this.newMonth()),
       timeInit: null,
       timeFinish: null,
-      endOpen: false,
+      endOpen: false
     };
   }
 
@@ -209,7 +206,7 @@ class ModalTimeOfUse extends Component {
   renderTime = (timeInit = null, timeFinish = null, indexDate) => {
     const { editUseOfMonth, index } = this.props;
     return (
-      <div className="row ant-col-sm-12">
+      <div className="row">
         <TimePicker
           defaultValue={this.convertMoment(timeInit, formatTime)}
           format={formatTime}
@@ -275,7 +272,7 @@ class ModalTimeOfUse extends Component {
     if (timeInit && timeFinish) {
       this.setState({
         timeInit: null,
-        timeFinish: null,
+        timeFinish: null
       });
       closeModal();
     } else {
@@ -283,13 +280,11 @@ class ModalTimeOfUse extends Component {
     }
   };
 
-handleEndOpenChange = (open) => {
-  if(!open) {
-    this.setState({
-
-    })
-  }
-}
+  handleEndOpenChange = open => {
+    if (!open) {
+      this.setState({});
+    }
+  };
 
   render() {
     const { nameEquipment, visibleModal, useOfMonth } = this.props;
@@ -317,54 +312,65 @@ handleEndOpenChange = (open) => {
             {this.renderDatePicker()}
           </div>
           <div>
-            <div className="row">
-              {valueRadio === "continuous" ? (
-                <div>
-                  <label>Data inicial/final</label>
-                  <RangePicker
-                    s
-                    onChange={this.changeRangePicker}
-                    dateRender={this.dateRender}
-                    disabledDate={this.disabledDate}
-                    format={"DD/MM/YYYY"}
-                    className="_margin-right"
-                    value={[dateInit, dateFinish]}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <label>Dia</label>
-                  <DatePicker
-                    onChange={this.changeDatePicker}
-                    disabledDate={this.disabledDate}
-                    format={"DD/MM/YYYY"}
-                    className="_margin-right"
-                    value={dateInit}
-                  />
-                </div>
-              )}
-              <div className="input-time _margin-right">
-                <label>Hora inicial</label>
-                <TimePicker
-                  value={this.convertMoment(timeInit)}
-                  format={formatTime}
-                  placeholder="Hora inicio"
-                  onChange={data => this.changeTime(data, "timeInit")}
-                />
-              </div>
-              <div className="input-time">
-                <label>Hora final</label>
-                <TimePicker
-                  value={this.convertMoment(timeFinish)}
-                  format={formatTime}
-                  placeholder="Hora fim"
-                  disabledHours={() => validateHours(timeInit)}
-                  disabledMinutes={hour =>
-                    validateMinutes(timeInit, timeFinish)}
-                  onChange={data => this.changeTime(data, "timeFinish")}
-                />
-              </div>
-            </div>
+            <Row gutter={20}>
+              <Col span={24} sm={10}>
+                {valueRadio === "continuous" ? (
+                  <div className="row -direction-column">
+                    <label>Data inicial/final</label>
+                    <RangePicker
+                      onChange={this.changeRangePicker}
+                      dateRender={this.dateRender}
+                      disabledDate={this.disabledDate}
+                      format={"DD/MM/YYYY"}
+                      className="date-picker"
+                      value={[dateInit, dateFinish]}
+                    />
+                  </div>
+                ) : (
+                  <div className="row -direction-column">
+                    <label>Dia</label>
+                    <DatePicker
+                      onChange={this.changeDatePicker}
+                      disabledDate={this.disabledDate}
+                      format={"DD/MM/YYYY"}
+                      className="date-picker"
+                      value={dateInit}
+                    />
+                  </div>
+                )}
+              </Col>
+              <Col span={24} sm={14}>
+                <Row gutter={20}>
+                  <Col span={12}>
+                    <div className="row -direction-column">
+                      <label>Hora inicial</label>
+                      <TimePicker
+                        className="time-picker"
+                        value={this.convertMoment(timeInit)}
+                        format={formatTime}
+                        placeholder="Hora inicio"
+                        onChange={data => this.changeTime(data, "timeInit")}
+                      />
+                    </div>
+                  </Col>
+                  <Col span={12}>
+                    <div className="row -direction-column">
+                      <label>Hora final</label>
+                      <TimePicker
+                        className="time-picker"
+                        value={this.convertMoment(timeFinish)}
+                        format={formatTime}
+                        placeholder="Hora fim"
+                        disabledHours={() => validateHours(timeInit)}
+                        disabledMinutes={hour =>
+                          validateMinutes(timeInit, timeFinish)}
+                        onChange={data => this.changeTime(data, "timeFinish")}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           </div>
         </BoxModal>
       </div>

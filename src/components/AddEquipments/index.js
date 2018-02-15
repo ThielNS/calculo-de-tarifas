@@ -55,8 +55,8 @@ class AddEquipments extends Component {
         });
       } else {
         notification["error"]({
-          message: "Distribuidora não encontrada",
-          description: "Adicione uma distribuidora"
+          message: "Concessionária não encontrada",
+          description: "Adicione uma concessionária"
         });
       }
     }
