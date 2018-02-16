@@ -27,15 +27,22 @@ export const validateMinutes = (timeInit, timeFinish) => {
   return minutes;
 };
 
-export const compareHours = (timeInit, timeFinish) => {
-  const hourInit = moment(timeInit, formatHours).hour();
-  const hourFinish = moment(timeFinish, formatHours).hours();
-  const minuteInit = moment(timeInit, formatHours).minute();
-  const minuteFinish = moment(timeFinish, formatHours).minute();
+export const compareTime = (timeInit, timeFinish, type) => {
 
-  if (hourInit === hourFinish) {
-    return minuteFinish <= minuteInit;
-  } else {
-    return false;
+  let hourInit = moment(timeInit, formatHours).hour();
+  let hourFinish = moment(timeFinish, formatHours).hour();
+
+  let minuteInit = moment(timeInit, formatHours).minute();
+  let minuteFinish = moment(timeFinish, formatHours).minute();
+
+  console.log(hourInit, hourFinish, minuteInit, minuteFinish, type);
+
+  if(type === 'hour') {
+    return hourInit > hourFinish;
+  } else if(type === 'minute') {
+    return (hourInit === hourFinish && minuteInit >= minuteFinish) || (hourInit > hourFinish)
   }
+
+  return false
+
 };

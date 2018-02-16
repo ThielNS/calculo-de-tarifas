@@ -37,6 +37,7 @@ class DateUse extends Component {
         <Col span={24} sm={10}>
           <RangePicker
             onChange={data => editUseOfMonth(data, indexDate, index)}
+            allowClear={false}
             dateRender={dateRender}
             disabledDate={disabledDate}
             format={formatDate}
@@ -72,6 +73,7 @@ class DateUse extends Component {
         <Col span={24} sm={10}>
           <DatePicker
             onChange={data => editUseOfMonth(data, indexDate, index)}
+            allowClear={false}
             disabledDate={disabledDate}
             format={formatDate}
             className="date-picker ant-col-24"

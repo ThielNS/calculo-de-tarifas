@@ -143,80 +143,22 @@ class ModalTimeOfUse extends Component {
     return value !== null ? moment(value, format) : null;
   };
 
-  renderDate = (item, indexDate) => {
-    return (
-      <DateUse
-        {...this.props}
-        convertMoment={this.convertMoment}
-        item={item}
-        indexDate={indexDate}
-        convertDate={this.convertDate}
-        dateRender={this.dateRender}
-        disabledDate={this.disabledDate}
-        renderTime={this.renderTime}
-      />
-    );
-    // const { editUseOfMonth, index, deleteDates, listEquipments } = this.props;
-    // const { RangePicker } = DatePicker;
-    // const convertMoment = this.convertMoment;
-
-    // if (item.dateInit !== item.dateFinish) {
-    //   return (
-    //     <div className="row">
-    //       <RangePicker
-    //         onChange={data => editUseOfMonth(data, indexDate, index)}
-    //         dateRender={this.dateRender}
-    //         disabledDate={this.disabledDate}
-    //         format={formatDate}
-    //         className="_margin-right"
-    //         defaultValue={[
-    //           convertMoment(this.convertDate(item.dateInit), formatDate),
-    //           convertMoment(this.convertDate(item.dateFinish), formatDate)
-    //         ]}
-    //       />
-    //       {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
-
-    //       <button onClick={() => deleteDates(listEquipments, index, indexDate)}>
-    //         <Icon type="delete" />
-    //       </button>
-    //     </div>
-    //   );
-    // } else if (item.dateInit === item.dateFinish) {
-    //   return (
-    //     <div className="row">
-    //       <DatePicker
-    //         onChange={data => editUseOfMonth(data, indexDate, index)}
-    //         disabledDate={this.disabledDate}
-    //         format={formatDate}
-    //         className="_margin-right"
-    //         defaultValue={convertMoment(
-    //           this.convertDate(item.dateInit),
-    //           formatDate
-    //         )}
-    //       />
-    //       {this.renderTime(item.timeInit, item.timeFinish, indexDate)}
-    //       <button onClick={() => deleteDates(listEquipments, index, indexDate)}>
-    //         <Icon type="delete" />
-    //       </button>
-    //     </div>
-    //   );
-    // }
-  };
-
   renderTime = (timeInit = null, timeFinish = null, indexDate) => {
     const { editUseOfMonth, index } = this.props;
     return (
       <div className="row">
         <TimePicker
-          defaultValue={this.convertMoment(timeInit, formatTime)}
+          value={this.convertMoment(timeInit, formatTime)}
           format={formatTime}
           placeholder="Hora inicio"
           className="input-time _margin-right"
+          allowEmpty={false}
           onChange={data => editUseOfMonth(data, indexDate, index, "timeInit")}
         />
         <TimePicker
-          defaultValue={this.convertMoment(timeFinish, formatTime)}
+          value={this.convertMoment(timeFinish, formatTime)}
           format={formatTime}
+          allowEmpty={false}
           placeholder="Hora fim"
           className="imput-time"
           disabledHours={() => validateHours(timeInit)}

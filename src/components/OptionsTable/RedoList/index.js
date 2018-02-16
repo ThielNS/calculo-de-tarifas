@@ -46,7 +46,7 @@ class RedoList extends Component {
 
         return (
             <div className="modal-redolist">
-                <Button icon="reload" onClick={this.showModal} className="btn-redo-list">Refazer Lista</Button>
+                <Button icon="reload" onClick={this.showModal} className="btn-redo-list" type="warning">Refazer Lista</Button>
                 <Modal title="Refazer lista"
                     visible={visible}
                     onOk={() => this.handleOk()}

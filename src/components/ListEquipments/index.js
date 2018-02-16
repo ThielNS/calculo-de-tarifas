@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Button, Icon, InputNumber, Table, Input } from "antd";
 import { formatNumber, notification } from "../../modules/feedback";
-import { compareHours } from "../../modules/validations";
+import { compareHours, compareMinutes, compareTime } from "../../modules/validations";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
 import ColTimeOfUse from "../ColTimeOfUse";
 import SelectEquipments from "../SelectEquipments";
 import "./listEquipments.less";
+import moment from "moment";
 
 class ListEquipments extends Component {
   constructor(props) {
@@ -178,7 +179,8 @@ class ListEquipments extends Component {
     this.props.addUseOfMonth(data, index);
   };
 
-  editUseOfMonth = (data, indexDate, indexEquipment, isTime = null) => {
+  editUseOfMonth = async (data, indexDate, indexEquipment, isTime = null) => {
+
     const { listEquipments, editUseOfMonth } = this.props;
 
     let dateTime = {};
@@ -187,10 +189,28 @@ class ListEquipments extends Component {
 
     let { timeInit, timeFinish } = date.useOfMonth[indexDate];
 
-    if (compareHours(timeInit, timeFinish)) {
+    if (isTime === 'timeInit' && compareTime(data, timeFinish, 'hour')) {
       notification(
         "Hora inválida",
         "A hora final deve ser maior ou igual à hora inicial",
+        "error"
+      );
+    } else if(isTime === 'timeFinish' && compareTime(timeInit, data, 'hour')){
+      notification(
+        "Hora inválida",
+        "A hora final deve ser maior ou igual à hora inicial",
+        "error"
+      );
+    } else if(isTime === 'timeInit' && compareTime(data, timeFinish, 'minute')){
+      notification(
+        "Minuto inválido",
+        "O minuto inicial deve ser maior que o minuto final",
+        "error"
+      );
+    } else if(isTime === 'timeFinish' && compareTime(timeInit, data, 'minute')){
+      notification(
+        "Minuto inválido",
+        "O minuto inicial deve ser maior que o minuto final",
         "error"
       );
     } else {
