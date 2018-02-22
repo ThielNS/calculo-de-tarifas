@@ -35,8 +35,6 @@ export const compareTime = (timeInit, timeFinish, type) => {
   let minuteInit = moment(timeInit, formatHours).minute();
   let minuteFinish = moment(timeFinish, formatHours).minute();
 
-  console.log(hourInit, hourFinish, minuteInit, minuteFinish, type);
-
   if(type === 'hour') {
     return hourInit > hourFinish;
   } else if(type === 'minute') {

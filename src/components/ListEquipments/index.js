@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { Button, Icon, InputNumber, Table, Input } from "antd";
 import { formatNumber, notification } from "../../modules/feedback";
-import { compareHours, compareMinutes, compareTime } from "../../modules/validations";
+import {compareTime } from "../../modules/validations";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
 import ColTimeOfUse from "../ColTimeOfUse";
 import SelectEquipments from "../SelectEquipments";
 import "./listEquipments.less";
-import moment from "moment";
 
 class ListEquipments extends Component {
   constructor(props) {

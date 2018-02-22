@@ -1,4 +1,5 @@
 import { notification } from "antd";
+import moment from "moment";
 
 import {
   ADD_EQUIPMENT,
@@ -246,11 +247,11 @@ export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
   });
 };
 
-const convertDate = (date, month) => {
+/* const convertDate = (date, month) => {
   let year = date.substr(0, 4);
   let day = date.substr(8, 2);
   let newMonth;
-
+  
   if (month <= 9) {
     newMonth = `0${month + 1}`;
   } else {
@@ -259,16 +260,25 @@ const convertDate = (date, month) => {
 
   return `${year}-${newMonth}-${day}`;
 };
+ */
 
 export const changeListEquipments = (dataList, changeValue, method = null) => {
+  let lastDay = moment().month(changeValue).endOf(`month`).format(`DD`);
+
   return dataList.map(item => {
     item.date.useOfMonth.map(dateTime => {
-      dateTime.dateInit = convertDate(dateTime.dateInit, changeValue);
-      dateTime.dateFinish = convertDate(dateTime.dateFinish, changeValue);
+      dateTime.dateInit = moment(dateTime.dateInit).month(changeValue);
+      dateTime.dateFinish = moment(dateTime.dateFinish).month(changeValue);
 
+      if(dateTime.dateInit.date() > lastDay || dateTime.dateFinish.date() > lastDay ) {
+        dateTime.dateInit = dateTime.dateInit.date(lastDay);
+        dateTime.dateFinish = dateTime.dateFinish.date(lastDay);
+      } 
+
+      dateTime.dateInit = dateTime.dateInit.format('YYYY-MM-DD');
+      dateTime.dateFinish = dateTime.dateFinish.format('YYYY-MM-DD');
       return dateTime;
     });
-
     return item;
   });
 };
