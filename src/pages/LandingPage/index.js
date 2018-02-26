@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Icon, Anchor } from "antd";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/LogoLandingPage.png";
-import DrawDifference from "../../assets/images/difference-illustration.png";
+import DrawDifference from "../../assets/images/draw-landingpg.png";
 import Footer from "../../components/Footer";
 import "./landingPage.less";
 
@@ -60,8 +60,9 @@ class LandingPage extends Component {
                 </div>
                 <div className="content-difference">
                   <p className="description">
-                    A tarifa branca é um nova opção para os consumidores, já vigente em 2018, sobre a 
-                    variação do valor da conta de energia de acordo com o dia e o horário de consumo.
+                    A tarifa branca é um nova opção que sinaliza aos consumidores a variação do valor de energia de acordo com o dia e o horário
+                    de consumo.
+                    A tarifa convencional é caracterizada por tarifas de consumo de energia, sem considerar as horas de utilização.
                   </p>
                   <div>
                     <img
