@@ -1,9 +1,9 @@
-let itemsDistribuitors = localStorage.getItem('itemsDistribuitors');
+let itemsDistribuitors = localStorage.getItem("itemsDistribuitors");
 
-itemsDistribuitors = itemsDistribuitors ? JSON.parse(itemsDistribuitors) : [];
+itemsDistribuitors = itemsDistribuitors === undefined ? JSON.parse(itemsDistribuitors) : [];
 
 export const initialState = itemsDistribuitors;
 
 export const localStorageSetItem = value => {
-  localStorage.setItem('itemsDistribuitors', JSON.stringify(value));
+  localStorage.setItem("itemsDistribuitors", JSON.stringify(value));
 };

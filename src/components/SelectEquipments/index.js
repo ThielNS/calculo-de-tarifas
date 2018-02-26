@@ -7,33 +7,55 @@ class SelectEquipment extends Component {
 
     this.state = {
       nameEquipment: "",
-      placeholder: 'Inserir Equipamento',
-      equipments: []
+      placeholder: "Inserir Equipamento",
+      equipments: [],
+      lock: false
     };
   }
 
   handleChange = value => {
-    const { searchEquipments } = this.props;
+    const { lock } = this.state;
+    const { searchEquipments, handleChangeEquipment, getPower } = this.props;
+    if (!this.state.power) {
+      this.setState({
+        power: 1
+      });
+    }
+
+    if (!lock) {
+      handleChangeEquipment(value, getPower());
+    }
+
     this.setState({ nameEquipment: value });
+    if(this.state.power === 0 || this.state.power === undefined) {
+      console.log('power undefined or 0')
+    }
 
     searchEquipments(value)
       .then(data => {
-        this.setState({ equipments: data });
+        if (data) {
+          this.setState({ equipments: data, power: 1});
+        } 
       })
       .catch(e => {
         console.log(e, "erro");
       });
   };
 
-  handleSelect = (value, option) => {
+  handleSelect = async (value, option) => {
+    await this.setState({ lock: true });
+
     const { power, nameEquipment } = option.props;
     const { handleChangeEquipment } = this.props;
 
-    handleChangeEquipment(power, nameEquipment);
-    
-    this.setState({
-      nameEquipment: value
+    handleChangeEquipment(nameEquipment, power);
+
+    await this.setState({
+      nameEquipment: value,
+      power:1
     });
+
+    await this.setState({ lock: false });
   };
 
   renderOptions = () => {
@@ -41,7 +63,11 @@ class SelectEquipment extends Component {
     const { equipments } = this.state;
 
     return equipments.map((item, index) => (
-      <Option key={item.name} power={item.defaultPower} nameEquipment={item.name}>
+      <Option
+        key={item.name}
+        power={item.defaultPower}
+        nameEquipment={item.name}
+      >
         {`${item.name} | ${item.defaultPower}W`}
       </Option>
     ));

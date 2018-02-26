@@ -75,10 +75,12 @@ class AddEquipments extends Component {
   handleChange = value => {
     const { searchEquipments } = this.props;
     this.setState({ nameEquipment: value });
-
+    console.log(value)
     searchEquipments(value)
       .then(data => {
-        this.setState({ equipments: data });
+        if(data){
+          this.setState({ equipments: data });    
+        }
       })
       .catch(e => {
         console.log(e, "erro");
@@ -87,7 +89,7 @@ class AddEquipments extends Component {
 
   handleSelect = (value, option) => {
     const { power } = option.props;
-
+ 
     this.setState({
       nameEquipment: value,
       power

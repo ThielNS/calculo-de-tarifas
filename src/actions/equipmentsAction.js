@@ -151,7 +151,7 @@ export const addEquipment = data => dispatch => {
 
   post("calculate", newObj).then(response => {
     newData.date.timeOfUse = response[0].timeOfUse;
-    newData.whiteTariff = response[0].whiteTariffEnergySpending;
+    newData.whiteTariff = response[0].whiteTariffEnergySpending;    
     newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
     return dispatch({
       type: ADD_EQUIPMENT,
@@ -178,7 +178,10 @@ export const editEquipments = (data, index) => dispatch => {
     .then(response => {
       newData.date.timeOfUse = response[0].timeOfUse;
       newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      console.log(newData.whiteTariff)
       newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      console.log(newData.conventionalTariff)
+      
       dispatch({
         type: EDIT_EQUIPMENTS,
         dataItem: newData,
@@ -196,7 +199,7 @@ export const editEquipments = (data, index) => dispatch => {
           "Erro ao Editar",
           "Quantidade deve ser um número inteiro"
         );
-      }
+      } 
     });
 };
 

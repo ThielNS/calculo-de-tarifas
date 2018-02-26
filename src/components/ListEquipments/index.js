@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Icon, InputNumber, Table, Input } from "antd";
 import { formatNumber, notification } from "../../modules/feedback";
-import {compareTime } from "../../modules/validations";
+import { compareTime } from "../../modules/validations";
 import ColTimeOfUseContainer from "../../containers/ColTimeOfUseContainer";
 import ColTimeOfUse from "../ColTimeOfUse";
 import SelectEquipments from "../SelectEquipments";
@@ -11,19 +11,19 @@ class ListEquipments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      power: 0,
+      power: 1,
       quantity: 1,
       useOfMonth: [],
       rowForm: {
         nameEquipment: "",
-        power: 0,
+        power: 1,
         quantity: 1,
         date: {
           timeOfUse: "0h",
           useOfMonth: []
         },
-        whiteTariff: 0.00,
-        conventionalTariff: 0.00,
+        whiteTariff: 0.0,
+        conventionalTariff: 0.0,
         form: true
       },
       columns: [
@@ -75,15 +75,21 @@ class ListEquipments extends Component {
         formatter: value => `${value}W`,
         parser: value => value.replace("W", "")
       },
-      send: false,
+      send: false
     };
   }
 
   componentDidUpdate() {
     const { rowForm, send } = this.state;
-    const {nameEquipment, power, quantity, date } = rowForm;
-    const {useOfMonth} = date;
+    const { nameEquipment, power, quantity, date } = rowForm;
+    const { useOfMonth } = date;
     const { addEquipment } = this.props;
+
+    // console.log(nameEquipment, "NAME EQUIPMENT");
+    // console.log(power, "power");
+    // console.log(quantity, "quantity");
+    // console.log(useOfMonth, "useOfMonth");
+    // console.log(send, "send");
 
     if (
       nameEquipment &&
@@ -94,8 +100,10 @@ class ListEquipments extends Component {
     ) {
       const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
 
+      console.log("antes do check", powerDistribuitorId);
+
       if (powerDistribuitorId) {
-        
+        console.log("depois do check");
         addEquipment(rowForm);
 
         this.setState({
@@ -104,29 +112,34 @@ class ListEquipments extends Component {
             power: 0,
             quantity: 1,
             date: {
-              timeOfUse: "0h",              
-              useOfMonth: [],
+              timeOfUse: "0h",
+              useOfMonth: []
             },
-            whiteTariff: 0.00,
-            conventionalTariff: 0.00,
+            whiteTariff: 0.0,
+            conventionalTariff: 0.0,
             form: true
           },
           send: !send
         });
       } else {
-        notification("Concessionária não encontrada","Adicione uma Concessionária",'error');
+        notification(
+          "Concessionária não encontrada",
+          "Adicione uma Concessionária",
+          "error"
+        );
       }
     }
   }
 
   inputSearch = (value, data, index) => {
     const { editNameEquipment, searchEquipments } = this.props;
-    
+
     if (data.form) {
       return (
         <SelectEquipments
           searchEquipments={searchEquipments}
           handleChangeEquipment={this.handleChangeEquipment}
+          getPower={this.getPower}
         />
       );
     } else {
@@ -155,19 +168,51 @@ class ListEquipments extends Component {
 
     let newData = { nameEquipment, ...item };
 
+    if (newData.power === 0 || newData.power === "") {
+      newData.power = 0.01;
+      this.setState({ power: 0.01 });
+    }
+
+    if (newData.quantity === 0 || newData.quantity === "") {
+      newData.quantity = 1;
+      this.setState({ quantity: 1 });
+    }
+
     editEquipments(newData, index);
   };
 
-  handleChangeEquipment = (powerEquipment, name) => {
+  handleChangeEquipment = (name, powerEquipment) => {
     let { rowForm } = this.state;
     const { power, nameEquipment, ...restRowForm } = rowForm;
-    this.setState({
-      rowForm: {
-        ...restRowForm,
-        power: powerEquipment,
-        nameEquipment: name
-      }
-    });
+
+    if (powerEquipment) {
+      this.setState({
+        rowForm: {
+          ...restRowForm,
+          power: powerEquipment,
+          nameEquipment: name
+        }
+      });
+    } else {
+      this.setState({
+        rowForm: {
+          ...restRowForm,
+          nameEquipment: name
+        }
+      });
+    }
+  };
+
+  getPower = () => {
+    // let { rowForm } = this.state;
+    const { power } = this.state.rowForm;
+    if(power === undefined) {
+      this.setState({
+        power: 1
+      })
+    }
+    console.log(power);
+    return power;
   };
 
   addUseOfMonth = (dates, index) => {
@@ -179,7 +224,6 @@ class ListEquipments extends Component {
   };
 
   editUseOfMonth = async (data, indexDate, indexEquipment, isTime = null) => {
-
     const { listEquipments, editUseOfMonth } = this.props;
 
     let dateTime = {};
@@ -188,25 +232,31 @@ class ListEquipments extends Component {
 
     let { timeInit, timeFinish } = date.useOfMonth[indexDate];
 
-    if (isTime === 'timeInit' && compareTime(data, timeFinish, 'hour')) {
+    if (isTime === "timeInit" && compareTime(data, timeFinish, "hour")) {
       notification(
         "Hora inválida",
         "A hora final deve ser maior ou igual à hora inicial",
         "error"
       );
-    } else if(isTime === 'timeFinish' && compareTime(timeInit, data, 'hour')){
+    } else if (isTime === "timeFinish" && compareTime(timeInit, data, "hour")) {
       notification(
         "Hora inválida",
         "A hora final deve ser maior ou igual à hora inicial",
         "error"
       );
-    } else if(isTime === 'timeInit' && compareTime(data, timeFinish, 'minute')){
+    } else if (
+      isTime === "timeInit" &&
+      compareTime(data, timeFinish, "minute")
+    ) {
       notification(
         "Minuto inválido",
         "O minuto inicial deve ser maior que o minuto final",
         "error"
       );
-    } else if(isTime === 'timeFinish' && compareTime(timeInit, data, 'minute')){
+    } else if (
+      isTime === "timeFinish" &&
+      compareTime(timeInit, data, "minute")
+    ) {
       notification(
         "Minuto inválido",
         "O minuto inicial deve ser maior que o minuto final",
@@ -375,7 +425,7 @@ class ListEquipments extends Component {
   editUseOfMonthInsert = (data, indexDate, indexEquipment, isTime = null) => {
     const { rowForm } = this.state;
     const { useOfMonth, timeOfUse } = rowForm.date;
-    let { ...restRowForm } = rowForm
+    let { ...restRowForm } = rowForm;
 
     let dateTime = {};
 
@@ -383,7 +433,7 @@ class ListEquipments extends Component {
       dateTime = {
         dateInit: useOfMonth[indexDate].dateInit,
         dateFinish: useOfMonth[indexDate].dateFinish,
-        timeInit: {...data},
+        timeInit: { ...data },
         timeFinish: useOfMonth[indexDate].timeFinish
       };
     } else if (isTime === "timeFinish") {
@@ -448,12 +498,12 @@ class ListEquipments extends Component {
       rowForm: {
         date: {
           useOfMonth: newUseOfMonth,
-          timeOfUse          
+          timeOfUse
         },
         ...restRowForm
       }
-    })
-  }
+    });
+  };
 
   render() {
     const { columns, rowForm } = this.state;
@@ -467,7 +517,7 @@ class ListEquipments extends Component {
           pagination={false}
           className="list-equipmets"
           rowKey={(data, index) => index}
-          scroll={{x: 900}}
+          scroll={{ x: 900 }}
         />
       </div>
     );
