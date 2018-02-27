@@ -149,7 +149,12 @@ class ListEquipments extends Component {
     }
   };
 
-  editEquipment = (value, type, data, index) => {
+  editEquipment = (value, type, data, index, event) => {
+    if (!/^[0-9]*$/.test(value) && type === "quantity") {
+      this.setState({quantity: data.quantity});
+      return;
+    }
+    
     const { nameEquipment, power, quantity, date } = data;
     const { editEquipments } = this.props;
 
@@ -158,6 +163,7 @@ class ListEquipments extends Component {
     if (type === "power") {
       item = { power: value, quantity, date };
     } else if (type === "quantity") {
+      
       item = { quantity: value, power, date };
     } else if (type === "date") {
       item = { date: value, power, quantity };
@@ -170,10 +176,15 @@ class ListEquipments extends Component {
       this.setState({ power: 0.01 });
     }
 
-    if (newData.quantity === 0 || newData.quantity === "") {
-      newData.quantity = 1;
-      this.setState({ quantity: 1 });
-    }
+
+    // if (
+    //   newData.quantity === 0 ||
+    //   newData.quantity === "" ||
+    //   newData.quantity === "."
+    // ) {
+    //   newData.quantity = 1;
+    //   this.setState({ quantity: 1 });
+    // }
 
     editEquipments(newData, index);
   };
@@ -202,10 +213,10 @@ class ListEquipments extends Component {
 
   getPower = () => {
     const { power } = this.state.rowForm;
-    if(power === undefined) {
+    if (power === undefined) {
       this.setState({
         power: 1
-      })
+      });
     }
     return power;
   };
@@ -313,7 +324,7 @@ class ListEquipments extends Component {
     }
   };
 
-  changeNumber = (value, type) => {
+  changeNumber = (value, type, ev) => {
     let { rowForm } = this.state;
     const { power, quantity, ...restRowForm } = rowForm;
 
@@ -360,7 +371,6 @@ class ListEquipments extends Component {
       <InputNumber
         value={number}
         min={1}
-        type="number"
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
