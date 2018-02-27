@@ -1,4 +1,6 @@
-const API_URL = "http://192.168.2.207:80";
+import {notificationError} from "../actions/equipmentsAction";
+
+const API_URL = "http://192.168.2.122:80";
 //const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{
@@ -42,6 +44,6 @@ export const request = (url, { contentType = 'application/json', ...customOption
       return response.json();
     })
     .catch(error => {
-      throw new Error('Request Error', error);
+      notificationError("Conexão com o servidor", "Erro ao obter as informações do servidor")
     });
 };

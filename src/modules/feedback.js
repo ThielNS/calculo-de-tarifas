@@ -19,7 +19,7 @@ export const formatNumber = value => {
   if(typeof(value) === 'string') {
     return value
   } else {
-    const number = new Intl.NumberFormat('pt-BR').format(value);
-    return `R$ ${number}`
+    const number = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL' }).format(value);
+    return `${number}`
   }
 };

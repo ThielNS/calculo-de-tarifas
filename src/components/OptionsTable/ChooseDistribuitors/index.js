@@ -34,12 +34,12 @@ class chooseDistribuitors extends Component {
 
   defaultValue = () => {
     const { itemsDistribuitors } = this.props;
-    const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
+    //const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
 
-    if (powerDistribuitorId) {
-      return powerDistribuitorId;
+    if (itemsDistribuitors.length <= 0) {
+      return "Concessionária"
     } else if (itemsDistribuitors.length > 0) {
-      return itemsDistribuitors[0].id;
+      return itemsDistribuitors[0].name;
     } else {
       return null;
     }
@@ -53,7 +53,7 @@ class chooseDistribuitors extends Component {
         <Select
           showSearch
           optionFilterProp="children"
-          defaultValue={this.defaultValue()}
+          placeholder={this.defaultValue()}
           onChange={this.handleChange}
           filterOption={(input, option) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=

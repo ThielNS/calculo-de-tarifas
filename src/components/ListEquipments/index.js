@@ -100,10 +100,7 @@ class ListEquipments extends Component {
     ) {
       const powerDistribuitorId = localStorage.getItem("powerDistribuitorId");
 
-      console.log("antes do check", powerDistribuitorId);
-
       if (powerDistribuitorId) {
-        console.log("depois do check");
         addEquipment(rowForm);
 
         this.setState({
@@ -204,14 +201,12 @@ class ListEquipments extends Component {
   };
 
   getPower = () => {
-    // let { rowForm } = this.state;
     const { power } = this.state.rowForm;
     if(power === undefined) {
       this.setState({
         power: 1
       })
     }
-    console.log(power);
     return power;
   };
 

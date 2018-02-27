@@ -16,18 +16,7 @@ const equipmentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_EQUIPMENT:
       const { data } = action;
-      const id = 1;
       const newState = state.concat(data);
-
-      const newStateId = newState.map(equipment => {
-        equipment.date.useOfMonth.map(dateTime => {
-          dateTime.id = id + 1;
-          return dateTime
-        });
-        return equipment
-      });
-
-      console.log(newStateId)
 
       localStorageSetItem(newState);
 

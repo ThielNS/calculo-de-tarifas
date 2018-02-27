@@ -6,4 +6,5 @@ export const initialState = itemsDistribuitors;
 
 export const localStorageSetItem = value => {
   localStorage.setItem("itemsDistribuitors", JSON.stringify(value));
+ 
 };

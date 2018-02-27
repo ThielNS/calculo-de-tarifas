@@ -35,8 +35,7 @@ class MonthlyExpenses extends Component {
   getConventionalTariffs() {
     const { listEquipments } = this.props;
     let conventionalTariffs = [0.0];
-
-  
+    
       Object.keys(listEquipments).forEach(key => {
         const valueConventionalTariff = listEquipments[key]["conventionalTariff"];
         conventionalTariffs.push(valueConventionalTariff);

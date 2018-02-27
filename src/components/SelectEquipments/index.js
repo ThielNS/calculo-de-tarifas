@@ -27,9 +27,6 @@ class SelectEquipment extends Component {
     }
 
     this.setState({ nameEquipment: value });
-    if(this.state.power === 0 || this.state.power === undefined) {
-      console.log('power undefined or 0')
-    }
 
     searchEquipments(value)
       .then(data => {

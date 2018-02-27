@@ -15,7 +15,7 @@ import {
 import { get, post } from "../modules/request";
 import { createObject, updateEquipments } from "./powerDistribuitorAction";
 
-const notificationError = (title, content) => {
+export const notificationError = (title, content) => {
   notification["error"]({
     message: title,
     description: content
@@ -34,7 +34,7 @@ export const searchEquipments = name => dispatch => {
   return get(`equipments?name=${name}&limit=${limit}`)
     .then(data => data)
     .catch(error => {
-      console.error(error);
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas")
     });
 };
 
@@ -157,6 +157,8 @@ export const addEquipment = data => dispatch => {
       type: ADD_EQUIPMENT,
       data: newData
     });
+  }).catch(error => {
+    notificationError('Conexão com o servidor', 'Erro ao calcular tarifas')
   });
 };
 
@@ -178,9 +180,7 @@ export const editEquipments = (data, index) => dispatch => {
     .then(response => {
       newData.date.timeOfUse = response[0].timeOfUse;
       newData.whiteTariff = response[0].whiteTariffEnergySpending;
-      console.log(newData.whiteTariff)
       newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
-      console.log(newData.conventionalTariff)
       
       dispatch({
         type: EDIT_EQUIPMENTS,
