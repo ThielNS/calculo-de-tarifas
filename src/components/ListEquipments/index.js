@@ -33,7 +33,7 @@ class ListEquipments extends Component {
           render: this.inputSearch
         },
         {
-          title: "Potência",
+          title: "Potência (W)",
           dataIndex: "power",
           key: "power",
           render: (value, data, index) =>
@@ -72,7 +72,7 @@ class ListEquipments extends Component {
         }
       ],
       formatter: {
-        formatter: value => `${value}W`,
+        formatter: value => `${value}`,
         parser: value => value.replace("W", "")
       },
       send: false
@@ -350,6 +350,7 @@ class ListEquipments extends Component {
         <InputNumber
           value={number}
           min={1}
+          type="number"
           {...formatter}
           onChange={value => this.changeNumber(value, type)}
         />
@@ -359,6 +360,7 @@ class ListEquipments extends Component {
       <InputNumber
         value={number}
         min={1}
+        type="number"
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
