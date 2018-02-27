@@ -50,7 +50,7 @@ class ListEquipments extends Component {
           title: "Tempo de Uso",
           dataIndex: "date",
           key: "date",
-          className: "set-time column-right",
+          className: "column-right",
           render: this.timeOfUse
         },
         {

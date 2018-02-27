@@ -4,6 +4,7 @@ import {
 } from "../reducers/powerDistribuitorReducer/constants";
 import { convertUseOfMonth, convertEquipment } from "./equipmentsAction";
 import { get, post } from "../modules/request";
+import { notificationError } from "./equipmentsAction";
 
 export const listDistribuitors = (index, dataItem) => dispatch => {
   return get("powerdistribuitors")
@@ -13,7 +14,9 @@ export const listDistribuitors = (index, dataItem) => dispatch => {
         data
       })
     )
-    .catch(Error => {});
+    .catch(Error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
+    });
 };
 
 export const createObject = (data, distribuitorId) => {
@@ -37,7 +40,6 @@ export const updateEquipments = (response, data) => {
 };
 
 export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
-
   const newData = data.map(item => {
     const newUseOfMonth = convertUseOfMonth(item.date.useOfMonth);
     item = convertEquipment(item, newUseOfMonth, true);
@@ -53,7 +55,9 @@ export const listCalculateEquipments = (data, distribuitorId) => dispatch => {
         dataList: updateEquipments(response, data)
       });
     })
-    .catch(error => {});
+    .catch(error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
+    });
 };
 
 /* export const listCalculateEquipments = data => dispatch => {

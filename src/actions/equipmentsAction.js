@@ -305,7 +305,7 @@ export const updateMonthEquipments = (dataList, month) => dispatch => {
       type: UPDATE_MONTH_EQUIPMENTS,
       updateData: updateEquipments(response, newDataList)
     });
-  });
+  }).catch(Error => {notificationError("Conexão com o servidor", "Erro ao calcular tarifas")})
 };
 
 export const resetListEquipments = dispatch => {
