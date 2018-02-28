@@ -1,6 +1,6 @@
 import {notificationError} from "../actions/equipmentsAction";
 
-const API_URL = "http://192.168.2.122:80";
+const API_URL = "http://192.168.3.79:80";
 //const API_URL = "https://private-581d3-itse1.apiary-mock.com";
 
 export const get = (url) =>{

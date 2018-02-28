@@ -93,7 +93,7 @@ class ListEquipments extends Component {
 
     if (
       nameEquipment &&
-      power > 0.01 &&
+      power > 0 &&
       quantity >= 1 &&
       useOfMonth.length > 0 &&
       send
@@ -151,10 +151,15 @@ class ListEquipments extends Component {
 
   editEquipment = (value, type, data, index, event) => {
     if (!/^[0-9]*$/.test(value) && type === "quantity") {
-      this.setState({quantity: data.quantity});
+      this.setState({ quantity: data.quantity });
       return;
     }
-    
+
+    if (!/^-?\d*\.?\d*$/.test(value) && type === "power") {
+      this.setState({ power: data.power });
+      return;
+    }
+
     const { nameEquipment, power, quantity, date } = data;
     const { editEquipments } = this.props;
 
@@ -163,7 +168,6 @@ class ListEquipments extends Component {
     if (type === "power") {
       item = { power: value, quantity, date };
     } else if (type === "quantity") {
-      
       item = { quantity: value, power, date };
     } else if (type === "date") {
       item = { date: value, power, quantity };
@@ -172,19 +176,14 @@ class ListEquipments extends Component {
     let newData = { nameEquipment, ...item };
 
     if (newData.power === 0 || newData.power === "") {
-      newData.power = 0.01;
-      this.setState({ power: 0.01 });
+      newData.power = 1;
+      this.setState({ power: 1 });
     }
 
-
-    // if (
-    //   newData.quantity === 0 ||
-    //   newData.quantity === "" ||
-    //   newData.quantity === "."
-    // ) {
-    //   newData.quantity = 1;
-    //   this.setState({ quantity: 1 });
-    // }
+    if (newData.quantity === 0 || newData.quantity === "") {
+      newData.quantity = 1;
+      this.setState({ quantity: 1 });
+    }
 
     editEquipments(newData, index);
   };
@@ -362,6 +361,7 @@ class ListEquipments extends Component {
           value={number}
           min={1}
           type="number"
+          parser={value => value.replace(/\$\s?|(,*)/g, "")}
           {...formatter}
           onChange={value => this.changeNumber(value, type)}
         />
@@ -371,6 +371,7 @@ class ListEquipments extends Component {
       <InputNumber
         value={number}
         min={1}
+        parser={value => value.replace(/\$\s?|(,*)/g, "")}
         {...formatter}
         onChange={value => this.editEquipment(value, type, data, index)}
       />
