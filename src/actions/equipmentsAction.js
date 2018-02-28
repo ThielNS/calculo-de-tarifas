@@ -34,7 +34,7 @@ export const searchEquipments = name => dispatch => {
   return get(`equipments?name=${name}&limit=${limit}`)
     .then(data => data)
     .catch(error => {
-      notificationError("Conexão com o servidor", "Erro ao calcular tarifas")
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
     });
 };
 
@@ -149,17 +149,19 @@ export const addEquipment = data => dispatch => {
     convertUseOfMonth(data.date.useOfMonth)
   );
 
-  post("calculate", newObj).then(response => {
-    newData.date.timeOfUse = response[0].timeOfUse;
-    newData.whiteTariff = response[0].whiteTariffEnergySpending;    
-    newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
-    return dispatch({
-      type: ADD_EQUIPMENT,
-      data: newData
+  post("calculate", newObj)
+    .then(response => {
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: ADD_EQUIPMENT,
+        data: newData
+      });
+    })
+    .catch(error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
     });
-  }).catch(error => {
-    notificationError('Conexão com o servidor', 'Erro ao calcular tarifas')
-  });
 };
 
 export const removeEquipments = index => dispatch => {
@@ -181,7 +183,7 @@ export const editEquipments = (data, index) => dispatch => {
       newData.date.timeOfUse = response[0].timeOfUse;
       newData.whiteTariff = response[0].whiteTariffEnergySpending;
       newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
-      
+
       dispatch({
         type: EDIT_EQUIPMENTS,
         dataItem: newData,
@@ -199,7 +201,7 @@ export const editEquipments = (data, index) => dispatch => {
           "Erro ao Editar",
           "Quantidade deve ser um número inteiro"
         );
-      } 
+      }
     });
 };
 
@@ -214,16 +216,20 @@ export const addUseOfMonth = (data, index) => dispatch => {
     convertUseOfMonth(restData.date.useOfMonth)
   );
 
-  post("calculate", newObj).then(response => {
-    newData.date.timeOfUse = response[0].timeOfUse;
-    newData.whiteTariff = response[0].whiteTariffEnergySpending;
-    newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
-    return dispatch({
-      type: EDIT_EQUIPMENTS,
-      dataItem: newData,
-      index
+  post("calculate", newObj)
+    .then(response => {
+      newData.date.timeOfUse = response[0].timeOfUse;
+      newData.whiteTariff = response[0].whiteTariffEnergySpending;
+      newData.conventionalTariff = response[0].conventionalTariffEnergySpending;
+      return dispatch({
+        type: EDIT_EQUIPMENTS,
+        dataItem: newData,
+        index
+      });
+    })
+    .catch(Error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
     });
-  });
 };
 
 export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
@@ -247,7 +253,9 @@ export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
       indexEquipment,
       indexDate
     });
-  });
+  }).catch(Error => {
+    notificationError("Conexão com o servidor", "Erro ao calcular tarifas")
+  })
 };
 
 /* const convertDate = (date, month) => {
@@ -266,20 +274,26 @@ export const editUseOfMonth = (data, indexEquipment, indexDate) => dispatch => {
  */
 
 export const changeListEquipments = (dataList, changeValue, method = null) => {
-  let lastDay = moment().month(changeValue).endOf(`month`).format(`DD`);
+  let lastDay = moment()
+    .month(changeValue)
+    .endOf(`month`)
+    .format(`DD`);
 
   return dataList.map(item => {
     item.date.useOfMonth.map(dateTime => {
       dateTime.dateInit = moment(dateTime.dateInit).month(changeValue);
       dateTime.dateFinish = moment(dateTime.dateFinish).month(changeValue);
 
-      if(dateTime.dateInit.date() > lastDay || dateTime.dateFinish.date() > lastDay ) {
+      if (
+        dateTime.dateInit.date() > lastDay ||
+        dateTime.dateFinish.date() > lastDay
+      ) {
         dateTime.dateInit = dateTime.dateInit.date(lastDay);
         dateTime.dateFinish = dateTime.dateFinish.date(lastDay);
-      } 
+      }
 
-      dateTime.dateInit = dateTime.dateInit.format('YYYY-MM-DD');
-      dateTime.dateFinish = dateTime.dateFinish.format('YYYY-MM-DD');
+      dateTime.dateInit = dateTime.dateInit.format("YYYY-MM-DD");
+      dateTime.dateFinish = dateTime.dateFinish.format("YYYY-MM-DD");
       return dateTime;
     });
     return item;
@@ -300,12 +314,16 @@ export const updateMonthEquipments = (dataList, month) => dispatch => {
     localStorage.getItem("powerDistribuitorId")
   );
 
-  post("calculate", newObj).then(response => {
-    return dispatch({
-      type: UPDATE_MONTH_EQUIPMENTS,
-      updateData: updateEquipments(response, newDataList)
+  post("calculate", newObj)
+    .then(response => {
+      return dispatch({
+        type: UPDATE_MONTH_EQUIPMENTS,
+        updateData: updateEquipments(response, newDataList)
+      });
+    })
+    .catch(Error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
     });
-  }).catch(Error => {notificationError("Conexão com o servidor", "Erro ao calcular tarifas")})
 };
 
 export const resetListEquipments = dispatch => {
@@ -334,19 +352,23 @@ export const deleteDates = (data, indexEquipment, indexDate) => dispatch => {
     item = convertEquipment(item, newUseOfMonth, true);
     return item;
   });
-  
+
   let newObject = createObject(
     newData,
     localStorage.getItem("powerDistribuitorId"),
     localStorage.getItem("monthIndex")
   );
 
-  post("calculate", newObject).then(response => {
-    return dispatch({
-      type: DELETE_DATES,
-      listEquipment: updateEquipments(response, resultState)
+  post("calculate", newObject)
+    .then(response => {
+      return dispatch({
+        type: DELETE_DATES,
+        listEquipment: updateEquipments(response, resultState)
+      });
+    })
+    .catch(Error => {
+      notificationError("Conexão com o servidor", "Erro ao calcular tarifas");
     });
-  });
 };
 
 export const editNameEquipment = (
